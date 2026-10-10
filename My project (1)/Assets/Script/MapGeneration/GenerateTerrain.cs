@@ -10,11 +10,16 @@ public class GenerateTerrain : MonoBehaviour
 {
     [SerializeField] private int mapWidthInTiles, mapDepthInTiles;
     [SerializeField] private GameObject tilePrefab;
-    private List<GameObject> tiles;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject npc;
+    private List<GameObject> tiles = new List<GameObject>();
+    [SerializeField] Camera camera;
+
 
     private int tileWidth, tileDepth;
     void Start()
     {
+        //grounds = new List<Ground>();
         // get the tile dimensions from the tile Prefab
         Vector3 tileSize = tilePrefab.GetComponent<MeshRenderer>().bounds.size;
         tileWidth = (int)tileSize.x;
@@ -22,6 +27,15 @@ public class GenerateTerrain : MonoBehaviour
 
         GenerateMap();
         GenerateWalkingTerrain(tiles, tileDepth, tileWidth);
+        SpawnPlayer();
+    }
+
+    void SpawnPlayer()
+    {
+        GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
+        //Camera mainCam = Instantiate(camera, new Vector3(0, 0, 0), Quaternion.identity);
+        //mainCam.GetComponent<PlayerFollow>().PlayerTransform = play.GetComponent<PlayerController>();
+        GameObject play1 = Instantiate(npc, new Vector3(1, 3.5f, 0), Quaternion.identity);
     }
 
     void GenerateMap()
@@ -35,6 +49,7 @@ public class GenerateTerrain : MonoBehaviour
                 this.gameObject.transform.position.z + zTileIndex * tileDepth);
                 // instantiate a new Tile
                 GameObject tile = Instantiate(tilePrefab, tilePosition, Quaternion.identity) as GameObject;
+                tiles.Add(tile);
             }
         }        
     }
@@ -49,7 +64,7 @@ public class GenerateTerrain : MonoBehaviour
                 for (int xIndex = 0; xIndex < tileWidth; xIndex++)
                 {
                     int colorIndex = zIndex * tileWidth + xIndex;
-                    float height = tile.GetComponent<TileGeneration>().heightMap[zIndex, xIndex];
+                    //float height = tile.GetComponent<TileGeneration>().heightMap[zIndex, xIndex];
 
                 }
             }

@@ -142,7 +142,7 @@ MonoBehaviour:
   tileRenderer: {fileID: 5663991683423660625}
   meshFilter: {fileID: 2925461239274273236}
   meshCollider: {fileID: 3412402655022335300}
-  mapScale: 9
+  mapScale: 2
 --- !u!114 &7990429973746308036
 MonoBehaviour:
   m_ObjectHideFlags: 0

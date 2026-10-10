@@ -1,7 +1,8 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float playerSpeed;
     public InputActionReference moveAction;
@@ -18,7 +19,7 @@ class PlayerController : MonoBehaviour
     void Start()
     {
         target = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        turn = Object.FindAnyObjectByType<TurnManagement>();
+        turn = FindAnyObjectByType<TurnManagement>();
     }
 
     // Update is called once per frame
@@ -29,6 +30,7 @@ class PlayerController : MonoBehaviour
 
     public void Movement()
     {
+        //0 = player turn
         if(turn.currentTurn == 0)
         {
             //If is moving cant input something else
@@ -46,9 +48,9 @@ class PlayerController : MonoBehaviour
                 {
                     if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
                     {
-                        target = new Vector3(pos.x, 0.55f, pos.z);
+                        target = new Vector3(pos.x, 3.5f, pos.z);
                         isMoving = true;
-                       break;
+                        break;
                     }
                 }
 
@@ -88,5 +90,4 @@ class PlayerController : MonoBehaviour
         return targetsPos;
     }
 
-    
 }

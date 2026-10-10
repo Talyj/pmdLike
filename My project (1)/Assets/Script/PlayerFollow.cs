@@ -5,20 +5,32 @@ using UnityEngine;
 
 public class PlayerFollow : MonoBehaviour
 {
-    public Transform PlayerTransform;
+    public PlayerController PlayerTransform;
     private Vector3 _cameraOffset;
 
     [Range(0.01f, 1.0f)] public float SmoothFactor = 0.5f;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        _cameraOffset = transform.position - PlayerTransform.position;
     }
 
-    void LateUpdate()
+    // Start is called before the first frame update
+    public void Start()
     {
-        Vector3 newPos = PlayerTransform.position + _cameraOffset;
+        //PlayerTransform = FindAnyObjectByType<PlayerController>();
+        //if(PlayerTransform == null)
+        //{
+        //    PlayerController.instanceStarted += OnPlayerInstanceStarted;
+        //}
+    }
+    private void Update()
+    {
+        PlayerTransform = GetComponent<PlayerController>();
+    }
+
+    public void LateUpdate()
+    {
+        Vector3 newPos = PlayerTransform.transform.position + _cameraOffset;
         transform.position = Vector3.Slerp(transform.position, newPos, SmoothFactor);
     }
 

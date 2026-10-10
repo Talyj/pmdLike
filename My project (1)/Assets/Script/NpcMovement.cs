@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.GraphicsBuffer;
 
-public class NpcController : MonoBehaviour
+public class NpcMovement : MonoBehaviour
 {
     private TurnManagement turn;
 
@@ -11,14 +11,14 @@ public class NpcController : MonoBehaviour
 
 
     //Player variables
-    private CharacterController player;
+    private PlayerController player;
     private Vector3 targetPos;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = Object.FindAnyObjectByType<CharacterController>();
+        player = Object.FindAnyObjectByType<PlayerController>();
         turn = Object.FindAnyObjectByType<TurnManagement>();
         targetPos = player.transform.position;
     }
@@ -39,24 +39,26 @@ public class NpcController : MonoBehaviour
         //if it's my turn then i follow
         if(transform.position != targetPos)
         {
-            //Before moving check the distance between me and the target, if it's too high change the targetPos to a closer tile
+            //Before moving check the distance between me and the target, if it's too far change the targetPos to a closer tile
             if(Vector3.Distance(transform.position, targetPos) > 1.5)
             {
                 //Get the collider around to see where i can go
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2);
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.5f);
                 Collider closestCollider = new Collider();
                 float distCollider = 2;
-                //check every collider named "center"
+
+                //get direction to get to player
+                Vector3 direction = targetPos - transform.position;
+
+                //check every collider named "BodyPlayer" to not move if it's next to it
                 foreach (var pos in hitColliders)
                 {
-                    if(pos.name == "center")
+                    if(pos.name == "BodyPlayer")
                     {
-                        if(Vector3.Distance(targetPos, pos.transform.position) < distCollider)
-                        {
-                            distCollider = Vector3.Distance(targetPos, pos.transform.position);
-                            targetPos = new Vector3(pos.transform.position.x, 0.5f, pos.transform.position.z);
-                        }
+                        targetPos = transform.position;
+                        break;
                     }
+                    targetPos = transform.position + direction.normalized;
                 }
             }
 

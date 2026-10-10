@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,10 +25,14 @@ public class TileGeneration : MonoBehaviour
     [SerializeField] private MeshFilter meshFilter;
     [SerializeField] private MeshCollider meshCollider;
     [SerializeField] float mapScale;
+
+    //private GenerateTerrain obj;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         GenerateMap();
+        //obj = GetComponent<GenerateTerrain>();
     }
 
     void GenerateMap()
@@ -79,6 +84,7 @@ public class TileGeneration : MonoBehaviour
         {
             Debug.Log(xIndex + " " + zIndex);
             Ground newGround = Instantiate(sol, new Vector3((this.transform.position.x + xIndex * -1) + 5, 3, (this.transform.position.z + zIndex * -1) + 5), Quaternion.identity);
+            //obj.grounds.Add(newGround);
             //ajouter une seconde
         }       
     }
