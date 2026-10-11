@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
@@ -8,14 +9,17 @@ using UnityEngine;
 
 public class GenerateTerrain : MonoBehaviour
 {
+    public float heightSpawn = 3.5f;
     [SerializeField] private int mapWidthInTiles, mapDepthInTiles;
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject npc;
-    private List<GameObject> tiles = new List<GameObject>();
     [SerializeField] Camera camera;
+    [SerializeField] TurnManagement turnManager;
+    private List<GameObject> tiles = new List<GameObject>();
 
     public List<Ground> grounds = new List<Ground>();
+    public int numberOfEnemy=0;
 
 
     private int tileWidth, tileDepth;
@@ -30,13 +34,41 @@ public class GenerateTerrain : MonoBehaviour
         GenerateMap();
         //GenerateWalkingTerrain(tiles, tileDepth, tileWidth);
         SpawnPlayer();
+        StartCoroutine(SpawnEnemies());
+    }
+
+    private void Update()
+    {
+    }
+
+    IEnumerator SpawnEnemies()
+    {
+        while (true)
+        {
+            if(grounds.Count() > 0 && numberOfEnemy < 10)
+            {
+                var test = UnityEngine.Random.Range(0, grounds.Count());
+
+                GameObject enemy = Instantiate(npc, new Vector3(grounds[test].transform.position.x, heightSpawn, grounds[test].transform.position.z), Quaternion.identity);
+                enemy.GetComponent<NpcMovement>().isCompanion = false;
+                turnManager.enemies.Add(enemy);
+                numberOfEnemy++;
+            }
+            Debug.Log("oue");
+            yield return new WaitForSeconds(2);
+        }
     }
 
     void SpawnPlayer()
     {
+        //Player
         GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
-        GameObject play1 = Instantiate(npc, new Vector3(1, 3.5f, 0), Quaternion.identity);
+        turnManager.player = play;
         camera.GetComponent<PlayerFollow>().PlayerTransform = play.GetComponent<PlayerController>();
+
+        //Companions
+        GameObject companions = Instantiate(npc, new Vector3(1, heightSpawn, 0), Quaternion.identity);
+        turnManager.companions.Add(companions);
     }
 
     void GenerateMap()

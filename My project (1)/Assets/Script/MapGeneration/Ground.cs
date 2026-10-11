@@ -3,6 +3,7 @@ using UnityEngine;
 public class Ground : MonoBehaviour
 {
     public bool IsEmpty = true;
+    RaycastHit hit;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,20 +16,21 @@ public class Ground : MonoBehaviour
     {
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void FixedUpdate()
     {
-        if(other.tag == "characters")
+        CheckIfEmpty();
+    }
+
+    private void CheckIfEmpty()
+    {
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1.0f))
         {
             IsEmpty = false;
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "characters")
+        else
         {
             IsEmpty = true;
         }
-
+        Debug.DrawRay(transform.position, Vector3.up, Color.yellow);
     }
 }

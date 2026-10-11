@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
                     {
-                        target = new Vector3(pos.x, 3.5f, pos.z);
+                        target = new Vector3(pos.x, pos.y +.5f, pos.z);
                         isMoving = true;
                         break;
                     }
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
         foreach(var pos in hitColliders)
         {
      
-            if(pos.name == "center")
+            if(pos.name.Contains("Ground"))
             {
                 if (pos.transform.position.x == transform.position.x && pos.transform.position.z == transform.position.z) continue;
                 targetsPos.Add(pos.transform.position);
