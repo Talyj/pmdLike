@@ -15,6 +15,8 @@ public class GenerateTerrain : MonoBehaviour
     private List<GameObject> tiles = new List<GameObject>();
     [SerializeField] Camera camera;
 
+    public List<Ground> grounds = new List<Ground>();
+
 
     private int tileWidth, tileDepth;
     void Start()
@@ -26,16 +28,15 @@ public class GenerateTerrain : MonoBehaviour
         tileDepth = (int)tileSize.z;
 
         GenerateMap();
-        GenerateWalkingTerrain(tiles, tileDepth, tileWidth);
+        //GenerateWalkingTerrain(tiles, tileDepth, tileWidth);
         SpawnPlayer();
     }
 
     void SpawnPlayer()
     {
         GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
-        //Camera mainCam = Instantiate(camera, new Vector3(0, 0, 0), Quaternion.identity);
-        //mainCam.GetComponent<PlayerFollow>().PlayerTransform = play.GetComponent<PlayerController>();
         GameObject play1 = Instantiate(npc, new Vector3(1, 3.5f, 0), Quaternion.identity);
+        camera.GetComponent<PlayerFollow>().PlayerTransform = play.GetComponent<PlayerController>();
     }
 
     void GenerateMap()

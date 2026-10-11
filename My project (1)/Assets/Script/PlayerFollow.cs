@@ -7,7 +7,6 @@ public class PlayerFollow : MonoBehaviour
 {
     public PlayerController PlayerTransform;
     private Vector3 _cameraOffset;
-
     [Range(0.01f, 1.0f)] public float SmoothFactor = 0.5f;
 
     private void Awake()
@@ -25,12 +24,13 @@ public class PlayerFollow : MonoBehaviour
     }
     private void Update()
     {
-        PlayerTransform = GetComponent<PlayerController>();
     }
 
     public void LateUpdate()
     {
-        Vector3 newPos = PlayerTransform.transform.position + _cameraOffset;
+        PlayerTransform = FindAnyObjectByType<PlayerController>();
+        //Vector3 newPos = PlayerTransform.transform.position + _cameraOffset;
+        Vector3 newPos = PlayerTransform.transform.position + new Vector3(0, 3, -4);
         transform.position = Vector3.Slerp(transform.position, newPos, SmoothFactor);
     }
 
