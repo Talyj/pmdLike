@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class GenerateTerrain : MonoBehaviour
-{
+{   
+    //Maybe separate the spawn of the ground and the player/enemies
     public float heightSpawn = 3.5f;
     [SerializeField] private int mapWidthInTiles, mapDepthInTiles;
     [SerializeField] private GameObject tilePrefab;
@@ -16,13 +18,15 @@ public class GenerateTerrain : MonoBehaviour
     [SerializeField] private GameObject npc;
     [SerializeField] Camera camera;
     [SerializeField] TurnManagement turnManager;
+    [SerializeField] private Material materialMechant;
+    [SerializeField] private Material materialCompanions;
     private List<GameObject> tiles = new List<GameObject>();
 
     public List<Ground> grounds = new List<Ground>();
     public int numberOfEnemy=0;
-
-
     private int tileWidth, tileDepth;
+
+
     void Start()
     {
         //grounds = new List<Ground>();
@@ -34,40 +38,54 @@ public class GenerateTerrain : MonoBehaviour
         GenerateMap();
         //GenerateWalkingTerrain(tiles, tileDepth, tileWidth);
         SpawnPlayer();
-        StartCoroutine(SpawnEnemies());
+        //StartCoroutine(SpawnEnemies());
     }
 
     private void Update()
     {
     }
 
-    IEnumerator SpawnEnemies()
+    public IEnumerator SpawnEnemiesLoop()
     {
         while (true)
         {
             if(grounds.Count() > 0 && numberOfEnemy < 10)
             {
-                var test = UnityEngine.Random.Range(0, grounds.Count());
+                //var test = UnityEngine.Random.Range(0, grounds.Count());
 
-                GameObject enemy = Instantiate(npc, new Vector3(grounds[test].transform.position.x, heightSpawn, grounds[test].transform.position.z), Quaternion.identity);
-                enemy.GetComponent<NpcMovement>().isCompanion = false;
-                turnManager.enemies.Add(enemy);
-                numberOfEnemy++;
+                //GameObject enemy = Instantiate(npc, new Vector3(grounds[test].transform.position.x, heightSpawn, grounds[test].transform.position.z), Quaternion.identity);
+                //enemy.GetComponent<NpcMovement>().isCompanion = false;
+                //turnManager.enemies.Add(enemy);
+                //numberOfEnemy++;
+                SpawnEnemiesOnce();            
             }
-            Debug.Log("oue");
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(10);
         }
+    }
+
+    public void SpawnEnemiesOnce()
+    {
+        var rdmChoice = UnityEngine.Random.Range(0, grounds.Count());
+
+        GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(5, 3.5f, -3), Quaternion.identity);
+        enemy.GetComponent<NpcMovement>().isCompanion = false;
+        enemy.GetComponent<MeshRenderer>().material = materialMechant;
+        turnManager.enemies.Add(enemy);
+        numberOfEnemy++;
     }
 
     void SpawnPlayer()
     {
         //Player
-        GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
+        GameObject play = Instantiate(player, new Vector3(0, 3.5f, 3), Quaternion.identity);
+        //GameObject play = Instantiate(player, new Vector3(5, 3.5f, -5), Quaternion.identity);
         turnManager.player = play;
         camera.GetComponent<PlayerFollow>().PlayerTransform = play.GetComponent<PlayerController>();
 
         //Companions
         GameObject companions = Instantiate(npc, new Vector3(1, heightSpawn, 0), Quaternion.identity);
+        companions.GetComponent<MeshRenderer>().material = materialCompanions;
         turnManager.companions.Add(companions);
     }
 

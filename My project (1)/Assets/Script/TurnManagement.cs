@@ -11,21 +11,27 @@ public class TurnManagement : MonoBehaviour
     //2 = tour des méchants
 
     public int currentTurn = 0;
+    public int totalTurn = 0;
 
     public GameObject player;
     public List<GameObject> companions = new List<GameObject>();
     public List<GameObject> enemies = new List<GameObject>();
 
+    private GenerateTerrain terrain;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        terrain = GetComponent<GenerateTerrain>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(totalTurn == 0 && terrain.numberOfEnemy < 10)
+        {
+            terrain.SpawnEnemiesOnce();
+        }
     }
 
     public void TurnChange()
@@ -37,6 +43,10 @@ public class TurnManagement : MonoBehaviour
                 break;
             case 1:
                 CheckAllActed(companions);
+                if(enemies.Count == 0)
+                {
+                    AddTurn();
+                }
                 break;
             case 2:
                 CheckAllActed(enemies);
@@ -58,6 +68,7 @@ public class TurnManagement : MonoBehaviour
     private void AddTurn()
     {
         currentTurn++;
+        totalTurn++;
         if (currentTurn >= 3)
         {
             currentTurn = 0;

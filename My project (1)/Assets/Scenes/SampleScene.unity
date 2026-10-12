@@ -218,6 +218,8 @@ MonoBehaviour:
   npc: {fileID: 8539622564464889243, guid: e87cb17cb04f8644c8933506144cf3f0, type: 3}
   camera: {fileID: 7999753444860942062}
   turnManager: {fileID: 96470652}
+  materialMechant: {fileID: 2100000, guid: 4d41cdc30a8801545aecbb67404afbb6, type: 2}
+  materialCompanions: {fileID: 2100000, guid: ff69790a9e26e3646827a8ba33154aac, type: 2}
   grounds: []
   numberOfEnemy: 0
 --- !u!4 &96470651
@@ -248,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManagement
   currentTurn: 0
+  totalTurn: 0
   player: {fileID: 0}
   companions: []
   enemies: []
