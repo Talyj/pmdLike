@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerFollow : MonoBehaviour
 {
-    public PlayerController PlayerTransform;
+    public PlayerMovement PlayerTransform;
     private Vector3 _cameraOffset;
     [Range(0.01f, 1.0f)] public float SmoothFactor = 0.5f;
 
@@ -28,7 +28,7 @@ public class PlayerFollow : MonoBehaviour
 
     public void LateUpdate()
     {
-        PlayerTransform = FindAnyObjectByType<PlayerController>();
+        PlayerTransform = FindAnyObjectByType<PlayerMovement>();
         //Vector3 newPos = PlayerTransform.transform.position + _cameraOffset;
         Vector3 newPos = PlayerTransform.transform.position + new Vector3(0, 3, -4);
         transform.position = Vector3.Slerp(transform.position, newPos, SmoothFactor);

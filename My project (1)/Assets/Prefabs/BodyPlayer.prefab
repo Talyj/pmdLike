@@ -12,10 +12,13 @@ GameObject:
   - component: {fileID: 7208242228878396648}
   - component: {fileID: 7614800573592314882}
   - component: {fileID: 8814561693428465030}
-  - component: {fileID: 1953050644046864227}
+  - component: {fileID: 5854149407053892874}
+  - component: {fileID: 4571028446364644884}
+  - component: {fileID: 1515504779906658012}
+  - component: {fileID: 1851794427646379257}
   m_Layer: 0
   m_Name: BodyPlayer
-  m_TagString: characters
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +119,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1953050644046864227
+--- !u!114 &5854149407053892874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,12 +128,58 @@ MonoBehaviour:
   m_GameObject: {fileID: 7503565349928239517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2803330d0caa25c49963056d00adc158, type: 3}
+  m_Script: {fileID: 11500000, guid: 95dd71c44a8c3d14ea8ab6fa29cbb799, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   playerSpeed: 3
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   isMoving: 0
+--- !u!114 &4571028446364644884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503565349928239517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b98bc20588720e428ae5b8ad76fb808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  playerMove: {fileID: 5854149407053892874}
+  damageable: {fileID: 1515504779906658012}
+  action: {fileID: 1851794427646379257}
+--- !u!114 &1515504779906658012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503565349928239517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8111b2db672fa448195fcf15c19dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  health: 100
+  mana: 100
+  atq: 0
+  def: 0
+--- !u!114 &1851794427646379257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503565349928239517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdc3294d9fd3646428c4fd2c56d3702d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Action
+  player: {fileID: 5854149407053892874}
+  turn: {fileID: 0}
+  move: {fileID: 5854149407053892874}
 --- !u!1 &7826879906707756118
 GameObject:
   m_ObjectHideFlags: 0

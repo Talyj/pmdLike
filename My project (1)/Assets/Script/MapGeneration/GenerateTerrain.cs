@@ -71,6 +71,7 @@ public class GenerateTerrain : MonoBehaviour
         //GameObject enemy = Instantiate(npc, new Vector3(5, 3.5f, -3), Quaternion.identity);
         enemy.GetComponent<NpcMovement>().isCompanion = false;
         enemy.GetComponent<MeshRenderer>().material = materialMechant;
+        enemy.tag = "enemy";
         turnManager.enemies.Add(enemy);
         numberOfEnemy++;
     }
@@ -78,15 +79,17 @@ public class GenerateTerrain : MonoBehaviour
     void SpawnPlayer()
     {
         //Player
-        GameObject play = Instantiate(player, new Vector3(0, 3.5f, 3), Quaternion.identity);
+        GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
         //GameObject play = Instantiate(player, new Vector3(5, 3.5f, -5), Quaternion.identity);
+        play.GetComponent<PlayerAction>().turn = turnManager;
         turnManager.player = play;
-        camera.GetComponent<PlayerFollow>().PlayerTransform = play.GetComponent<PlayerController>();
+        //Camera
+        camera.GetComponent<PlayerFollow>().PlayerTransform = play.GetComponent<PlayerMovement>();
 
         //Companions
-        GameObject companions = Instantiate(npc, new Vector3(1, heightSpawn, 0), Quaternion.identity);
-        companions.GetComponent<MeshRenderer>().material = materialCompanions;
-        turnManager.companions.Add(companions);
+        GameObject companion = Instantiate(npc, new Vector3(1, heightSpawn, 0), Quaternion.identity);
+        companion.GetComponent<MeshRenderer>().material = materialCompanions;
+        turnManager.companions.Add(companion);
     }
 
     void GenerateMap()

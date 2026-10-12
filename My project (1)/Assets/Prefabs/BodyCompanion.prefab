@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 5701347889809194302}
   - component: {fileID: 7379580684002147100}
   - component: {fileID: 4102754891559532024}
+  - component: {fileID: 8930515852813979801}
   m_Layer: 0
   m_Name: BodyCompanion
   m_TagString: characters
@@ -245,3 +246,18 @@ MonoBehaviour:
   isCompanion: 1
   hasActed: 0
   rdmTargetPos: {x: 0, y: 0, z: 0}
+--- !u!114 &8930515852813979801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539622564464889243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a8111b2db672fa448195fcf15c19dc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  health: 100
+  mana: 100
+  action: {fileID: 0}

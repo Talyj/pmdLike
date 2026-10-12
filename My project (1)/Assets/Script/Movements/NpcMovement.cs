@@ -20,7 +20,7 @@ public class NpcMovement : MonoBehaviour
 
 
     //Player variables
-    private PlayerController player;
+    private PlayerMovement player;
     private Vector3 targetPos;
 
     //Randomness variables
@@ -36,7 +36,7 @@ public class NpcMovement : MonoBehaviour
         //C'était dans start
         if (isCompanion)
         {
-            player = Object.FindAnyObjectByType<PlayerController>();
+            player = Object.FindAnyObjectByType<PlayerMovement>();
             targetPos = player.transform.position;
         }
         else
@@ -195,7 +195,7 @@ public class NpcMovement : MonoBehaviour
         List<Ground> res = new List<Ground>();
 
         //Get the collider around to see where i can go
-        Collider[] hitColliders = Physics.OverlapSphere(transform.transform.position, 1.5f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.5f);
 
         foreach(var col in hitColliders)
         {

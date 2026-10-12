@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class PlayerController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed;
     public InputActionReference moveAction;
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        //Movement();
     }
 
     public void Movement()
@@ -100,5 +100,4 @@ public class PlayerController : MonoBehaviour
         }
         return targetsPos;
     }
-
 }
