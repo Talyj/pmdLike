@@ -67,8 +67,8 @@ public class GenerateTerrain : MonoBehaviour
     {
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count());
 
-        GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        //GameObject enemy = Instantiate(npc, new Vector3(5, 3.5f, -3), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 6), Quaternion.identity);
         enemy.GetComponent<NpcMovement>().isCompanion = false;
         enemy.GetComponent<MeshRenderer>().material = materialMechant;
         enemy.tag = "enemy";

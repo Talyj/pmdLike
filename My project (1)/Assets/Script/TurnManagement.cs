@@ -28,7 +28,7 @@ public class TurnManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(totalTurn == 0 && terrain.numberOfEnemy < 10)
+        if(totalTurn == 0 && terrain.numberOfEnemy < 1)
         {
             terrain.SpawnEnemiesOnce();
         }
@@ -40,6 +40,10 @@ public class TurnManagement : MonoBehaviour
         {
             case 0:
                 AddTurn();
+                if(companions.Count == 0)
+                {
+                    AddTurn();
+                }
                 break;
             case 1:
                 CheckAllActed(companions);

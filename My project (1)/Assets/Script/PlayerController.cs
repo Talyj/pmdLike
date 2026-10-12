@@ -15,5 +15,6 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         playerMove.Movement();
+        action.Attack();
     }
 }
