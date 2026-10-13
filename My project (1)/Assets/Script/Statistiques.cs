@@ -4,19 +4,21 @@ using UnityEngine.Rendering;
 public class Statistiques : MonoBehaviour
 {
     [SerializeField] private TurnManagement turn;
-    [SerializeField] private GenerateTerrain terrain;
-    public int health = 100;
-    public int mana = 100;
+    [SerializeField] private GenerateCharacters charGen;
+    public int healthCurrent = 100;
+    public int healthMax = 100;
+    public int manaCurrent = 100;
+    public int manaMax = 100;
     public int atq;
     public int def;
-    //private bool isDead = false;
+    public bool isDead = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         turn = FindAnyObjectByType<TurnManagement>();
-        terrain = FindAnyObjectByType<GenerateTerrain>();
+        charGen = FindAnyObjectByType<GenerateCharacters>();
     }
 
     // Update is called once per frame
@@ -27,7 +29,7 @@ public class Statistiques : MonoBehaviour
 
     private void CheckHealth()
     {
-        if(health <= 0)
+        if(healthCurrent <= 0)
         {
             //isDead = true;
             Dies();
@@ -37,7 +39,7 @@ public class Statistiques : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         var res = dmg - def;
-        health -= res;
+        healthCurrent -= res;
     }
 
     public void Dies()
@@ -46,15 +48,15 @@ public class Statistiques : MonoBehaviour
         switch (gameObject.tag)
         {
             case "Player":
-
-                break;
+                isDead = true;
+                return;
             case "companion":
 
                 break;
             case "enemy":
                 //before death check if the gameobject is still referenced
                 turn.enemies.Remove(gameObject);
-                terrain.numberOfEnemy--;
+                charGen.numberOfEnemy--;
                 break;
         }
         Destroy(this.gameObject);

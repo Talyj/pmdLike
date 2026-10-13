@@ -17,21 +17,18 @@ public class TurnManagement : MonoBehaviour
     public List<GameObject> companions = new List<GameObject>();
     public List<GameObject> enemies = new List<GameObject>();
 
-    private GenerateTerrain terrain;
+    private GenerateCharacters charGen;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        terrain = GetComponent<GenerateTerrain>();
+        charGen = GetComponent<GenerateCharacters>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(totalTurn == 0 && terrain.numberOfEnemy < 1)
-        {
-            terrain.SpawnEnemiesOnce();
-        }
+
     }
 
     public void TurnChange()

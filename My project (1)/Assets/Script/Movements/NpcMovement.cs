@@ -31,6 +31,7 @@ public class NpcMovement : MonoBehaviour
     private Vector3 lastPosition;
     RaycastHit hit;
     public Vector3 posGround;
+    public bool isMoving = false;
 
     //Action variables
     [SerializeField] private NpcAction action;
@@ -121,7 +122,10 @@ public class NpcMovement : MonoBehaviour
     {
         if (!isCompanion && turn.currentTurn == 2)
         {
-            action.Attack();
+            if (!isMoving)
+            {
+                action.Attack();
+            }
             if (!action.hasTarget)
             {
                 RandomMove();
@@ -150,6 +154,7 @@ public class NpcMovement : MonoBehaviour
                 posGround = GetClosestTileToTarget(GetAroundTile()).transform.position;
             }
             lastPosition = transform.position;
+            isMoving = false;
             turn.TurnChange();
         }
     }
@@ -173,6 +178,7 @@ public class NpcMovement : MonoBehaviour
                 //Move towards the target
             }
             lastPosition = transform.position;
+            isMoving = false;
             turn.TurnChange();
         }
     }
@@ -252,7 +258,7 @@ public class NpcMovement : MonoBehaviour
                 }
 
             }
-
+            isMoving = true;
             //rdmTargetPos = new Vector3(groundTargets[integer].transform.position.x, height, groundTargets[integer].transform.position.z);
             var direction = new Vector3(targetPos.x, height, targetPos.z) - transform.position;
             transform.rotation = Quaternion.LookRotation(direction);
