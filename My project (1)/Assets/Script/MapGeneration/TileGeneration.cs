@@ -82,8 +82,8 @@ public class TileGeneration : MonoBehaviour
         if (terrainType.name == "ground")
         {
             //Debug.Log(xIndex + " " + zIndex);
-            Ground newGround = Instantiate(sol, new Vector3((this.transform.position.x + xIndex * -1) + 5, 3, (this.transform.position.z + zIndex * -1) + 5), Quaternion.identity);
-            obj.grounds.Add(newGround);
+            Ground ground = Instantiate(sol, new Vector3((this.transform.position.x + xIndex * -1) + 5, 3, (this.transform.position.z + zIndex * -1) + 5), Quaternion.identity);
+            obj.grounds.Add(ground);
             //ajouter une seconde
         }       
     }

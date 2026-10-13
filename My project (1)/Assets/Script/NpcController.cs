@@ -7,7 +7,7 @@ public class NpcController : MonoBehaviour
     [SerializeField] private Statistiques damageable;
     [SerializeField] private NpcAction action;
     //MOdify mode to modify behavior of the companions(later)
-    [SerializeField] private int mode = 0;
+    //[SerializeField] private int mode = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

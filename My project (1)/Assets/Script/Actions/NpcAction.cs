@@ -9,7 +9,9 @@ namespace Assets.Script.Actions
     {
         [SerializeField] private NpcMovement move;
         public PlayerController player;
-        private float range = 5f;
+        public TurnManagement turn;
+        private float detectRange = 5f;
+        private float atqRange = 2f;
         public bool hasTarget = false;
 
         // Use this for initialization
@@ -27,9 +29,27 @@ namespace Assets.Script.Actions
             //}
         }
 
+        public void Attack()
+        {
+            if (!move.hasActed)
+            {
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, atqRange);
+                foreach (var hit in hitColliders)
+                {
+                    if (hit.tag.ToLower() == "player")
+                    {
+                        move.hasActed = true;
+                        //Attack....
+                        hit.GetComponent<Statistiques>().TakeDamage(10);
+                        turn.TurnChange();
+                    }
+                }
+            }
+        }
+
         public bool CheckForTargets()
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectRange);
             foreach(var hit in hitColliders)
             {
                 if(hit.tag.ToLower() == "player" /*|| hit.tag.ToLower() == "characters"*/)
@@ -59,10 +79,10 @@ namespace Assets.Script.Actions
             {
                 Gizmos.color = Color.red;
                 //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
-                Gizmos.DrawWireSphere(transform.position, range);
+                Gizmos.DrawWireSphere(transform.position, detectRange);
                 Gizmos.color = Color.yellow;
                 //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
-                Gizmos.DrawWireSphere(transform.position, 1.5f);
+                Gizmos.DrawWireSphere(transform.position, atqRange);
             }            
         }
     }

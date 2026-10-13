@@ -1,3 +1,4 @@
+using Assets.Script.Actions;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using System;
@@ -61,10 +62,11 @@ public class GenerateTerrain : MonoBehaviour
     {
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count());
 
-        GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        //GameObject enemy = Instantiate(npc, new Vector3(1, 3.5f, -2), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 5), Quaternion.identity);
         enemy.GetComponent<NpcMovement>().isCompanion = false;
         enemy.GetComponent<MeshRenderer>().material = materialMechant;
+        enemy.GetComponent<NpcAction>().turn = turnManager;
         enemy.tag = "enemy";
         turnManager.enemies.Add(enemy);
         numberOfEnemy++;
@@ -83,6 +85,7 @@ public class GenerateTerrain : MonoBehaviour
         //Companions
         GameObject companion = Instantiate(npc, new Vector3(1, heightSpawn, 0), Quaternion.identity);
         companion.GetComponent<MeshRenderer>().material = materialCompanions;
+        companion.GetComponent<NpcAction>().turn = turnManager;
         turnManager.companions.Add(companion);
     }
 

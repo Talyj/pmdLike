@@ -9,7 +9,7 @@ public class Statistiques : MonoBehaviour
     public int mana = 100;
     public int atq;
     public int def;
-    private bool isDead = false;
+    //private bool isDead = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -29,7 +29,7 @@ public class Statistiques : MonoBehaviour
     {
         if(health <= 0)
         {
-            isDead = true;
+            //isDead = true;
             Dies();
         }
     }

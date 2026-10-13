@@ -30,7 +30,6 @@ public class NpcMovement : MonoBehaviour
     [SerializeField]private Vector3 rdmTargetPos;
     private Vector3 lastPosition;
     RaycastHit hit;
-    Ground ground;
     public Vector3 posGround;
 
     //Action variables
@@ -90,8 +89,6 @@ public class NpcMovement : MonoBehaviour
                 {
                     if (hit.collider.name.Contains("Body"))
                     {
-                        //Debug.DrawRay(transform.position, Vector3.forward, Color.yellow);                
-                        //Debug.Log("NOOOOOOOOOOOOOOOOOO");
                         targetPos = lastPosition;
                     }
 
@@ -124,6 +121,7 @@ public class NpcMovement : MonoBehaviour
     {
         if (!isCompanion && turn.currentTurn == 2)
         {
+            action.Attack();
             if (!action.hasTarget)
             {
                 RandomMove();
@@ -182,7 +180,7 @@ public class NpcMovement : MonoBehaviour
     public Ground GetClosestTileToTarget(List<Ground> grounds)
     {
         float dist = 100000;
-        Ground res = new Ground();
+        Ground res = null;
         if (grounds.Count() > 0)
         {
             if (action.player != null)
@@ -203,11 +201,6 @@ public class NpcMovement : MonoBehaviour
     private Vector3 GetRandomTile(List<Ground> grounds)
     {
         int rdm = Random.Range(0, grounds.Count);
-        //While the choosen tile is the same as i'm already on
-        //while(grounds[rdm].transform.position.x == transform.position.x && grounds[rdm].transform.position.z == transform.position.z)
-        //{
-        //    rdm = Random.Range(0, grounds.Count);
-        //}
         if(grounds.Count() > 0)
         {
             if (grounds[rdm].IsEmpty)

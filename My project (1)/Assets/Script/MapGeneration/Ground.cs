@@ -3,7 +3,6 @@ using UnityEngine;
 public class Ground : MonoBehaviour
 {
     public bool IsEmpty = true;
-    RaycastHit hit;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -14,16 +13,13 @@ public class Ground : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    }
-
-    private void FixedUpdate()
-    {
         CheckIfEmpty();
     }
 
+
     private void CheckIfEmpty()
     {
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, 1.0f))
+        if (Physics.Raycast(transform.position, Vector3.up, 1.0f))
         {
             IsEmpty = false;
         }
@@ -31,6 +27,5 @@ public class Ground : MonoBehaviour
         {
             IsEmpty = true;
         }
-        Debug.DrawRay(transform.position, Vector3.up, Color.yellow);
     }
 }
