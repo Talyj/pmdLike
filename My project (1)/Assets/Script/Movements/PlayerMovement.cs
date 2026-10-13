@@ -6,9 +6,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float playerSpeed;
     public InputActionReference moveAction;
-    private TurnManagement turn;
+    private TurnManager turn;
     public bool isMoving = false;
+    private UI ui;
     Vector3 target;
+    private int myTurn;
 
     private void OnEnable()
     {
@@ -19,7 +21,9 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         target = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        turn = FindAnyObjectByType<TurnManagement>();
+        turn = FindAnyObjectByType<TurnManager>();
+        myTurn = GetComponent<Statistiques>().myTurn;
+        ui = FindAnyObjectByType<UI>();
     }
 
     // Update is called once per frame
@@ -30,45 +34,52 @@ public class PlayerMovement : MonoBehaviour
 
     public void Movement()
     {
-        //0 = player turn
-        if(turn.currentTurn == 0)
+        //If is moving cant input something else
+        if (!isMoving)
         {
-            //If is moving cant input something else
-            if (!isMoving)
+            List<Vector3> possibleTargets = GetMovePointAround();
+
+
+            // Read input
+            Vector2 input = moveAction.action.ReadValue<Vector2>();
+            Vector3 move = new Vector3(input.x, 0, input.y);
+            move = Vector3.ClampMagnitude(move, 1f);
+
+            foreach(var pos in possibleTargets)
             {
-                List<Vector3> possibleTargets = GetMovePointAround();
-
-
-                // Read input
-                Vector2 input = moveAction.action.ReadValue<Vector2>();
-                Vector3 move = new Vector3(input.x, 0, input.y);
-                move = Vector3.ClampMagnitude(move, 1f);
-
-                foreach(var pos in possibleTargets)
+                if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
                 {
-                    if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
-                    {
-                        target = new Vector3(pos.x, 3.5f, pos.z);
-                        isMoving = true;
-                        break;
-                    }
+                    target = new Vector3(pos.x, 3.5f, pos.z);
+                    isMoving = true;
+                    break;
                 }
-
-                if (move != Vector3.zero)
-                    transform.forward = move;
-
             }
-            float step = playerSpeed * Time.deltaTime;
 
-            if(transform.position != target)
+            if (move != Vector3.zero)
+                transform.forward = move;
+
+        }
+        float step = playerSpeed * Time.deltaTime;
+
+        if(transform.position != target)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, step);
+            if(Vector3.Distance(transform.position, target) < 0.001f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, target, step);
-                if(Vector3.Distance(transform.position, target) < 0.001f)
+                var npc = GetComponent<NpcMovement>();
+                if(npc != null)
                 {
-                    transform.position = target;
-                    isMoving = false;
-                    turn.TurnChange();
+                    turn.companionTurn++;
+                    npc.hasActed = true;
                 }
+                if (turn.modeDeCombat == 1)
+                {
+                    ui.GetNewPlayerController();
+                }
+
+                transform.position = target;
+                isMoving = false;
+                turn.TurnChange();
             }
         }
     }
@@ -84,12 +95,9 @@ public class PlayerMovement : MonoBehaviour
             var direction = new Vector3(pos.transform.position.x, transform.position.y, pos.transform.position.z) - transform.position;
             if(Physics.Raycast(transform.position, direction, out hit, 1f))
             {
-                if (hit.collider.name.Contains("Body"))
+                if(hit.collider.tag == "characters")
                 {
-                    if (hit.collider.GetComponent<NpcMovement>().isCompanion)
-                    {
-                        targetsPos.Add(pos.transform.position);
-                    }
+                    targetsPos.Add(pos.transform.position);
                 }
             }
             else if (pos.name.Contains("Ground"))

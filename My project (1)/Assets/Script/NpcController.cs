@@ -6,18 +6,51 @@ public class NpcController : MonoBehaviour
     [SerializeField] private NpcMovement npcMove;
     [SerializeField] private Statistiques damageable;
     [SerializeField] private NpcAction action;
+    [SerializeField] private PlayerMovement playerMoveMe;
+    [SerializeField] private PlayerAction playerActionMe;
+
+    [HideInInspector]public TurnManager turn;
+    [SerializeField] public bool isCompanion = true;
+    private int myTurn;
+    public int orderId;
+    private UI ui;
+
+
+
     //MOdify mode to modify behavior of the companions(later)
     //[SerializeField] private int mode = 0;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        myTurn = GetComponent<Statistiques>().myTurn;
+        ui = FindAnyObjectByType<UI>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        npcMove.FollowLeader();
-        npcMove.EnemiesMove();
+        if (isCompanion && turn.currentTurn == myTurn && turn.companionTurn == orderId)
+        {
+            if(turn.modeDeCombat == 0)
+            {
+                npcMove.FollowLeader();
+            }
+            else if(turn.modeDeCombat == 1)
+            {
+                if(turn.companionTurn == orderId)
+                {
+                    if (turn.modeDeCombat == 1)
+                    {
+                        ui.GetNewPlayerController();
+                    }
+                    playerMoveMe.Movement();
+                    playerActionMe.Attack();
+                }
+            }
+        }
+        else if(!isCompanion && turn.currentTurn == myTurn)
+        {
+            npcMove.EnemiesMove();
+        }
     }
 }

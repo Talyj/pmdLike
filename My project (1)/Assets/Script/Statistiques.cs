@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 public class Statistiques : MonoBehaviour
 {
-    [SerializeField] private TurnManagement turn;
+    [SerializeField] private TurnManager turn;
     [SerializeField] private GenerateCharacters charGen;
     public int healthCurrent = 100;
     public int healthMax = 100;
@@ -12,12 +12,13 @@ public class Statistiques : MonoBehaviour
     public int atq;
     public int def;
     public bool isDead = false;
+    public int myTurn;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        turn = FindAnyObjectByType<TurnManagement>();
+        turn = FindAnyObjectByType<TurnManager>();
         charGen = FindAnyObjectByType<GenerateCharacters>();
     }
 

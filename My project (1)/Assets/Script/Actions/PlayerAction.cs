@@ -5,14 +5,15 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerAction : MonoBehaviour
 {
-    public PlayerMovement player;
-    public TurnManagement turn;
     [SerializeField] private PlayerMovement move;
+    [HideInInspector] public PlayerController playerCont;
+    private int myTurn;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        myTurn = GetComponent<Statistiques>().myTurn;
     }
 
     // Update is called once per frame
@@ -23,29 +24,29 @@ public class PlayerAction : MonoBehaviour
 
     public void Attack()
     {
-
-        //0 = player turn
-        if (turn.currentTurn == 0)
+        //If is moving cant input something else
+        if (!move.isMoving)
         {
-            //If is moving cant input something else
-            if (!move.isMoving)
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                move.isMoving = false;
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
+                foreach (var hit in hitColliders)
                 {
-                    move.isMoving = false;
-                    Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2f);
-                    foreach (var hit in hitColliders)
+                    if (hit.tag == "enemy")
                     {
-                        if (hit.tag == "enemy")
+                        var npc = GetComponent<NpcMovement>();
+                        if (npc != null)
                         {
-                            //hit.GetComponent<Health>().Dies();
-                            hit.GetComponent<Statistiques>().TakeDamage(50);
+                            playerCont.turn.companionTurn++;
+                            npc.hasActed = true;
                         }
+                        hit.GetComponent<Statistiques>().TakeDamage(50);
                     }
-                    turn.TurnChange();
                 }
-
+                playerCont.turn.TurnChange();
             }
+
         }
     }
 

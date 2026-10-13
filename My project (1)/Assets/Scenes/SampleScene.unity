@@ -154,14 +154,7 @@ MonoBehaviour:
   mapWidthInTiles: 3
   mapDepthInTiles: 3
   tilePrefab: {fileID: 1465953844180287608, guid: db02baa1fc4f3904d92f2b362d2dcb56, type: 3}
-  player: {fileID: 7503565349928239517, guid: d7d6c908ed8e0a546b7bf9b9be788ad7, type: 3}
-  npc: {fileID: 8539622564464889243, guid: e87cb17cb04f8644c8933506144cf3f0, type: 3}
-  camera: {fileID: 7999753444860942062}
-  turnManager: {fileID: 96470652}
-  materialMechant: {fileID: 2100000, guid: 4d41cdc30a8801545aecbb67404afbb6, type: 2}
-  materialCompanions: {fileID: 2100000, guid: ff69790a9e26e3646827a8ba33154aac, type: 2}
   grounds: []
-  numberOfEnemy: 0
 --- !u!4 &96470651
 Transform:
   m_ObjectHideFlags: 0
@@ -189,11 +182,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4fe4e8553ce6ed41bbeffad2d34b9f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManagement
+  companionTurn: 0
   currentTurn: 0
   totalTurn: 0
   player: {fileID: 0}
   companions: []
   enemies: []
+  modeDeCombat: 0
 --- !u!114 &96470653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenerateCharacters
   heightSpawn: 3.5
+  ui: {fileID: 945424414}
   player: {fileID: 7503565349928239517, guid: d7d6c908ed8e0a546b7bf9b9be788ad7, type: 3}
   npc: {fileID: 8539622564464889243, guid: e87cb17cb04f8644c8933506144cf3f0, type: 3}
   camera: {fileID: 7999753444860942062}
@@ -402,6 +398,7 @@ GameObject:
   - component: {fileID: 945424411}
   - component: {fileID: 945424413}
   - component: {fileID: 945424412}
+  - component: {fileID: 945424414}
   m_Layer: 5
   m_Name: Hp
   m_TagString: Untagged
@@ -530,6 +527,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 945424410}
   m_CullTransparentMesh: 1
+--- !u!114 &945424414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945424410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f84eb3f694c6234bb4a492eaad7d466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI
+  player: {fileID: 0}
+  mainPlayer: {fileID: 0}
+  turn: {fileID: 0}
 --- !u!1 &1076892211
 GameObject:
   m_ObjectHideFlags: 0
@@ -808,7 +820,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24295d416511ca546b3ba582132de542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFollow
-  PlayerTransform: {fileID: 0}
+  mainPlayer: {fileID: 0}
+  targetPosition: {fileID: 0}
+  turn: {fileID: 0}
   SmoothFactor: 0.62
 --- !u!1 &5960400352691470136
 GameObject:

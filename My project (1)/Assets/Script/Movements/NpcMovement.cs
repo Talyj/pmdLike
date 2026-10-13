@@ -13,17 +13,18 @@ using static UnityEngine.GraphicsBuffer;
 public class NpcMovement : MonoBehaviour
 {
     private float height = 3.5f;
-    private TurnManagement turn;
+    private TurnManager turn;
 
     [SerializeField] private float playerSpeed;
     public InputActionReference moveAction;
-    [SerializeField]public bool isCompanion = true;
     public bool hasActed = false;
+    private int myTurn;
 
 
     //Player variables (companion)
-    private PlayerMovement player;
+    public PlayerMovement player;
     private Vector3 targetPos;
+    private NpcController npcController;
 
     //Randomness variables (enemy)
     private List<Ground> grounds = new List<Ground>();
@@ -40,10 +41,10 @@ public class NpcMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        npcController = GetComponent<NpcController>();
         //C'était dans start
-        if (isCompanion)
+        if (npcController.isCompanion)
         {
-            player = Object.FindAnyObjectByType<PlayerMovement>();
             targetPos = player.transform.position;
         }
         else
@@ -52,7 +53,8 @@ public class NpcMovement : MonoBehaviour
             posGround = transform.position;
         }
 
-        turn = FindAnyObjectByType<TurnManagement>();
+        turn = FindAnyObjectByType<TurnManager>();
+        myTurn = GetComponent<Statistiques>().myTurn;
         lastPosition = transform.position;
     }
 
@@ -62,17 +64,10 @@ public class NpcMovement : MonoBehaviour
 
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.yellow;
-    //    //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
-    //    Gizmos.DrawWireSphere(transform.position + transform.position, 1.5f);
-    //}
-
 
     public void FollowLeader()
     {
-        if(isCompanion && turn.currentTurn == 1)
+        if(npcController.isCompanion && turn.currentTurn == myTurn)
         {
             //Base behavior for a companion
             //if it's my turn then i follow
@@ -80,10 +75,12 @@ public class NpcMovement : MonoBehaviour
             {
                 //Ajouter un genre de pathfinding pour retrouver le joueur
 
-                if(Vector3.Distance(transform.position, targetPos) > 1.5)
+                if (Vector3.Distance(transform.position, targetPos) > 1.5)
                 {
                     Debug.Log("wsh t'es loin");
-                    //TargetMove();
+                    //posGround = player.transform.position;
+                    //posGround = TrackingMove();
+                    //return;
                 }
                 //Check if the target tile is empty
                 if (Physics.Raycast(transform.position, targetPos - transform.position, out hit, .5f))
@@ -96,12 +93,13 @@ public class NpcMovement : MonoBehaviour
                 }
                 var direction = targetPos - transform.position;
                 transform.rotation = Quaternion.LookRotation(direction);
-                transform.position = Vector3.MoveTowards(transform.position, targetPos, playerSpeed * Time.deltaTime);           
+                transform.position = Vector3.MoveTowards(transform.position, targetPos, playerSpeed * Time.deltaTime);
+                //TrackingMove(targetPos);
             }
             if (Vector3.Distance(transform.position, targetPos) < 0.001f)
             {
-                lastPosition = transform.position;
                 targetPos = player.transform.position;
+                turn.companionTurn++;
                 hasActed = true;
                 turn.TurnChange();
             }
@@ -120,7 +118,7 @@ public class NpcMovement : MonoBehaviour
 
     public void EnemiesMove()
     {
-        if (!isCompanion && turn.currentTurn == 2)
+        if (!npcController.isCompanion && turn.currentTurn == myTurn)
         {
             if (!isMoving)
             {
@@ -132,15 +130,15 @@ public class NpcMovement : MonoBehaviour
             }
             else
             {
-                TrackingMove();
+                TrackingMove(transform.position);
             }
         }
     }
 
-    void TrackingMove()
+    void TrackingMove(Vector3 target)
     {
-        posGround = MoveToTarget(posGround);
-        if (Vector3.Distance(transform.position, new Vector3(posGround.x, height, posGround.z)) < 0.001f)
+        target = MoveToTarget(target);
+        if (Vector3.Distance(transform.position, new Vector3(target.x, height, target.z)) < 0.001f)
         {
             hasActed = true;
             //Check for targets around (player/ companion)
@@ -151,7 +149,7 @@ public class NpcMovement : MonoBehaviour
             }
             else
             {
-                posGround = GetClosestTileToTarget(GetAroundTile()).transform.position;
+                target = GetClosestTileToTarget(GetAroundTile()).transform.position;
             }
             lastPosition = transform.position;
             isMoving = false;

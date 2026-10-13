@@ -3,19 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnManagement : MonoBehaviour
+public class TurnManager : MonoBehaviour
 {
     //trois types de tours
     //0 = tour du joueur
     //1 = tour des compagnons
     //2 = tour des méchants
 
+    public int companionTurn = 0;
     public int currentTurn = 0;
     public int totalTurn = 0;
 
     public GameObject player;
     public List<GameObject> companions = new List<GameObject>();
     public List<GameObject> enemies = new List<GameObject>();
+
+    // 0 = Classique
+    // 1 = tactique
+    public int modeDeCombat = 0;
+
 
     private GenerateCharacters charGen;
 
@@ -37,6 +43,7 @@ public class TurnManagement : MonoBehaviour
         {
             case 0:
                 AddTurn();
+                companionTurn = 0;
                 if(companions.Count == 0)
                 {
                     AddTurn();
@@ -44,10 +51,6 @@ public class TurnManagement : MonoBehaviour
                 break;
             case 1:
                 CheckAllActed(companions);
-                if(enemies.Count == 0)
-                {
-                    AddTurn();
-                }
                 break;
             case 2:
                 CheckAllActed(enemies);
@@ -62,6 +65,10 @@ public class TurnManagement : MonoBehaviour
             if (!npc.GetComponent<NpcMovement>().hasActed) return 0;
         }
         AddTurn();
+        if(enemies.Count <= 0)
+        {
+            AddTurn();
+        }
         resetTurn(toCheck);
         return 1;
     }

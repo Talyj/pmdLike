@@ -8,8 +8,8 @@ namespace Assets.Script.Actions
     public class NpcAction : MonoBehaviour
     {
         [SerializeField] private NpcMovement move;
-        public PlayerController player;
-        public TurnManagement turn;
+        [SerializeField] private NpcController npcController;
+        [HideInInspector]public PlayerController player;
         private float detectRange = 5f;
         private float atqRange = 2f;
         public bool hasTarget = false;
@@ -41,7 +41,7 @@ namespace Assets.Script.Actions
                         move.hasActed = true;
                         //Attack....
                         hit.GetComponent<Statistiques>().TakeDamage(10);
-                        turn.TurnChange();
+                        npcController.turn.TurnChange();
                     }
                 }
             }

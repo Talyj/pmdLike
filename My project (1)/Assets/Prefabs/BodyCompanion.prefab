@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 4102754891559532024}
   - component: {fileID: 8930515852813979801}
   - component: {fileID: 6017293004085227596}
+  - component: {fileID: 1443893054752741899}
+  - component: {fileID: 5982814934936083371}
   m_Layer: 0
   m_Name: BodyCompanion
   m_TagString: characters
@@ -246,6 +248,10 @@ MonoBehaviour:
   npcMove: {fileID: 4102754891559532024}
   damageable: {fileID: 8930515852813979801}
   action: {fileID: 6017293004085227596}
+  playerMoveMe: {fileID: 5982814934936083371}
+  playerActionMe: {fileID: 1443893054752741899}
+  turn: {fileID: 0}
+  isCompanion: 1
 --- !u!114 &4102754891559532024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,10 +266,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NpcController
   playerSpeed: 5
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  isCompanion: 1
   hasActed: 0
+  player: {fileID: 0}
   rdmTargetPos: {x: 0, y: 0, z: 0}
   posGround: {x: 0, y: 0, z: 0}
+  isMoving: 0
   action: {fileID: 6017293004085227596}
 --- !u!114 &8930515852813979801
 MonoBehaviour:
@@ -278,11 +285,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   turn: {fileID: 0}
-  terrain: {fileID: 0}
-  health: 100
-  mana: 100
+  charGen: {fileID: 0}
+  healthCurrent: 100
+  healthMax: 100
+  manaCurrent: 100
+  manaMax: 100
   atq: 0
   def: 0
+  isDead: 0
+  myTurn: 0
 --- !u!114 &6017293004085227596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,5 +307,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Actions.NpcAction
   move: {fileID: 4102754891559532024}
+  npcController: {fileID: 4603180505913190927}
   player: {fileID: 0}
   hasTarget: 0
+--- !u!114 &1443893054752741899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539622564464889243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdc3294d9fd3646428c4fd2c56d3702d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAction
+  player: {fileID: 5982814934936083371}
+  turn: {fileID: 0}
+  move: {fileID: 5982814934936083371}
+--- !u!114 &5982814934936083371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539622564464889243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95dd71c44a8c3d14ea8ab6fa29cbb799, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  playerSpeed: 3
+  moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  isMoving: 0
