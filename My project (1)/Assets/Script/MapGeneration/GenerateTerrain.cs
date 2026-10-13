@@ -51,12 +51,6 @@ public class GenerateTerrain : MonoBehaviour
         {
             if(grounds.Count() > 0 && numberOfEnemy < 10)
             {
-                //var test = UnityEngine.Random.Range(0, grounds.Count());
-
-                //GameObject enemy = Instantiate(npc, new Vector3(grounds[test].transform.position.x, heightSpawn, grounds[test].transform.position.z), Quaternion.identity);
-                //enemy.GetComponent<NpcMovement>().isCompanion = false;
-                //turnManager.enemies.Add(enemy);
-                //numberOfEnemy++;
                 SpawnEnemiesOnce();            
             }
             yield return new WaitForSeconds(10);
@@ -67,8 +61,8 @@ public class GenerateTerrain : MonoBehaviour
     {
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count());
 
-        //GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 6), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(1, 3.5f, -2), Quaternion.identity);
         enemy.GetComponent<NpcMovement>().isCompanion = false;
         enemy.GetComponent<MeshRenderer>().material = materialMechant;
         enemy.tag = "enemy";

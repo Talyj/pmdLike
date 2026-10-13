@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 1518399517893790909}
   - component: {fileID: 5701347889809194302}
   - component: {fileID: 7379580684002147100}
+  - component: {fileID: 4603180505913190927}
   - component: {fileID: 4102754891559532024}
   - component: {fileID: 8930515852813979801}
   - component: {fileID: 6017293004085227596}
@@ -230,6 +231,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4603180505913190927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8539622564464889243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ff2f009386b0e8479439759b52c993d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NpcController
+  npcMove: {fileID: 4102754891559532024}
+  damageable: {fileID: 8930515852813979801}
+  action: {fileID: 6017293004085227596}
 --- !u!114 &4102754891559532024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,6 +263,7 @@ MonoBehaviour:
   isCompanion: 1
   hasActed: 0
   rdmTargetPos: {x: 0, y: 0, z: 0}
+  posGround: {x: 0, y: 0, z: 0}
   action: {fileID: 6017293004085227596}
 --- !u!114 &8930515852813979801
 MonoBehaviour:
@@ -279,4 +296,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Actions.NpcAction
   move: {fileID: 4102754891559532024}
+  player: {fileID: 0}
   hasTarget: 0
