@@ -11,8 +11,10 @@ public class NpcController : MonoBehaviour
 
     [HideInInspector]public TurnManager turn;
     [SerializeField] public bool isCompanion = true;
+    public bool isControlled = false;
     private int myTurn;
     public int orderId;
+    public bool canAct = false;
     private UI ui;
 
 
@@ -37,14 +39,21 @@ public class NpcController : MonoBehaviour
             }
             else if(turn.modeDeCombat == 1)
             {
+                //TODO CAn put that in one if
                 if(turn.companionTurn == orderId)
                 {
-                    if (turn.modeDeCombat == 1)
+                    //if (turn.modeDeCombat == 1)
+                    //{
+                    //    ui.GetNewPlayerController();
+                    //}
+                    //reset target de playermoveme une fois
+                    if (!isControlled)
                     {
-                        ui.GetNewPlayerController();
+                        isControlled = true;
+                        playerMoveMe.target = transform.position;
                     }
-                    playerMoveMe.Movement();
                     playerActionMe.Attack();
+                    playerMoveMe.Movement();
                 }
             }
         }

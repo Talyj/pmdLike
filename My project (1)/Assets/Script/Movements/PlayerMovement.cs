@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private TurnManager turn;
     public bool isMoving = false;
     private UI ui;
-    Vector3 target;
+    public Vector3 target;
     private int myTurn;
 
     private void OnEnable()
@@ -39,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
         {
             List<Vector3> possibleTargets = GetMovePointAround();
 
+            //THis works with the controller
+            //var test = Input.GetAxis("Horizontal");
+            //var test2 = Input.GetAxis("Vertical");
+            //Vector2 intput1 = new Vector2(test, test2);
 
             // Read input
             Vector2 input = moveAction.action.ReadValue<Vector2>();
@@ -66,20 +70,24 @@ public class PlayerMovement : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, step);
             if(Vector3.Distance(transform.position, target) < 0.001f)
             {
+                //partie companion
                 var npc = GetComponent<NpcMovement>();
                 if(npc != null)
                 {
                     turn.companionTurn++;
-                    npc.hasActed = true;
+                    npc.hasMoved = true;
+                    GetComponent<NpcController>().isControlled = false;
                 }
+
+                //tous
+                transform.position = target;
+                isMoving = false;
+                turn.TurnChange();
+
                 if (turn.modeDeCombat == 1)
                 {
                     ui.GetNewPlayerController();
                 }
-
-                transform.position = target;
-                isMoving = false;
-                turn.TurnChange();
             }
         }
     }
@@ -93,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
         foreach(var pos in hitColliders)
         {
             var direction = new Vector3(pos.transform.position.x, transform.position.y, pos.transform.position.z) - transform.position;
+            //CAnt go on a tile with an enemy in
             if(Physics.Raycast(transform.position, direction, out hit, 1f))
             {
                 if(hit.collider.tag == "characters")
@@ -100,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
                     targetsPos.Add(pos.transform.position);
                 }
             }
-            else if (pos.name.Contains("Ground"))
+            else if (pos.tag == "ground")
             {
                 if (pos.transform.position.x == transform.position.x && pos.transform.position.z == transform.position.z) continue;
                 targetsPos.Add(pos.transform.position);

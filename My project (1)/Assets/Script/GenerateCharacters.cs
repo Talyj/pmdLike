@@ -31,7 +31,7 @@ public class GenerateCharacters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (turnManager.totalTurn == 0 && numberOfEnemy < 10)
+        if (turnManager.totalTurn == 0 && numberOfEnemy < 0)
         {
             SpawnEnemiesOnce();
         }
@@ -70,7 +70,6 @@ public class GenerateCharacters : MonoBehaviour
         // TODO Give all the variables to the controller
         GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
         //GameObject play = Instantiate(player, new Vector3(5, 3.5f, -5), Quaternion.identity);
-        play.GetComponent<PlayerAction>().playerCont = play.GetComponent<PlayerController>();
         play.GetComponent<PlayerController>().turn = turnManager;
         play.GetComponent<Statistiques>().myTurn = 0;
         turnManager.player = play;
@@ -86,20 +85,21 @@ public class GenerateCharacters : MonoBehaviour
         // TODO Give all the variables to the controller
         GameObject companion = Instantiate(npc, new Vector3(1, heightSpawn, 0), Quaternion.identity);
         companion.GetComponent<MeshRenderer>().material = materialCompanions;
-        companion.GetComponent<NpcMovement>().player = play.GetComponent<PlayerMovement>();
+        companion.GetComponent<NpcMovement>().player = play.GetComponent<PlayerController>();
         companion.GetComponent<NpcController>().turn = turnManager;
         companion.GetComponent<Statistiques>().myTurn = 1;
+        companion.GetComponent<Statistiques>().healthCurrent = 50;
         companion.GetComponent<NpcController>().orderId = 0;
-        companion.GetComponent<PlayerAction>().playerCont = play.GetComponent<PlayerController>();
         turnManager.companions.Add(companion);
 
         //test second companions
-        //GameObject companion1 = Instantiate(npc, new Vector3(1, heightSpawn, 1), Quaternion.identity);
-        //companion1.GetComponent<MeshRenderer>().material = materialCompanions;
-        //companion1.GetComponent<NpcMovement>().player = play.GetComponent<PlayerMovement>();
-        //companion1.GetComponent<NpcController>().turn = turnManager;
-        //companion1.GetComponent<Statistiques>().myTurn = 1;
-        //companion1.GetComponent<NpcController>().orderId = 1;
-        //turnManager.companions.Add(companion1);
+        GameObject companion1 = Instantiate(npc, new Vector3(1, heightSpawn, 1), Quaternion.identity);
+        companion1.GetComponent<MeshRenderer>().material = materialCompanions;
+        companion1.GetComponent<NpcMovement>().player = play.GetComponent<PlayerController>();
+        companion1.GetComponent<NpcController>().turn = turnManager;
+        companion1.GetComponent<Statistiques>().myTurn = 1;
+        companion.GetComponent<Statistiques>().healthCurrent = 45;
+        companion1.GetComponent<NpcController>().orderId = 1;
+        turnManager.companions.Add(companion1);
     }
 }

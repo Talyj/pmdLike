@@ -17,13 +17,13 @@ public class NpcMovement : MonoBehaviour
 
     [SerializeField] private float playerSpeed;
     public InputActionReference moveAction;
-    public bool hasActed = false;
+    public bool hasMoved = false;
     private int myTurn;
 
 
     //Player variables (companion)
-    public PlayerMovement player;
-    private Vector3 targetPos;
+    public PlayerController player;
+    [SerializeField] private Vector3 targetPos;
     private NpcController npcController;
 
     //Randomness variables (enemy)
@@ -42,7 +42,6 @@ public class NpcMovement : MonoBehaviour
     void Start()
     {
         npcController = GetComponent<NpcController>();
-        //C'était dans start
         if (npcController.isCompanion)
         {
             targetPos = player.transform.position;
@@ -64,58 +63,6 @@ public class NpcMovement : MonoBehaviour
 
     }
 
-
-    public void FollowLeader()
-    {
-        if(npcController.isCompanion && turn.currentTurn == myTurn)
-        {
-            //Base behavior for a companion
-            //if it's my turn then i follow
-            if(transform.position != targetPos && hasActed == false)
-            {
-                //Ajouter un genre de pathfinding pour retrouver le joueur
-
-                if (Vector3.Distance(transform.position, targetPos) > 1.5)
-                {
-                    Debug.Log("wsh t'es loin");
-                    //posGround = player.transform.position;
-                    //posGround = TrackingMove();
-                    //return;
-                }
-                //Check if the target tile is empty
-                if (Physics.Raycast(transform.position, targetPos - transform.position, out hit, .5f))
-                {
-                    if (hit.collider.name.Contains("Body"))
-                    {
-                        targetPos = lastPosition;
-                    }
-
-                }
-                var direction = targetPos - transform.position;
-                transform.rotation = Quaternion.LookRotation(direction);
-                transform.position = Vector3.MoveTowards(transform.position, targetPos, playerSpeed * Time.deltaTime);
-                //TrackingMove(targetPos);
-            }
-            if (Vector3.Distance(transform.position, targetPos) < 0.001f)
-            {
-                targetPos = player.transform.position;
-                turn.companionTurn++;
-                hasActed = true;
-                turn.TurnChange();
-            }
-        }
-    }
-
-    void Attack()
-    {
-        //Add the behavior of a violent companion
-    }
-
-    void flee()
-    {
-        //Add the behavior of a wimpy companion
-    }
-
     public void EnemiesMove()
     {
         if (!npcController.isCompanion && turn.currentTurn == myTurn)
@@ -130,17 +77,39 @@ public class NpcMovement : MonoBehaviour
             }
             else
             {
-                TrackingMove(transform.position);
+                TrackingMove();
             }
         }
     }
 
-    void TrackingMove(Vector3 target)
+    public void FollowLeader()
     {
-        target = MoveToTarget(target);
-        if (Vector3.Distance(transform.position, new Vector3(target.x, height, target.z)) < 0.001f)
+        if(npcController.isCompanion && turn.currentTurn == myTurn && turn.companionTurn == npcController.orderId)
         {
-            hasActed = true;
+            TrackingFollowCompanion();
+        }
+    }
+
+    void TrackingFollowCompanion()
+    {
+        targetPos = MoveToTarget(targetPos, .5f);
+        if (Vector3.Distance(transform.position, new Vector3(targetPos.x, height, targetPos.z)) < 0.001f)
+        {
+            hasMoved = true;
+            targetPos = GetClosestTileToTarget(GetAroundTile(), player.transform.position, player).transform.position;
+            lastPosition = transform.position;
+            turn.companionTurn++;
+            isMoving = false;
+            turn.TurnChange();
+        }
+    }
+
+    void TrackingMove()
+    {
+        posGround = MoveToTarget(posGround, 1f);
+        if (Vector3.Distance(transform.position, new Vector3(posGround.x, height, posGround.z)) < 0.001f)
+        {
+            hasMoved = true;
             //Check for targets around (player/ companion)
             if (!action.CheckForTargets())
             {
@@ -149,7 +118,7 @@ public class NpcMovement : MonoBehaviour
             }
             else
             {
-                target = GetClosestTileToTarget(GetAroundTile()).transform.position;
+                posGround = GetClosestTileToTarget(GetAroundTile(), action.player.transform.position, action.player).transform.position;
             }
             lastPosition = transform.position;
             isMoving = false;
@@ -159,10 +128,10 @@ public class NpcMovement : MonoBehaviour
 
     void RandomMove()
     {
-        rdmTargetPos = MoveToTarget(rdmTargetPos);
+        rdmTargetPos = MoveToTarget(rdmTargetPos, 1f);
         if (Vector3.Distance(transform.position, new Vector3(rdmTargetPos.x, height, rdmTargetPos.z)) < 0.001f)
         {
-            hasActed = true;
+            hasMoved = true;
             //Check for targets around (player/ companion)
             if (!action.CheckForTargets())
             {
@@ -181,19 +150,19 @@ public class NpcMovement : MonoBehaviour
         }
     }
 
-    public Ground GetClosestTileToTarget(List<Ground> grounds)
+    public Ground GetClosestTileToTarget(List<Ground> grounds, Vector3 targetPos, PlayerController target)
     {
         float dist = 100000;
         Ground res = null;
         if (grounds.Count() > 0)
         {
-            if (action.player != null)
+            if (target != null)
             {
                 foreach (var grd in grounds)
                 {
-                    if (Vector3.Distance(action.player.transform.position, grd.transform.position) < dist)
+                    if (Vector3.Distance(targetPos, grd.transform.position) < dist)
                     {
-                        dist = Vector3.Distance(action.player.transform.position, grd.transform.position);
+                        dist = Vector3.Distance(targetPos, grd.transform.position);
                         res = grd;
                     }
                 }
@@ -228,26 +197,27 @@ public class NpcMovement : MonoBehaviour
             if (col.tag.ToLower() == "ground")
             {
                 //Take only the tiles that are not me
-                if(new Vector3(col.transform.position.x, height, col.transform.position.z) != transform.position)
+                if (new Vector3(col.transform.position.x, height, col.transform.position.z) != transform.position)
                 {
+                    //Debug.Log("my place");
                     res.Add(col.GetComponent<Ground>());
-                }              
+                }
             }                
         }
         return res;
     }
 
-    private Vector3 MoveToTarget(Vector3 targetPos)
+    private Vector3 MoveToTarget(Vector3 targetPos, float range)
     {
-        if (transform.position != new Vector3(targetPos.x, height, targetPos.z) && !hasActed)
+        if (transform.position != new Vector3(targetPos.x, height, targetPos.z) && !hasMoved)
         {
             //if target too far
             if (Vector3.Distance(transform.position, targetPos) > 1.5)
             {
-                //check the distance
+                //check the distance if the value is weird just take a random tile next to it
                 targetPos = GetRandomTile(GetAroundTile());
-            }        //Check if the target tile is empty
-            if (Physics.Raycast(transform.position, targetPos - transform.position, out hit, 1f))
+            }   //Check if the target tile is empty
+            if (Physics.Raycast(transform.position, targetPos - transform.position, out hit, range))
             {
                 if (hit.collider.name.Contains("Body"))
                 {

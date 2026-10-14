@@ -14,31 +14,17 @@ namespace Assets.Script.Actions
         private float atqRange = 2f;
         public bool hasTarget = false;
 
-        // Use this for initialization
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            //if(gameObject.tag == "enemy")
-            //{
-            //    CheckForTargets();
-            //}
-        }
 
         public void Attack()
         {
-            if (!move.hasActed)
+            if (!move.hasMoved)
             {
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, atqRange);
                 foreach (var hit in hitColliders)
                 {
                     if (hit.tag.ToLower() == "player")
                     {
-                        move.hasActed = true;
+                        move.hasMoved = true;
                         //Attack....
                         hit.GetComponent<Statistiques>().TakeDamage(10);
                         npcController.turn.TurnChange();
@@ -60,7 +46,7 @@ namespace Assets.Script.Actions
                     }
                     //Debug.Log("FOUUUUUUUUND");
                     hasTarget = true;
-                    move.posGround = move.GetClosestTileToTarget(move.GetAroundTile()).transform.position;
+                    move.posGround = move.GetClosestTileToTarget(move.GetAroundTile(), player.transform.position, player).transform.position;
                     return true;
                 }
             }

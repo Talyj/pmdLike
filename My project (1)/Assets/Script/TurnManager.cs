@@ -62,7 +62,7 @@ public class TurnManager : MonoBehaviour
     {
         foreach(var npc in toCheck)
         {
-            if (!npc.GetComponent<NpcMovement>().hasActed) return 0;
+            if (!npc.GetComponent<NpcMovement>().hasMoved) return 0;
         }
         AddTurn();
         if(enemies.Count <= 0)
@@ -88,7 +88,7 @@ public class TurnManager : MonoBehaviour
     {
         foreach(var npc in toReset)
         {
-            npc.GetComponent<NpcMovement>().hasActed = false;
+            npc.GetComponent<NpcMovement>().hasMoved = false;
         }
     }
 }

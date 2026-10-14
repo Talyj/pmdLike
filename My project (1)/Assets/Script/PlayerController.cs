@@ -18,12 +18,14 @@ public class PlayerController : MonoBehaviour
     {
         if (!stats.isDead && turn.currentTurn == stats.myTurn)
         {
-            playerMove.Movement();
-            action.Attack();
+            //LCTRL
+            //if (Input.GetButtonDown("Fire1"))
             if (Input.GetKeyDown(KeyCode.J))
             {
                 ChangeMode();
             }
+            playerMove.Movement();
+            action.Attack();
         }
     }
 

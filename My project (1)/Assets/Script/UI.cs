@@ -29,16 +29,13 @@ public class UI : MonoBehaviour
     public void GetNewPlayerController()
     {
         //Change the player stats to display
-        if(turn.modeDeCombat == 1 && turn.currentTurn == 1)
+        if(turn.companions.Count <= turn.companionTurn)
         {
-            if(turn.companions.Count <= turn.companionTurn)
-            {
-                player = mainPlayer;
-            }
-            else
-            {
-                player = turn.companions[turn.companionTurn].GetComponent<Statistiques>();
-            }
+            player = mainPlayer;
+        }
+        else
+        {
+            player = turn.companions[turn.companionTurn].GetComponent<Statistiques>();
         }
     }
 }

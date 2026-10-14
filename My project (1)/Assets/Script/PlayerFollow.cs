@@ -42,6 +42,7 @@ public class PlayerFollow : MonoBehaviour
 
     public void FollowTarget(GameObject target)
     {
+        targetPosition = target;
         Vector3 newPos = target.transform.position + new Vector3(0, 3, -4);
         transform.position = Vector3.Slerp(transform.position, newPos, SmoothFactor);
     }
