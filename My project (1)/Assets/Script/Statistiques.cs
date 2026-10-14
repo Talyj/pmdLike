@@ -1,10 +1,12 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public class Statistiques : MonoBehaviour
 {
-    [SerializeField] private TurnManager turn;
-    [SerializeField] private GenerateCharacters charGen;
+    [SerializeField] private HealthBar healthBar;
+    private TurnManager turn;
+    private GenerateCharacters charGen;
     public int healthCurrent = 100;
     public int healthMax = 100;
     public int manaCurrent = 100;
@@ -20,12 +22,20 @@ public class Statistiques : MonoBehaviour
     {
         turn = FindAnyObjectByType<TurnManager>();
         charGen = FindAnyObjectByType<GenerateCharacters>();
+        if (healthBar != null)
+        {
+            healthBar.UpdateHealthBar(healthCurrent, healthMax);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckHealth();
+        if(healthBar != null)
+        {
+            healthBar.LookAtCamera();
+        }
     }
 
     private void CheckHealth()
@@ -41,6 +51,10 @@ public class Statistiques : MonoBehaviour
     {
         var res = dmg - def;
         healthCurrent -= res;
+        if (healthBar != null)
+        {
+            healthBar.UpdateHealthBar(healthCurrent, healthMax);
+        }
     }
 
     public void Dies()

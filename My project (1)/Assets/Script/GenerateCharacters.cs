@@ -31,7 +31,7 @@ public class GenerateCharacters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (turnManager.totalTurn == 0 && numberOfEnemy < 0)
+        if (turnManager.totalTurn == 0 && numberOfEnemy < 1)
         {
             SpawnEnemiesOnce();
         }
@@ -53,8 +53,8 @@ public class GenerateCharacters : MonoBehaviour
     {
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count());
 
-        GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        //GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 5), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
         enemy.GetComponent<MeshRenderer>().material = materialMechant;
@@ -77,9 +77,7 @@ public class GenerateCharacters : MonoBehaviour
         ui.mainPlayer = play.GetComponent<Statistiques>();
         //Camera
         camera.GetComponent<PlayerFollow>().mainPlayer = play;
-        camera.GetComponent<PlayerFollow>().turn = turnManager;
         camera.GetComponent<PlayerFollow>().targetPosition = play;        
-
 
         //Companions
         // TODO Give all the variables to the controller

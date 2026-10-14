@@ -1,17 +1,19 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class UI : MonoBehaviour
 {
-    public Statistiques player;
-    public Statistiques mainPlayer;
+    [HideInInspector] public Statistiques player;
+    [HideInInspector] public Statistiques mainPlayer;
+    [SerializeField] private HealthBar healthBar;
+    [HideInInspector] public TurnManager turn;
     private TextMeshProUGUI textMP;
-    public TurnManager turn;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        textMP = GetComponent<TextMeshProUGUI>();
+        textMP = GetComponentInChildren<TextMeshProUGUI>();
         turn = FindAnyObjectByType<TurnManager>();
     }
 
@@ -23,7 +25,8 @@ public class UI : MonoBehaviour
 
     public void DisplayHealth()
     {
-         textMP.text = player.healthCurrent.ToString() + "/" + player.healthMax.ToString();
+        textMP.text = player.healthCurrent.ToString() + "/" + player.healthMax.ToString();
+        healthBar.UpdateHealthBar(player.healthCurrent, player.healthMax);
     }
 
     public void GetNewPlayerController()

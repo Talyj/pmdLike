@@ -7,7 +7,7 @@ public class PlayerFollow : MonoBehaviour
 {
     [HideInInspector] public GameObject mainPlayer;
     public GameObject targetPosition;
-    [HideInInspector] public TurnManager turn;
+    public TurnManager turn;
     private Vector3 _cameraOffset;
     [Range(0.01f, 1.0f)] public float SmoothFactor = 0.5f;
 

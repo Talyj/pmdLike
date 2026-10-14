@@ -41,7 +41,6 @@ public class PlayerAction : MonoBehaviour
             if (Input.GetButtonUp("Jump") && mainCamera.targetPosition == gameObject)
             {
                 isActing = true;
-                Debug.Log("iam : " + tag);
                 DealAOEDamages(50, 2f);
 
                 //The change turn must be in another if ?

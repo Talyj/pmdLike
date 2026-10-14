@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -10,8 +11,9 @@ namespace Assets.Script.Actions
         [SerializeField] private NpcMovement move;
         [SerializeField] private NpcController npcController;
         [HideInInspector]public PlayerController player;
+        private List<Statistiques> targets = new List<Statistiques>();
         private float detectRange = 5f;
-        private float atqRange = 2f;
+        public float atqRange = 2f;
         public bool hasTarget = false;
 
 
@@ -22,14 +24,23 @@ namespace Assets.Script.Actions
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, atqRange);
                 foreach (var hit in hitColliders)
                 {
-                    if (hit.tag.ToLower() == "player")
+                    if (hit.tag.ToLower() == "player"/* || hit.tag.ToLower() == "characters"*/)
                     {
                         move.hasMoved = true;
                         //Attack....
+                        //targets.Add(hit.GetComponent<Statistiques>());
                         hit.GetComponent<Statistiques>().TakeDamage(10);
                         npcController.turn.TurnChange();
                     }
                 }
+                //if(targets.Count > 0)
+                //{
+                //    foreach(var tar in targets)
+                //    {
+                //        tar.GetComponent<Statistiques>().TakeDamage(10);
+                //    }
+                //    npcController.turn.TurnChange();
+                //}
             }
         }
 

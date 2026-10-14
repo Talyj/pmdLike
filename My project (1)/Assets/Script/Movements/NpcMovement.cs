@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using UnityEditor.Android;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Jobs;
@@ -67,18 +68,31 @@ public class NpcMovement : MonoBehaviour
     {
         if (!npcController.isCompanion && turn.currentTurn == myTurn)
         {
-            if (!isMoving)
+            if (action.hasTarget)
             {
-                action.Attack();
-            }
-            if (!action.hasTarget)
-            {
-                RandomMove();
+                if(Vector3.Distance(action.player.transform.position, transform.position) <= action.atqRange)
+                {
+                    action.Attack();
+                }
+                else
+                {
+                    TrackingMove();
+                }
             }
             else
             {
-                TrackingMove();
+                RandomMove();
             }
+            //if (!isMoving)
+            //{
+            //}
+            //if (!action.hasTarget)
+            //{
+            //    RandomMove();
+            //}
+            //else
+            //{
+            //}
         }
     }
 
@@ -109,7 +123,6 @@ public class NpcMovement : MonoBehaviour
         posGround = MoveToTarget(posGround, 1f);
         if (Vector3.Distance(transform.position, new Vector3(posGround.x, height, posGround.z)) < 0.001f)
         {
-            hasMoved = true;
             //Check for targets around (player/ companion)
             if (!action.CheckForTargets())
             {
@@ -120,6 +133,7 @@ public class NpcMovement : MonoBehaviour
             {
                 posGround = GetClosestTileToTarget(GetAroundTile(), action.player.transform.position, action.player).transform.position;
             }
+            hasMoved = true;
             lastPosition = transform.position;
             isMoving = false;
             turn.TurnChange();
@@ -131,7 +145,6 @@ public class NpcMovement : MonoBehaviour
         rdmTargetPos = MoveToTarget(rdmTargetPos, 1f);
         if (Vector3.Distance(transform.position, new Vector3(rdmTargetPos.x, height, rdmTargetPos.z)) < 0.001f)
         {
-            hasMoved = true;
             //Check for targets around (player/ companion)
             if (!action.CheckForTargets())
             {
@@ -144,6 +157,7 @@ public class NpcMovement : MonoBehaviour
             {
                 //Move towards the target
             }
+            hasMoved = true;
             lastPosition = transform.position;
             isMoving = false;
             turn.TurnChange();
@@ -228,9 +242,11 @@ public class NpcMovement : MonoBehaviour
             }
             isMoving = true;
             //rdmTargetPos = new Vector3(groundTargets[integer].transform.position.x, height, groundTargets[integer].transform.position.z);
+
             var direction = new Vector3(targetPos.x, height, targetPos.z) - transform.position;
             transform.rotation = Quaternion.LookRotation(direction);
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, height, targetPos.z), playerSpeed * Time.deltaTime);
+
         }
         return targetPos;
     }
