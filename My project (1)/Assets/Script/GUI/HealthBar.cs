@@ -6,11 +6,15 @@ public class HealthBar : MonoBehaviour
 {
 
     [SerializeField] private Image healthBarSprite;
-    private Camera mainCamera;
+    [HideInInspector] public Camera mainCamera;
+
+    private void Awake()
+    {
+        mainCamera = FindAnyObjectByType<Camera>();
+    }
 
     private void Start()
     {
-        mainCamera = FindAnyObjectByType<Camera>();
     }
 
     private void Update()

@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.99149597, b: 0, a: 1}
+  m_Color: {r: 0.06469482, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -382,6 +382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthBar
   healthBarSprite: {fileID: 773185861410491613}
+  mainCamera: {fileID: 0}
 --- !u!1 &8539622564464889243
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +402,7 @@ GameObject:
   - component: {fileID: 1443893054752741899}
   - component: {fileID: 5982814934936083371}
   m_Layer: 0
-  m_Name: BodyCompanion
+  m_Name: Npc0
   m_TagString: characters
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -515,7 +516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NpcController
   npcMove: {fileID: 4102754891559532024}
-  damageable: {fileID: 8930515852813979801}
+  statistiques: {fileID: 8930515852813979801}
   action: {fileID: 6017293004085227596}
   playerMoveMe: {fileID: 5982814934936083371}
   playerActionMe: {fileID: 1443893054752741899}
@@ -581,6 +582,7 @@ MonoBehaviour:
   move: {fileID: 4102754891559532024}
   npcController: {fileID: 4603180505913190927}
   player: {fileID: 0}
+  atqRange: 2
   hasTarget: 0
 --- !u!114 &1443893054752741899
 MonoBehaviour:

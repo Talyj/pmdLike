@@ -4,17 +4,17 @@ using UnityEngine;
 public class NpcController : MonoBehaviour
 {
     [SerializeField] private NpcMovement npcMove;
-    [SerializeField] private Statistiques damageable;
+    [SerializeField] private Statistiques statistiques;
     [SerializeField] private NpcAction action;
     [SerializeField] private PlayerMovement playerMoveMe;
     [SerializeField] private PlayerAction playerActionMe;
 
     [HideInInspector]public TurnManager turn;
-    [SerializeField] public bool isCompanion = true;
-    public bool isControlled = false;
+    [HideInInspector] public bool isCompanion = true;
+    [HideInInspector] public bool isControlled = false;
+    [HideInInspector] public int orderId;
+    [HideInInspector] public bool canAct = false;
     private int myTurn;
-    public int orderId;
-    public bool canAct = false;
     private UI ui;
 
 

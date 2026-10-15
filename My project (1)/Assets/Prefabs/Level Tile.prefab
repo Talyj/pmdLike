@@ -133,7 +133,7 @@ MonoBehaviour:
     height: 0
     color: {r: 0, g: 0, b: 0, a: 0}
   - name: ground
-    height: 0.5
+    height: 0.6
     color: {r: 0.1960784, g: 0.8039216, b: 0.1960784, a: 1}
   - name: sky
     height: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
   tileRenderer: {fileID: 5663991683423660625}
   meshFilter: {fileID: 2925461239274273236}
   meshCollider: {fileID: 3412402655022335300}
-  mapScale: 2
+  mapScale: 6
 --- !u!114 &7990429973746308036
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,13 +17,12 @@ public class NpcMovement : MonoBehaviour
     private TurnManager turn;
 
     [SerializeField] private float playerSpeed;
-    public InputActionReference moveAction;
-    public bool hasMoved = false;
+    [HideInInspector] public bool hasMoved = false;
     private int myTurn;
 
 
     //Player variables (companion)
-    public PlayerController player;
+    [HideInInspector] public PlayerController player;
     [SerializeField] private Vector3 targetPos;
     private NpcController npcController;
 
@@ -233,7 +232,7 @@ public class NpcMovement : MonoBehaviour
             }   //Check if the target tile is empty
             if (Physics.Raycast(transform.position, targetPos - transform.position, out hit, range))
             {
-                if (hit.collider.name.Contains("Body"))
+                if (hit.collider.tag.ToLower() != "ground")
                 {
                     //Debug.Log("NOOOOOOOOOOOOOOOOOO");
                     targetPos = lastPosition;

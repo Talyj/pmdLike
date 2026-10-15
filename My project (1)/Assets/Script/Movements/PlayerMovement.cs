@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private List<Vector3> GetMovePointAround()
+    public List<Vector3> GetMovePointAround()
     {
         List<Vector3> targetsPos = new List<Vector3>();
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 2);

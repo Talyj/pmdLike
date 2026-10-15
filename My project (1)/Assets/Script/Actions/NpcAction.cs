@@ -14,7 +14,7 @@ namespace Assets.Script.Actions
         private List<Statistiques> targets = new List<Statistiques>();
         private float detectRange = 5f;
         public float atqRange = 2f;
-        public bool hasTarget = false;
+        [HideInInspector] public bool hasTarget = false;
 
 
         public void Attack()
