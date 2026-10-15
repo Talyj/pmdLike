@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Processors;
@@ -26,27 +29,106 @@ public class PlayerAction : MonoBehaviour
         mainCamera = FindAnyObjectByType<PlayerFollow>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Attack();
-    }
-
     public void Attack()
     {
         //If is moving cant input something else
         if (!isActing)
         {
-            //Jump = space bar
-            if (Input.GetButtonUp("Jump") && mainCamera.targetPosition == gameObject)
-            {
-                isActing = true;
-                DealAOEDamages(50, 2f);
+            isActing = true;
+            DealAOEDamages(50, 2f);
 
-                //The change turn must be in another if ?
-                ChangeNpcState();
-                isActing = false;
-                turn.TurnChange();
+            //The change turn must be in another if ?
+            ChangeNpcState();
+            isActing = false;
+            turn.TurnChange();
+        }
+    }
+
+    public void SimpleAttack(float range, int dmg)
+    {
+        //Race skill should be put there like
+        //if(race == gluant){
+        //Change something
+        //}
+        //else if(race == goblin){
+        // change something else
+        //}
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, range))
+        {
+            if(hit.collider.tag.ToLower() == "enemy")
+            {
+                hit.collider.GetComponent<Statistiques>().TakeDamage(dmg);
+            }
+        }
+        ChangeNpcState();
+        isActing = false;
+        turn.TurnChange();
+    }
+
+    public IEnumerator Grab(float range ,int dmg)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, range))
+        {
+            if(hit.collider.tag.ToLower() == "enemy")
+            {
+                var target = hit.collider.gameObject;
+                var direction = (hit.collider.transform.position - transform.position).normalized;
+                var grabTo = new Vector3(transform.position.x + direction.x, transform.position.y + direction.y, transform.position.z + direction.z);
+                while (target.transform.position != grabTo)
+                {
+                    target.GetComponent<NpcMovement>().MoveTo(grabTo);
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+        }
+        ChangeNpcState();
+        isActing = false;
+        turn.TurnChange();
+    }
+
+    public void Heal(float range, int heal)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, range))
+        {
+            if (hit.collider.tag.ToLower() == "characters" || hit.collider.tag.ToLower() == "player")
+            {
+                hit.collider.GetComponent<Statistiques>().TakeDamage(-heal);
+            }
+        }
+        ChangeNpcState();
+        isActing = false;
+        turn.TurnChange();
+    }
+
+    public void HealAround(float range, int heal)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
+        foreach (var hit in hitColliders)
+        {
+            if (hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
+            {
+                //-heal because flemme de faire deux fonctions
+                hit.GetComponent<Statistiques>().TakeDamage(-heal);
+            }
+        }
+        ChangeNpcState();
+        isActing = false;
+        turn.TurnChange();
+    }
+
+    private void DealAOEDamages(int dmg, float range)
+    {
+        move.isMoving = false;        
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
+        foreach (var hit in hitColliders)
+        {
+            if (hit.tag == "enemy")
+            {
+                hit.GetComponent<Statistiques>().TakeDamage(dmg);
             }
         }
     }
@@ -62,23 +144,4 @@ public class PlayerAction : MonoBehaviour
         return false;
     }
 
-    private void DealAOEDamages(int value, float range)
-    {
-        move.isMoving = false;        
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
-        foreach (var hit in hitColliders)
-        {
-            if (hit.tag == "enemy")
-            {
-                hit.GetComponent<Statistiques>().TakeDamage(value);
-            }
-        }
-    }
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.yellow;
-    //    //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
-    //    Gizmos.DrawWireSphere(transform.position, 2f);
-    //}
 }

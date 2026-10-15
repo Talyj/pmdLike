@@ -29,13 +29,13 @@ public class GenerateCharacters : MonoBehaviour
     {
         grounds = GetComponent<GenerateTerrain>().grounds;
         SpawnPlayer();
-        //SpawnCompanions(allCompanions);
+        SpawnCompanions(allCompanions);
     }
 
     // Update is called once per frame
     void Update()
     {
-        BaseSpawnForDungeons(10);
+        BaseSpawnForDungeons(1);
     }
 
     public void BaseSpawnForDungeons(int numOfEnemies)
@@ -76,11 +76,11 @@ public class GenerateCharacters : MonoBehaviour
     {
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() -1);
 
-        GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        //GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 4), Quaternion.identity);
+        //GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(1, 3.5f, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
-        enemy.GetComponent<Statistiques>().myTurn = 2;
+        enemy.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.enemyTurn);
         enemy.tag = "enemy";
         turnManager.enemies.Add(enemy);
         numberOfEnemy++;
@@ -95,10 +95,12 @@ public class GenerateCharacters : MonoBehaviour
         GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
         //GameObject play = Instantiate(player, new Vector3(5, 3.5f, -5), Quaternion.identity);
         play.GetComponent<PlayerController>().turn = turnManager;
-        play.GetComponent<Statistiques>().myTurn = 0;
+        play.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.playerTurn);
+        play.GetComponent<Statistiques>().healthMax = 1000;
+        play.GetComponent<Statistiques>().manaMax = 1000;
         turnManager.player = play;
         ui.player = play.GetComponent<Statistiques>();
-        ui.mainPlayer = play.GetComponent<Statistiques>();
+        ui.mainPlayer = ui.player;
         mainPlayer = play;
         //Camera
         camera.GetComponent<PlayerFollow>().mainPlayer = play;
@@ -116,8 +118,8 @@ public class GenerateCharacters : MonoBehaviour
             companion.GetComponent<MeshRenderer>().material = materialCompanions;
             companion.GetComponent<NpcMovement>().player = mainPlayer.GetComponent<PlayerController>();
             companion.GetComponent<NpcController>().turn = turnManager;
-            companion.GetComponent<Statistiques>().myTurn = 1;
-            companion.GetComponent<Statistiques>().healthCurrent = 100;
+            companion.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.companionTurn);
+            //companion.GetComponent<Statistiques>().healthCurrent = 50;
             companion.GetComponent<NpcController>().orderId = compOrder;
             turnManager.companions.Add(companion);
         }

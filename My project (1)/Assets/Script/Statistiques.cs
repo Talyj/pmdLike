@@ -20,6 +20,8 @@ public class Statistiques : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        healthCurrent = healthMax;
+        manaCurrent = manaMax;
         turn = FindAnyObjectByType<TurnManager>();
         charGen = FindAnyObjectByType<GenerateCharacters>();
         if (healthBar != null)

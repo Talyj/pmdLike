@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 4571028446364644884}
   - component: {fileID: 1515504779906658012}
   - component: {fileID: 1851794427646379257}
+  - component: {fileID: 7977965064170254826}
   m_Layer: 0
   m_Name: BodyPlayer
   m_TagString: Player
@@ -186,6 +187,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Action
   move: {fileID: 5854149407053892874}
+--- !u!114 &7977965064170254826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7503565349928239517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c3a5d3b393cd946aff55c72655d3fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
 --- !u!1 &7826879906707756118
 GameObject:
   m_ObjectHideFlags: 0

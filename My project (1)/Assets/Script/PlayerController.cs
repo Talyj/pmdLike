@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -22,20 +23,30 @@ public class PlayerController : MonoBehaviour
             //if (Input.GetButtonDown("Fire1"))
             if (Input.GetKeyDown(KeyCode.J))
             {
-                ChangeMode();
+                turn.ChangeMode();
             }
             playerMove.Movement();
-            action.Attack();
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                //action.SimpleAttack(5f, 25);
+                //StartCoroutine(action.Grab(5f, 5));
+                //action.Heal(2f, 25);
+                //action.HealAround(3f, 10);
+            }
+            //Why the fuck did i need the second check ?? (in case the turn of some companions get jumped after attacking just add this condition)
+            if (Input.GetButtonUp("Jump")/* && mainCamera.targetPosition == gameObject*/)
+            {
+                action.Attack();
+            }
+            //Add a Job class to make them do the differents attacks
+            // this function will call the jobBehavior with all the attacks
         }
     }
 
-    private void ChangeMode()
-    {
-        turn.modeDeCombat++;
-        if(turn.modeDeCombat >= 2)
-        {
-            turn.modeDeCombat = 0;
-        }
-        Debug.Log("MODE CHANGE : " + turn.modeDeCombat);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
+    //    Gizmos.DrawWireSphere(transform.position, 2f);
+    //}
 }

@@ -30,11 +30,11 @@ public class PlayerFollow : MonoBehaviour
 
     public void LateUpdate()
     {
-        if(turn.currentTurn == 0)
+        if(turn.currentTurn == ((int)TurnManager.turn.playerTurn))
         {
             FollowTarget(mainPlayer.gameObject);
         }
-        else if(turn.currentTurn == 1 && turn.modeDeCombat == 1)
+        else if(turn.currentTurn == ((int)TurnManager.turn.companionTurn) && turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.tactique))
         {
             FollowTarget(turn.companions[turn.companionTurn]);
         }

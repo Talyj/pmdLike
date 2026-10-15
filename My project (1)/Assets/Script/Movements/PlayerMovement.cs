@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
@@ -39,29 +40,37 @@ public class PlayerMovement : MonoBehaviour
         {
             List<Vector3> possibleTargets = GetMovePointAround();
 
-            //THis works with the controller
-            //var test = Input.GetAxis("Horizontal");
-            //var test2 = Input.GetAxis("Vertical");
-            //Vector2 intput1 = new Vector2(test, test2);
-
             // Read input
             Vector2 input = moveAction.action.ReadValue<Vector2>();
             Vector3 move = new Vector3(input.x, 0, input.y);
             move = Vector3.ClampMagnitude(move, 1f);
+            move = Diagonals(move);
 
-            foreach(var pos in possibleTargets)
+            //Fire1 = n
+            if (Input.GetKey(KeyCode.F))
             {
-                if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
+                transform.LookAt(transform.position + move);
+            }
+            else
+            {
+                foreach (var pos in possibleTargets)
                 {
-                    target = new Vector3(pos.x, 3.5f, pos.z);
-                    isMoving = true;
-                    break;
+                    if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
+                    {
+                        target = new Vector3(pos.x, 3.5f, pos.z);
+                        isMoving = true;
+                        break;
+                    }
                 }
+
+                if (move != Vector3.zero)
+                    transform.forward = move;
             }
 
-            if (move != Vector3.zero)
-                transform.forward = move;
-
+            //THis works with the controller
+            //var test = Input.GetAxis("Horizontal");
+            //var test2 = Input.GetAxis("Vertical");
+            //Vector2 input = new Vector2(test, test2);
         }
         float step = playerSpeed * Time.deltaTime;
 
@@ -83,11 +92,6 @@ public class PlayerMovement : MonoBehaviour
                 transform.position = target;
                 isMoving = false;
                 turn.TurnChange();
-
-                if (turn.modeDeCombat == 1)
-                {
-                    ui.GetNewPlayerController();
-                }
             }
         }
     }
@@ -102,12 +106,15 @@ public class PlayerMovement : MonoBehaviour
         {
             var direction = new Vector3(pos.transform.position.x, transform.position.y, pos.transform.position.z) - transform.position;
             //CAnt go on a tile with an enemy in
-            if(Physics.Raycast(transform.position, direction, out hit, 1f))
+            if (Physics.Raycast(transform.position, direction, out hit, 1f))
             {
-                if(hit.collider.tag == "characters")
-                {
-                    targetsPos.Add(pos.transform.position);
-                }
+                //If ici contact avec quelque chose
+
+                //Peut traverser les companions?
+                //if (hit.collider.tag == "characters")
+                //{
+                //    targetsPos.Add(pos.transform.position);
+                //}
             }
             else if (pos.tag == "ground")
             {
@@ -116,5 +123,20 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         return targetsPos;
+    }
+
+    public Vector3 Diagonals(Vector3 move)
+    {
+        Vector3 res = move;
+        if(move.x != 0 && move.z != 0)
+        {
+            res = new Vector3(move.x / Math.Abs(move.x), 0, move.z / Math.Abs(move.z));
+        }
+        return res;
+    }
+
+    public void LookAround()
+    {
+
     }
 }

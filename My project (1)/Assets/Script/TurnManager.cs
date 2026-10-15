@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,13 +15,28 @@ public class TurnManager : MonoBehaviour
     public int currentTurn = 0;
     public int totalTurn = 0;
 
+    [SerializeField] private UI ui;
+
+    public enum turn
+    {
+        playerTurn = 0,
+        companionTurn = 1,
+        enemyTurn = 2
+    }
+
+    public enum ModeDeCombat
+    {
+        classic = 0,
+        tactique = 1
+    }
+
     public GameObject player;
     public List<GameObject> companions = new List<GameObject>();
     public List<GameObject> enemies = new List<GameObject>();
 
     // 0 = Classique
     // 1 = tactique
-    public int modeDeCombat = 0;
+    public int modeDeCombat = ((int)ModeDeCombat.classic);
 
 
     private GenerateCharacters charGen;
@@ -41,7 +57,7 @@ public class TurnManager : MonoBehaviour
     {
         switch (currentTurn)
         {
-            case 0:
+            case ((int)turn.playerTurn):
                 AddTurn();
                 companionTurn = 0;
                 if(companions.Count == 0)
@@ -49,12 +65,16 @@ public class TurnManager : MonoBehaviour
                     AddTurn();
                 }
                 break;
-            case 1:
+            case ((int)turn.companionTurn):
                 CheckAllActed(companions);
                 break;
-            case 2:
+            case ((int)turn.enemyTurn):
                 CheckAllActed(enemies);
                 break;
+        }
+        if (modeDeCombat == 1)
+        {
+            ui.GetNewPlayerController();
         }
 
     }
@@ -79,9 +99,18 @@ public class TurnManager : MonoBehaviour
         totalTurn++;
         if (currentTurn >= 3)
         {
-            currentTurn = 0;
+            currentTurn = ((int)turn.playerTurn);
         }
         
+    }
+    public void ChangeMode()
+    {
+        modeDeCombat++;
+        if (modeDeCombat >= 2)
+        {
+            modeDeCombat = 0;
+        }
+        Debug.Log("MODE CHANGE : " + modeDeCombat);
     }
 
     private void resetTurn(List<GameObject> toReset)

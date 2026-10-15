@@ -82,16 +82,6 @@ public class NpcMovement : MonoBehaviour
             {
                 RandomMove();
             }
-            //if (!isMoving)
-            //{
-            //}
-            //if (!action.hasTarget)
-            //{
-            //    RandomMove();
-            //}
-            //else
-            //{
-            //}
         }
     }
 
@@ -248,5 +238,12 @@ public class NpcMovement : MonoBehaviour
 
         }
         return targetPos;
+    }
+
+    public void MoveTo(Vector3 targetPos)
+    {
+        var direction = new Vector3(targetPos.x, height, targetPos.z) - transform.position;
+        transform.rotation = Quaternion.LookRotation(-direction);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, height, targetPos.z), playerSpeed * Time.deltaTime * 2);
     }
 }

@@ -70,17 +70,5 @@ namespace Assets.Script.Actions
             hasTarget = false;
         }
 
-        private void OnDrawGizmos()
-        {
-            if (gameObject.tag == "enemy")
-            {
-                Gizmos.color = Color.red;
-                //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
-                Gizmos.DrawWireSphere(transform.position, detectRange);
-                Gizmos.color = Color.yellow;
-                //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
-                Gizmos.DrawWireSphere(transform.position, atqRange);
-            }            
-        }
     }
 }
