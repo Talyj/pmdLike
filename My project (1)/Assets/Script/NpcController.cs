@@ -1,4 +1,5 @@
 using Assets.Script.Actions;
+using Assets.Script.Movements;
 using UnityEngine;
 
 public class NpcController : MonoBehaviour
@@ -9,6 +10,7 @@ public class NpcController : MonoBehaviour
     [SerializeField] private PlayerMovement playerMoveMe;
     [SerializeField] private PlayerAction playerActionMe;
 
+    [HideInInspector] public Job job;
     [HideInInspector]public TurnManager turn;
     [HideInInspector] public bool isCompanion = true;
     [HideInInspector] public bool isControlled = false;
@@ -26,6 +28,7 @@ public class NpcController : MonoBehaviour
     {
         myTurn = GetComponent<Statistiques>().myTurn;
         ui = FindAnyObjectByType<UI>();
+        job = GetComponent<Job>();
     }
 
     // Update is called once per frame
@@ -33,12 +36,12 @@ public class NpcController : MonoBehaviour
     {
         if (isCompanion && turn.currentTurn == myTurn && turn.companionTurn == orderId)
         {
-            if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.classic))
+            if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Classique))
             {
                 npcMove.FollowLeader();
                 //ajouter la possibilité d'attaquer si à coté d'un ennemy
             }
-            else if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.tactique) && turn.companionTurn == orderId)
+            else if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Tactique) && turn.companionTurn == orderId)
             {
                 if (!isControlled)
                 {
@@ -47,6 +50,7 @@ public class NpcController : MonoBehaviour
                 }
                 //playerActionMe.Attack();
                 playerMoveMe.Movement();
+                job.BehaviorForJob();
                 //if (Input.GetKeyDown(KeyCode.L))
                 //{
                 //    playerActionMe.SimpleAttack(5f, 25);

@@ -8,12 +8,12 @@ public class UI : MonoBehaviour
     [HideInInspector] public Statistiques mainPlayer;
     [SerializeField] private HealthBar healthBar;
     [HideInInspector] public TurnManager turn;
-    private TextMeshProUGUI textMP;
+    [SerializeField] private TextMeshProUGUI TextForHealth;
+    [SerializeField] private TextMeshProUGUI TextForModeDeCombat;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        textMP = GetComponentInChildren<TextMeshProUGUI>();
         turn = FindAnyObjectByType<TurnManager>();
     }
 
@@ -21,11 +21,17 @@ public class UI : MonoBehaviour
     void Update()
     {
         DisplayHealth();
+        DisplayModeDeCombat();
     }
 
-    public void DisplayHealth()
+    private void DisplayModeDeCombat()
     {
-        textMP.text = player.healthCurrent.ToString() + "/" + player.healthMax.ToString();
+        TextForModeDeCombat.text = System.Enum.GetName(typeof(TurnManager.ModeDeCombat), turn.modeDeCombat) ;
+    }
+
+    private void DisplayHealth()
+    {
+        TextForHealth.text = player.healthCurrent.ToString() + "/" + player.healthMax.ToString();
         healthBar.UpdateHealthBar(player.healthCurrent, player.healthMax);
     }
 

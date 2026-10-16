@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Unity.VisualScripting;
 using UnityEditor.Android;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class NpcMovement : MonoBehaviour
 
 
     //Player variables (companion)
-    [HideInInspector] public PlayerController player;
+    [HideInInspector] public Statistiques targetStats;
     [SerializeField] private Vector3 targetPos;
     private NpcController npcController;
 
@@ -44,7 +45,7 @@ public class NpcMovement : MonoBehaviour
         npcController = GetComponent<NpcController>();
         if (npcController.isCompanion)
         {
-            targetPos = player.transform.position;
+            targetPos = targetStats.transform.position;
         }
         else
         {
@@ -67,9 +68,9 @@ public class NpcMovement : MonoBehaviour
     {
         if (!npcController.isCompanion && turn.currentTurn == myTurn)
         {
-            if (action.hasTarget)
+            if (action.hasTarget && action.target != null)
             {
-                if(Vector3.Distance(action.player.transform.position, transform.position) <= action.atqRange)
+                if(Vector3.Distance(action.target.transform.position, transform.position) <= action.atqRange && !isMoving)
                 {
                     action.Attack();
                 }
@@ -99,7 +100,7 @@ public class NpcMovement : MonoBehaviour
         if (Vector3.Distance(transform.position, new Vector3(targetPos.x, height, targetPos.z)) < 0.001f)
         {
             hasMoved = true;
-            targetPos = GetClosestTileToTarget(GetAroundTile(), player.transform.position, player).transform.position;
+            targetPos = GetClosestTileToTarget(GetAroundTile(), targetStats.transform.position, targetStats).transform.position;
             lastPosition = transform.position;
             turn.companionTurn++;
             isMoving = false;
@@ -109,7 +110,7 @@ public class NpcMovement : MonoBehaviour
 
     void TrackingMove()
     {
-        posGround = MoveToTarget(posGround, 1f);
+        posGround = MoveToTarget(posGround, .5f);
         if (Vector3.Distance(transform.position, new Vector3(posGround.x, height, posGround.z)) < 0.001f)
         {
             //Check for targets around (player/ companion)
@@ -120,7 +121,7 @@ public class NpcMovement : MonoBehaviour
             }
             else
             {
-                posGround = GetClosestTileToTarget(GetAroundTile(), action.player.transform.position, action.player).transform.position;
+                posGround = GetClosestTileToTarget(GetAroundTile(), action.target.transform.position, action.target).transform.position;
             }
             hasMoved = true;
             lastPosition = transform.position;
@@ -131,7 +132,7 @@ public class NpcMovement : MonoBehaviour
 
     void RandomMove()
     {
-        rdmTargetPos = MoveToTarget(rdmTargetPos, 1f);
+        rdmTargetPos = MoveToTarget(rdmTargetPos, .5f);
         if (Vector3.Distance(transform.position, new Vector3(rdmTargetPos.x, height, rdmTargetPos.z)) < 0.001f)
         {
             //Check for targets around (player/ companion)
@@ -153,7 +154,7 @@ public class NpcMovement : MonoBehaviour
         }
     }
 
-    public Ground GetClosestTileToTarget(List<Ground> grounds, Vector3 targetPos, PlayerController target)
+    public Ground GetClosestTileToTarget(List<Ground> grounds, Vector3 targetPos, Statistiques target)
     {
         float dist = 100000;
         Ground res = null;

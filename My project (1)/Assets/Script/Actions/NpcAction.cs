@@ -10,8 +10,7 @@ namespace Assets.Script.Actions
     {
         [SerializeField] private NpcMovement move;
         [SerializeField] private NpcController npcController;
-        [HideInInspector]public PlayerController player;
-        private List<Statistiques> targets = new List<Statistiques>();
+        [HideInInspector]public Statistiques target;
         private float detectRange = 5f;
         public float atqRange = 2f;
         [HideInInspector] public bool hasTarget = false;
@@ -22,25 +21,26 @@ namespace Assets.Script.Actions
             if (!move.hasMoved)
             {
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, atqRange);
+                List<Statistiques> targets = new List<Statistiques>();
                 foreach (var hit in hitColliders)
                 {
-                    if (hit.tag.ToLower() == "player"/* || hit.tag.ToLower() == "characters"*/)
+                    if (hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
                     {
                         move.hasMoved = true;
                         //Attack....
-                        //targets.Add(hit.GetComponent<Statistiques>());
-                        hit.GetComponent<Statistiques>().TakeDamage(10);
-                        npcController.turn.TurnChange();
+                        targets.Add(hit.GetComponent<Statistiques>());
+                        //hit.GetComponent<Statistiques>().TakeDamage(10);
+                        //npcController.turn.TurnChange();
                     }
                 }
-                //if(targets.Count > 0)
-                //{
-                //    foreach(var tar in targets)
-                //    {
-                //        tar.GetComponent<Statistiques>().TakeDamage(10);
-                //    }
-                //    npcController.turn.TurnChange();
-                //}
+                if (targets.Count > 0)
+                {
+                    foreach (var tar in targets)
+                    {
+                        tar.GetComponent<Statistiques>().TakeDamage(10);
+                    }
+                    npcController.turn.TurnChange();
+                }
             }
         }
 
@@ -49,15 +49,15 @@ namespace Assets.Script.Actions
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectRange);
             foreach(var hit in hitColliders)
             {
-                if(hit.tag.ToLower() == "player" /*|| hit.tag.ToLower() == "characters"*/)
+                if(hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
                 {
-                    if(player == null)
+                    if(target == null)
                     {
-                        player = hit.GetComponent<PlayerController>();
+                        target = hit.GetComponent<Statistiques>();
                     }
                     //Debug.Log("FOUUUUUUUUND");
                     hasTarget = true;
-                    move.posGround = move.GetClosestTileToTarget(move.GetAroundTile(), player.transform.position, player).transform.position;
+                    move.posGround = move.GetClosestTileToTarget(move.GetAroundTile(), target.transform.position, target).transform.position;
                     return true;
                 }
             }
@@ -66,7 +66,7 @@ namespace Assets.Script.Actions
 
         public void ResetTargets()
         {
-            player = null;
+            target = null;
             hasTarget = false;
         }
 

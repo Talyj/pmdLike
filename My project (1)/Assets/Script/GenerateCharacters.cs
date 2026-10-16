@@ -35,7 +35,7 @@ public class GenerateCharacters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BaseSpawnForDungeons(1);
+        BaseSpawnForDungeons(10);
     }
 
     public void BaseSpawnForDungeons(int numOfEnemies)
@@ -77,7 +77,7 @@ public class GenerateCharacters : MonoBehaviour
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() -1);
 
         //GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        GameObject enemy = Instantiate(npc, new Vector3(1, 3.5f, 4), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
         enemy.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.enemyTurn);
@@ -116,7 +116,7 @@ public class GenerateCharacters : MonoBehaviour
             //Companions
             GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], new Vector3(1, heightSpawn, 0), Quaternion.identity);
             companion.GetComponent<MeshRenderer>().material = materialCompanions;
-            companion.GetComponent<NpcMovement>().player = mainPlayer.GetComponent<PlayerController>();
+            companion.GetComponent<NpcMovement>().targetStats = mainPlayer.GetComponent<Statistiques>();
             companion.GetComponent<NpcController>().turn = turnManager;
             companion.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.companionTurn);
             //companion.GetComponent<Statistiques>().healthCurrent = 50;

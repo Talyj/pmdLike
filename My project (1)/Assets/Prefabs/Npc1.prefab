@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 2766672414295036171}
   - component: {fileID: 6002184441026313907}
   - component: {fileID: 3772329987888953450}
+  - component: {fileID: 4172164394100933365}
   m_Layer: 0
   m_Name: Npc1
   m_TagString: Untagged
@@ -346,7 +347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NpcMovement
   playerSpeed: 5
   hasMoved: 0
-  player: {fileID: 0}
+  targetStats: {fileID: 0}
   targetPos: {x: 0, y: 0, z: 0}
   rdmTargetPos: {x: 0, y: 0, z: 0}
   posGround: {x: 0, y: 0, z: 0}
@@ -366,7 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Actions.NpcAction
   move: {fileID: 7818774945478956500}
   npcController: {fileID: 5479067551072629707}
-  player: {fileID: 0}
+  target: {fileID: 0}
   atqRange: 2
   hasTarget: 0
 --- !u!114 &2766672414295036171
@@ -403,6 +404,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAction
   move: {fileID: 3772329987888953450}
+  turn: {fileID: 0}
+  isActing: 0
+  skillsList: []
 --- !u!114 &3772329987888953450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,6 +423,20 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   isMoving: 0
   target: {x: 0, y: 0, z: 0}
+--- !u!114 &4172164394100933365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8692312961584957385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c3a5d3b393cd946aff55c72655d3fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
+  skillsList: []
+  job: 0
 --- !u!1 &8806434222245949148
 GameObject:
   m_ObjectHideFlags: 0

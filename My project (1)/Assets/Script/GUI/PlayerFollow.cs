@@ -34,7 +34,7 @@ public class PlayerFollow : MonoBehaviour
         {
             FollowTarget(mainPlayer.gameObject);
         }
-        else if(turn.currentTurn == ((int)TurnManager.turn.companionTurn) && turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.tactique))
+        else if(turn.currentTurn == ((int)TurnManager.turn.companionTurn) && turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Tactique))
         {
             FollowTarget(turn.companions[turn.companionTurn]);
         }

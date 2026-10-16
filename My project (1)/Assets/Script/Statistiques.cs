@@ -67,8 +67,8 @@ public class Statistiques : MonoBehaviour
             case "Player":
                 isDead = true;
                 return;
-            case "companion":
-
+            case "characters":
+                turn.companions.Remove(gameObject);
                 break;
             case "enemy":
                 //before death check if the gameobject is still referenced

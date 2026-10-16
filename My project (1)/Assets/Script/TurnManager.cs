@@ -26,8 +26,8 @@ public class TurnManager : MonoBehaviour
 
     public enum ModeDeCombat
     {
-        classic = 0,
-        tactique = 1
+        Classique = 0,
+        Tactique = 1
     }
 
     public GameObject player;
@@ -36,7 +36,7 @@ public class TurnManager : MonoBehaviour
 
     // 0 = Classique
     // 1 = tactique
-    public int modeDeCombat = ((int)ModeDeCombat.classic);
+    public int modeDeCombat = ((int)ModeDeCombat.Classique);
 
 
     private GenerateCharacters charGen;
@@ -45,12 +45,6 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         charGen = GetComponent<GenerateCharacters>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void TurnChange()
