@@ -190,6 +190,7 @@ MonoBehaviour:
   move: {fileID: 5854149407053892874}
   turn: {fileID: 0}
   isActing: 0
+  mainCamera: {fileID: 0}
   skillsList: []
 --- !u!114 &7977965064170254826
 MonoBehaviour:
@@ -204,7 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
   skillsList: []
-  job: 2
+  job: 0
 --- !u!1 &7826879906707756118
 GameObject:
   m_ObjectHideFlags: 0

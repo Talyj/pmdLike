@@ -30,7 +30,7 @@ public class TurnManager : MonoBehaviour
         Tactique = 1
     }
 
-    public GameObject player;
+    //public GameObject player;
     public List<GameObject> companions = new List<GameObject>();
     public List<GameObject> enemies = new List<GameObject>();
 
@@ -104,6 +104,7 @@ public class TurnManager : MonoBehaviour
         {
             modeDeCombat = 0;
         }
+        ui.DisplayModeDeCombat();
         Debug.Log("MODE CHANGE : " + modeDeCombat);
     }
 

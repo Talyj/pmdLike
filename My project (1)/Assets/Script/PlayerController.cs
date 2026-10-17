@@ -32,13 +32,20 @@ public class PlayerController : MonoBehaviour
             playerMove.Movement();
             job.BehaviorForJob();
 
-            //if (Input.GetKeyDown(KeyCode.L))
-            //{
-            //    //action.SimpleAttack(5f, 25);
-            //    //StartCoroutine(action.Grab(5f, 5));
-            //    //action.Heal(2f, 25);
-            //    //action.HealAround(3f, 10);
-            //}
+            if (Input.GetKeyUp(KeyCode.L))
+            {
+                //action.SimpleAttack(5f, 25);
+                //StartCoroutine(action.Grab(5f, 5));
+                //action.Heal(2f, 25);
+                //action.HealAround(3f, 10);
+                //CHeckGrapple
+                StartCoroutine(action.Grapple(5f, 5));                
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("ou");
+                StartCoroutine(action.Grab(5f, 5));
+            }
             ////Why the fuck did i need the second check ?? (in case the turn of some companions get jumped after attacking just add this condition)
             //if (Input.GetButtonUp("Jump")/* && mainCamera.targetPosition == gameObject*/)
             //{

@@ -521,6 +521,7 @@ MonoBehaviour:
   action: {fileID: 6017293004085227596}
   playerMoveMe: {fileID: 5982814934936083371}
   playerActionMe: {fileID: 1443893054752741899}
+  job: {fileID: 0}
   turn: {fileID: 0}
   isCompanion: 1
   isControlled: 0
@@ -599,6 +600,7 @@ MonoBehaviour:
   move: {fileID: 5982814934936083371}
   turn: {fileID: 0}
   isActing: 0
+  mainCamera: {fileID: 0}
   skillsList: []
 --- !u!114 &5982814934936083371
 MonoBehaviour:
@@ -629,4 +631,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
   skillsList: []
-  job: 1
+  job: 0

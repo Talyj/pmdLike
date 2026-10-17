@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace Assets.Script.Movements
 {
@@ -44,8 +45,6 @@ namespace Assets.Script.Movements
         {
             switch (job)
             {
-                case Jobs.Troubadour:
-                    break;
                 case Jobs.Tank:
                     TankBehavior();
                     break;
@@ -128,17 +127,20 @@ namespace Assets.Script.Movements
             //BaseAttack = u
             if (Input.GetButtonUp("BaseAttack") && action.mainCamera.targetPosition == gameObject)
             {
+                Debug.Log("u");
                 action.SimpleAttack(5f, 50);
             }
             //BaseAttack2 = i
             if (Input.GetButtonUp("SecondAttack") && action.mainCamera.targetPosition == gameObject)
             {
+                Debug.Log("i");
                 action.HealAround(2f, 5);
             }
             //Special = o
             if (Input.GetButtonUp("Special") && action.mainCamera.targetPosition == gameObject)
             {
-                StartCoroutine(action.Grab(3f, 5));
+                Debug.Log("o");
+                StartCoroutine(action.Grapple(5f, 5));
             }
         }
 

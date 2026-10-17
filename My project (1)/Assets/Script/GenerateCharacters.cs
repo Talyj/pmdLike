@@ -1,4 +1,5 @@
 using Assets.Script.Actions;
+using Assets.Script.Movements;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ public class GenerateCharacters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BaseSpawnForDungeons(10);
+        BaseSpawnForDungeons(1);
     }
 
     public void BaseSpawnForDungeons(int numOfEnemies)
@@ -77,7 +78,7 @@ public class GenerateCharacters : MonoBehaviour
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() -1);
 
         //GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 4), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(1, 3.5f, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
         enemy.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.enemyTurn);
@@ -98,8 +99,9 @@ public class GenerateCharacters : MonoBehaviour
         play.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.playerTurn);
         play.GetComponent<Statistiques>().healthMax = 1000;
         play.GetComponent<Statistiques>().manaMax = 1000;
-        turnManager.player = play;
         ui.player = play.GetComponent<Statistiques>();
+        ui.playerJob = play.GetComponent<Job>();
+        //turnManager.player = play;
         ui.mainPlayer = ui.player;
         mainPlayer = play;
         //Camera

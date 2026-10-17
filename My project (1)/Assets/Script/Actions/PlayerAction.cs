@@ -29,6 +29,7 @@ public class PlayerAction : MonoBehaviour
         turn = FindAnyObjectByType<TurnManager>();
         npc = GetComponent<NpcController>();
         mainCamera = FindAnyObjectByType<PlayerFollow>();
+        move = GetComponent<PlayerMovement>();
     }
 
     public void TestBehavior(List<string> skillList)
@@ -74,13 +75,43 @@ public class PlayerAction : MonoBehaviour
                 var grabTo = new Vector3(transform.position.x + direction.x, transform.position.y + direction.y, transform.position.z + direction.z);
                 while (target.transform.position != grabTo)
                 {
-                    target.GetComponent<NpcMovement>().MoveTo(grabTo);
+                    target.GetComponent<PlayerMovement>().MoveTo(grabTo);
                     yield return new WaitForEndOfFrame();
                 }
             }
         }
         ChangeNpcState();
         isActing = false;
+        turn.TurnChange();
+    }
+
+    public IEnumerator Grapple(float range, int dmg)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, range))
+        {
+            //if (hit.collider.tag.ToLower() == "enemy" || hit.collider.tag.ToLower() == "player" || hit.collider.tag.ToLower() == "characters")
+            //{
+            var target = hit.collider.gameObject;
+            var direction = -(hit.collider.transform.position - transform.position).normalized;
+
+            var grabTo = new Vector3(target.transform.position.x + direction.x, target.transform.position.y + direction.y, target.transform.position.z + direction.z);
+            while (transform.position != grabTo)
+            {
+                move.MoveTo(grabTo);
+                if (Vector3.Distance(transform.position, grabTo) < 0.001f)
+                {
+                    transform.position = grabTo;
+                    break;
+                }
+                yield return new WaitForEndOfFrame();
+            }
+            //}
+        }
+        ChangeNpcState();
+        isActing = false;
+        move.target = transform.position;
+        move.isMoving = false;
         turn.TurnChange();
     }
 

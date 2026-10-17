@@ -5,6 +5,7 @@ using UnityEngine.Analytics;
 using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
+    private float height = 3.5f;
     [SerializeField] private float playerSpeed;
     public InputActionReference moveAction;
     private TurnManager turn;
@@ -135,8 +136,11 @@ public class PlayerMovement : MonoBehaviour
         return res;
     }
 
-    public void LookAround()
+    public void MoveTo(Vector3 targetPos)
     {
-
+        isMoving = true;
+        var direction = new Vector3(targetPos.x, height, targetPos.z) - transform.position;
+        transform.rotation = Quaternion.LookRotation(-direction);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, height, targetPos.z), playerSpeed * Time.deltaTime * 2);
     }
 }
