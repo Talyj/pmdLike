@@ -7,12 +7,12 @@ public class Statistiques : MonoBehaviour
     [SerializeField] private HealthBar healthBar;
     private TurnManager turn;
     private GenerateCharacters charGen;
-    public int healthCurrent = 100;
-    public int healthMax = 100;
-    public int manaCurrent = 100;
-    public int manaMax = 100;
-    public int atq;
-    public int def;
+    public float healthCurrent = 100;
+    public float healthMax = 100;
+    public float manaCurrent = 100;
+    public float manaMax = 100;
+    public float atq;
+    public float def;
     public bool isDead = false;
     public int myTurn;
 
@@ -49,7 +49,7 @@ public class Statistiques : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(float dmg)
     {
         var res = dmg - def;
         healthCurrent -= res;
@@ -72,6 +72,7 @@ public class Statistiques : MonoBehaviour
                 break;
             case "enemy":
                 //before death check if the gameobject is still referenced
+                //add the list of dot
                 turn.enemies.Remove(gameObject);
                 charGen.numberOfEnemy--;
                 break;

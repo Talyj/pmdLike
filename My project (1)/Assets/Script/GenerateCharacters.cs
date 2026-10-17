@@ -78,7 +78,7 @@ public class GenerateCharacters : MonoBehaviour
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() -1);
 
         //GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        GameObject enemy = Instantiate(npc, new Vector3(1, 3.5f, 4), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
         enemy.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.enemyTurn);

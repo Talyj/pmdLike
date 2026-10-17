@@ -1,3 +1,4 @@
+using Assets.Script.Actions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using static UnityEngine.GraphicsBuffer;
 public class PlayerAction : MonoBehaviour
 {
     [SerializeField] private PlayerMovement move;
+    [SerializeField] private Statistiques stats;
     //[HideInInspector] public PlayerController playerCont;
     public TurnManager turn;
     private NpcController npc;
@@ -30,6 +32,7 @@ public class PlayerAction : MonoBehaviour
         npc = GetComponent<NpcController>();
         mainCamera = FindAnyObjectByType<PlayerFollow>();
         move = GetComponent<PlayerMovement>();
+        stats = GetComponent<Statistiques>();
     }
 
     public void TestBehavior(List<string> skillList)
@@ -165,6 +168,43 @@ public class PlayerAction : MonoBehaviour
         turn.TurnChange();
     }
 
+    public void Aggro(float range, int dmg)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
+        foreach(var col in hitColliders)
+        {
+            if(col.tag.ToLower() == "enemy")
+            {
+                col.GetComponent<NpcAction>().target = stats;
+            }
+        }
+        ChangeNpcState();
+        isActing = false;
+        turn.TurnChange();
+    }
+
+    public void PoisonAttack(float range, int duration)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, range))
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(hit.transform.position, 3f);
+            foreach (var col in hitColliders)
+            {
+                if (col.tag.ToLower() == "enemy" || col.tag.ToLower() == "characters" || col.tag.ToLower() == "player")
+                {
+                    if (!turn.GetComponent<DamageOverTime>().listCharacterToDebuff.ContainsKey(gameObject))
+                    {
+                        turn.GetComponent<DamageOverTime>().listCharacterToDebuff.Add(col.gameObject, duration);
+                    }
+                }
+            }
+        }
+        ChangeNpcState();
+        isActing = false;
+        turn.TurnChange();
+    }
+
     public bool ChangeNpcState()
     {
         npc = GetComponent<NpcController>();
@@ -175,6 +215,8 @@ public class PlayerAction : MonoBehaviour
         }
         return false;
     }
+
+    //Add a function that does the overlapsphere (too much occurence)
 
 }
 

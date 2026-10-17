@@ -73,6 +73,7 @@ namespace Assets.Script.Movements
             {
                 //CHange that to def for the tank
                 //action.Grab(5f, 5);
+                action.Aggro(10f, 0);
                 Debug.Log("Def");
             }
             //Special = o
@@ -118,6 +119,7 @@ namespace Assets.Script.Movements
             if (Input.GetButtonUp("Special") && action.mainCamera.targetPosition == gameObject)
             {
                 Debug.Log("cc");
+                action.PoisonAttack(5f, 3);
             }
         }
 

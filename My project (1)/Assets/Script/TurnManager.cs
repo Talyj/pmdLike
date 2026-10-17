@@ -16,6 +16,7 @@ public class TurnManager : MonoBehaviour
     public int totalTurn = 0;
 
     [SerializeField] private UI ui;
+    [SerializeField] private DamageOverTime dot;
 
     public enum turn
     {
@@ -78,24 +79,27 @@ public class TurnManager : MonoBehaviour
         {
             if (!npc.GetComponent<NpcMovement>().hasMoved) return 0;
         }
-        AddTurn();
+
         if(enemies.Count <= 0)
         {
             AddTurn();
         }
+        AddTurn();
         resetTurn(toCheck);
         return 1;
     }
 
     private void AddTurn()
     {
+        //dot.listCharacterToDebuff = dot.DealDot();
+        dot.DealDot();
+
         currentTurn++;
         totalTurn++;
         if (currentTurn >= 3)
         {
             currentTurn = ((int)turn.playerTurn);
         }
-        
     }
     public void ChangeMode()
     {
