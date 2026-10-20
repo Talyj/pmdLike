@@ -6,12 +6,10 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
+using static TurnManager;
 
 public class GenerateCharacters : MonoBehaviour
 {
-
-    public float heightSpawn = 3.5f;
-
     [SerializeField] private UI ui;
     [SerializeField] private GameObject player;
     [HideInInspector] private GameObject mainPlayer;
@@ -77,10 +75,11 @@ public class GenerateCharacters : MonoBehaviour
     {
         var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() -1);
 
-        //GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, heightSpawn, grounds[rdmChoice].transform.position.z), Quaternion.identity);
-        GameObject enemy = Instantiate(npc, new Vector3(0, 3.5f, 4), Quaternion.identity);
+        //GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        GameObject enemy = Instantiate(npc, new Vector3(0, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
+        enemy.GetComponent<NpcMovement>().turn = turnManager;
         enemy.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.enemyTurn);
         enemy.tag = "enemy";
         turnManager.enemies.Add(enemy);
@@ -93,8 +92,8 @@ public class GenerateCharacters : MonoBehaviour
     {
         //Player
         // TODO Give all the variables to the controller
-        GameObject play = Instantiate(player, new Vector3(0, 3.5f, 0), Quaternion.identity);
-        //GameObject play = Instantiate(player, new Vector3(5, 3.5f, -5), Quaternion.identity);
+        GameObject play = Instantiate(player, new Vector3(0, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
+        //GameObject play = Instantiate(player, new Vector3(5, turnManager.HeightMovementForEvryone, -5), Quaternion.identity);
         play.GetComponent<PlayerController>().turn = turnManager;
         play.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.playerTurn);
         play.GetComponent<Statistiques>().healthMax = 1000;
@@ -116,10 +115,11 @@ public class GenerateCharacters : MonoBehaviour
         {
             //mainPlayer.GetComponent<PlayerMovement>().
             //Companions
-            GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], new Vector3(1, heightSpawn, 0), Quaternion.identity);
+            GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], new Vector3(1, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
             companion.GetComponent<MeshRenderer>().material = materialCompanions;
             companion.GetComponent<NpcMovement>().targetStats = mainPlayer.GetComponent<Statistiques>();
             companion.GetComponent<NpcController>().turn = turnManager;
+            companion.GetComponent<NpcMovement>().turn = turnManager;
             companion.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.companionTurn);
             //companion.GetComponent<Statistiques>().healthCurrent = 50;
             companion.GetComponent<NpcController>().orderId = compOrder;
@@ -129,7 +129,7 @@ public class GenerateCharacters : MonoBehaviour
 
 
         ////test second companions
-        //GameObject companion1 = Instantiate(npc, new Vector3(1, heightSpawn, 1), Quaternion.identity);
+        //GameObject companion1 = Instantiate(npc, new Vector3(1, turnManager.HeightMovementForEvryone, 1), Quaternion.identity);
         //companion1.GetComponent<MeshRenderer>().material = materialCompanions;
         //companion1.GetComponent<NpcMovement>().player = mainPlayer.GetComponent<PlayerController>();
         //companion1.GetComponent<NpcController>().turn = turnManager;

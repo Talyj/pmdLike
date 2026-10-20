@@ -5,7 +5,6 @@ using UnityEngine.Analytics;
 using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
-    private float height = 3.5f;
     [SerializeField] private float playerSpeed;
     public InputActionReference moveAction;
     private TurnManager turn;
@@ -58,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
                     {
-                        target = new Vector3(pos.x, 3.5f, pos.z);
+                        target = new Vector3(pos.x, turn.HeightMovementForEvryone, pos.z);
                         isMoving = true;
                         break;
                     }
@@ -107,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         {
             var direction = new Vector3(pos.transform.position.x, transform.position.y, pos.transform.position.z) - transform.position;
             //CAnt go on a tile with an enemy in
-            if (Physics.Raycast(transform.position, direction, out hit, 1f))
+            if (Physics.Raycast(transform.position, direction, out hit, 1.5f))
             {
                 //If ici contact avec quelque chose
 
@@ -139,8 +138,8 @@ public class PlayerMovement : MonoBehaviour
     public void MoveTo(Vector3 targetPos)
     {
         isMoving = true;
-        var direction = new Vector3(targetPos.x, height, targetPos.z) - transform.position;
+        var direction = new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z) - transform.position;
         transform.rotation = Quaternion.LookRotation(-direction);
-        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, height, targetPos.z), playerSpeed * Time.deltaTime * 2);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z), playerSpeed * Time.deltaTime * 2);
     }
 }

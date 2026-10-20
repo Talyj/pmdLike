@@ -6,11 +6,15 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
+    //Variables for everyone
+    [HideInInspector] public float HeightMovementForEvryone = .35f;
+    [HideInInspector] public float RangeViewNotClip = 1.5f;
+
+
     //trois types de tours
     //0 = tour du joueur
     //1 = tour des compagnons
     //2 = tour des méchants
-
     public int companionTurn = 0;
     public int currentTurn = 0;
     public int totalTurn = 0;
@@ -91,8 +95,8 @@ public class TurnManager : MonoBehaviour
 
     private void AddTurn()
     {
-        //dot.listCharacterToDebuff = dot.DealDot();
         dot.DealDot();
+        //dot.listCharacterToDebuff = dot.DealDot();
 
         currentTurn++;
         totalTurn++;

@@ -36,10 +36,4 @@ public class DamageOverTime : MonoBehaviour
         }
 
     }
-
-    public void NewListDebuff()
-    {
-
-    }
-
 }

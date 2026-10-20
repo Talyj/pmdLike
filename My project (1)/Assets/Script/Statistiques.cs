@@ -6,6 +6,7 @@ public class Statistiques : MonoBehaviour
 {
     [SerializeField] private HealthBar healthBar;
     private TurnManager turn;
+    private DamageOverTime dot;
     private GenerateCharacters charGen;
     public float healthCurrent = 100;
     public float healthMax = 100;
@@ -23,6 +24,7 @@ public class Statistiques : MonoBehaviour
         healthCurrent = healthMax;
         manaCurrent = manaMax;
         turn = FindAnyObjectByType<TurnManager>();
+        dot = FindAnyObjectByType<DamageOverTime>();
         charGen = FindAnyObjectByType<GenerateCharacters>();
         if (healthBar != null)
         {
@@ -49,6 +51,7 @@ public class Statistiques : MonoBehaviour
         }
     }
 
+    //Maybe add a takePoisonDamage
     public void TakeDamage(float dmg)
     {
         var res = dmg - def;
@@ -68,11 +71,14 @@ public class Statistiques : MonoBehaviour
                 isDead = true;
                 return;
             case "characters":
+                dot.listCharacterToDebuff.Remove(gameObject);
                 turn.companions.Remove(gameObject);
                 break;
             case "enemy":
                 //before death check if the gameobject is still referenced
+                turn.TurnChange();
                 //add the list of dot
+                dot.listCharacterToDebuff.Remove(gameObject);
                 turn.enemies.Remove(gameObject);
                 charGen.numberOfEnemy--;
                 break;

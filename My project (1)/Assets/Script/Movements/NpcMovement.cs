@@ -14,8 +14,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class NpcMovement : MonoBehaviour
 {
-    private float height = 3.5f;
-    private TurnManager turn;
+    [HideInInspector]public TurnManager turn;
 
     [SerializeField] private float playerSpeed;
     [HideInInspector] public bool hasMoved = false;
@@ -53,7 +52,6 @@ public class NpcMovement : MonoBehaviour
             posGround = transform.position;
         }
 
-        turn = FindAnyObjectByType<TurnManager>();
         myTurn = GetComponent<Statistiques>().myTurn;
         lastPosition = transform.position;
     }
@@ -96,8 +94,8 @@ public class NpcMovement : MonoBehaviour
 
     void TrackingFollowCompanion()
     {
-        targetPos = MoveToTarget(targetPos, .5f);
-        if (Vector3.Distance(transform.position, new Vector3(targetPos.x, height, targetPos.z)) < 0.001f)
+        targetPos = MoveToTarget(targetPos, 1.5f);
+        if (Vector3.Distance(transform.position, new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z)) < 0.001f)
         {
             hasMoved = true;
             targetPos = GetClosestTileToTarget(GetAroundTile(), targetStats.transform.position, targetStats).transform.position;
@@ -110,8 +108,8 @@ public class NpcMovement : MonoBehaviour
 
     void TrackingMove()
     {
-        posGround = MoveToTarget(posGround, .5f);
-        if (Vector3.Distance(transform.position, new Vector3(posGround.x, height, posGround.z)) < 0.001f)
+        posGround = MoveToTarget(posGround, 1.5f);
+        if (Vector3.Distance(transform.position, new Vector3(posGround.x, turn.HeightMovementForEvryone, posGround.z)) < 0.001f)
         {
             //Check for targets around (player/ companion)
             if (!action.CheckForTargets())
@@ -132,8 +130,8 @@ public class NpcMovement : MonoBehaviour
 
     void RandomMove()
     {
-        rdmTargetPos = MoveToTarget(rdmTargetPos, .5f);
-        if (Vector3.Distance(transform.position, new Vector3(rdmTargetPos.x, height, rdmTargetPos.z)) < 0.001f)
+        rdmTargetPos = MoveToTarget(rdmTargetPos, 1.5f);
+        if (Vector3.Distance(transform.position, new Vector3(rdmTargetPos.x, turn.HeightMovementForEvryone, rdmTargetPos.z)) < 0.001f)
         {
             //Check for targets around (player/ companion)
             if (!action.CheckForTargets())
@@ -201,7 +199,7 @@ public class NpcMovement : MonoBehaviour
             if (col.tag.ToLower() == "ground")
             {
                 //Take only the tiles that are not me
-                if (new Vector3(col.transform.position.x, height, col.transform.position.z) != transform.position)
+                if (new Vector3(col.transform.position.x, turn.HeightMovementForEvryone, col.transform.position.z) != transform.position)
                 {
                     //Debug.Log("my place");
                     res.Add(col.GetComponent<Ground>());
@@ -213,7 +211,7 @@ public class NpcMovement : MonoBehaviour
 
     private Vector3 MoveToTarget(Vector3 targetPos, float range)
     {
-        if (transform.position != new Vector3(targetPos.x, height, targetPos.z) && !hasMoved)
+        if (transform.position != new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z) && !hasMoved)
         {
             //if target too far
             if (Vector3.Distance(transform.position, targetPos) > 1.5)
@@ -233,19 +231,11 @@ public class NpcMovement : MonoBehaviour
             isMoving = true;
             //rdmTargetPos = new Vector3(groundTargets[integer].transform.position.x, height, groundTargets[integer].transform.position.z);
 
-            var direction = new Vector3(targetPos.x, height, targetPos.z) - transform.position;
+            var direction = new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z) - transform.position;
             transform.rotation = Quaternion.LookRotation(direction);
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, height, targetPos.z), playerSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z), playerSpeed * Time.deltaTime);
 
         }
         return targetPos;
     }
-
-    //Todelete if i end up forgetting its purpose
-    //public void MoveTo(Vector3 targetPos)
-    //{
-    //    var direction = new Vector3(targetPos.x, height, targetPos.z) - transform.position;
-    //    transform.rotation = Quaternion.LookRotation(-direction);
-    //    transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, height, targetPos.z), playerSpeed * Time.deltaTime * 2);
-    //}
 }
