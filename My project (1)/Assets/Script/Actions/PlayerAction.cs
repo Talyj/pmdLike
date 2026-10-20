@@ -15,10 +15,10 @@ public class PlayerAction : MonoBehaviour
     [SerializeField] private PlayerMovement move;
     [SerializeField] private Statistiques stats;
     //[HideInInspector] public PlayerController playerCont;
-    public TurnManager turn;
+    [HideInInspector] public TurnManager turn;
     private NpcController npc;
     public bool isActing = false;
-    public PlayerFollow mainCamera;
+    [HideInInspector]public PlayerFollow mainCamera;
     public List<string> skillsList = new List<string>();
 
     private int myTurn;

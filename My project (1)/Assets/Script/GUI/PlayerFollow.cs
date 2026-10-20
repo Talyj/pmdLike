@@ -23,7 +23,7 @@ public class PlayerFollow : MonoBehaviour
     }
     private void Update()
     {
-        MoveCameraAround();
+        //MoveCameraAround();
     }
 
     public void LateUpdate()

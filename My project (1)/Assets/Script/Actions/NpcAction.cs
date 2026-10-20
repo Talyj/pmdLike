@@ -10,7 +10,7 @@ namespace Assets.Script.Actions
     {
         [SerializeField] private NpcMovement move;
         [SerializeField] private NpcController npcController;
-        /*[HideInInspector]*/public Statistiques target;
+        [HideInInspector]public Statistiques target;
         private float detectRange = 5f;
         public float atqRange = 2f;
         [HideInInspector] public bool hasTarget = false;

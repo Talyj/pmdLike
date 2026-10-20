@@ -8,10 +8,10 @@ public class Statistiques : MonoBehaviour
     private TurnManager turn;
     private DamageOverTime dot;
     private GenerateCharacters charGen;
-    public float healthCurrent = 100;
-    public float healthMax = 100;
-    public float manaCurrent = 100;
-    public float manaMax = 100;
+    public float healthCurrent;
+    public float healthMax;
+    public float manaCurrent;
+    public float manaMax;
     public float atq;
     public float def;
     public bool isDead = false;

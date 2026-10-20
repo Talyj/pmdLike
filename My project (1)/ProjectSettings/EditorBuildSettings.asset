@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FIrstDungeon.unity
     guid: a889782fbc0341948a312d4e11e3da4c
+  - enabled: 1
+    path: Assets/Scenes/Village.unity
+    guid: a967e949631a8a84893e3e656d61d258
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05

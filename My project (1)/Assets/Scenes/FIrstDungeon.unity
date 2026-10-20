@@ -695,6 +695,7 @@ GameObject:
   - component: {fileID: 789353661}
   - component: {fileID: 789353660}
   - component: {fileID: 789353664}
+  - component: {fileID: 789353665}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: Untagged
@@ -752,6 +753,7 @@ MonoBehaviour:
   materialCompanions: {fileID: 2100000, guid: ff69790a9e26e3646827a8ba33154aac, type: 2}
   grounds: []
   numberOfEnemy: 0
+  goalToSpawn: {fileID: 6712788295157893284, guid: 723a8c6cd6742fd45a499f0bffc68e03, type: 3}
 --- !u!114 &789353662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -796,6 +798,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageOverTime
   turn: {fileID: 789353660}
+--- !u!114 &789353665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789353659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b29270f5c66f44098caf0c17d2e33a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DataToSave
 --- !u!1 &798981378
 GameObject:
   m_ObjectHideFlags: 0

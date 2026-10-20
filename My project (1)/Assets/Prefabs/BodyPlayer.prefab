@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b98bc20588720e428ae5b8ad76fb808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  data: {fileID: 0}
   playerMove: {fileID: 5854149407053892874}
   damageable: {fileID: 1515504779906658012}
   action: {fileID: 1851794427646379257}
@@ -188,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Action
   move: {fileID: 5854149407053892874}
-  stats: {fileID: 0}
+  stats: {fileID: 1515504779906658012}
   turn: {fileID: 0}
   isActing: 0
   mainCamera: {fileID: 0}
@@ -206,7 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
   skillsList: []
-  job: 2
+  job: 0
 --- !u!1 &7826879906707756118
 GameObject:
   m_ObjectHideFlags: 0

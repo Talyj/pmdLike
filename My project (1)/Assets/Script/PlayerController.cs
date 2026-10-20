@@ -1,5 +1,7 @@
 using Assets.Script.Movements;
 using System.Collections;
+using System.IO;
+using System.Text.Json.Nodes;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,6 +17,7 @@ public class PlayerController : MonoBehaviour
     {
         stats = GetComponent<Statistiques>();
         job = GetComponent<Job>();
+
     }
 
     // Update is called once per frame
@@ -39,7 +42,8 @@ public class PlayerController : MonoBehaviour
                 //action.Heal(2f, 25);
                 //action.HealAround(3f, 10);
                 //CHeckGrapple
-                StartCoroutine(action.Grapple(5f, 5));                
+                //StartCoroutine(action.Grapple(5f, 5));
+                Debug.Log("nothing lol");
             }
             ////Why the fuck did i need the second check ?? (in case the turn of some companions get jumped after attacking just add this condition)
             //if (Input.GetButtonUp("Jump")/* && mainCamera.targetPosition == gameObject*/)

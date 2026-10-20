@@ -346,6 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dae870847c32d24d9b3919648828c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NpcMovement
+  turn: {fileID: 0}
   playerSpeed: 5
   hasMoved: 0
   targetStats: {fileID: 0}
@@ -405,7 +406,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAction
   move: {fileID: 3772329987888953450}
-  stats: {fileID: 0}
+  stats: {fileID: 2766672414295036171}
   turn: {fileID: 0}
   isActing: 0
   mainCamera: {fileID: 0}

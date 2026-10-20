@@ -17,7 +17,6 @@ public class NpcController : MonoBehaviour
     [HideInInspector] public int orderId;
     [HideInInspector] public bool canAct = false;
     private int myTurn;
-    private UI ui;
 
 
 
@@ -27,8 +26,8 @@ public class NpcController : MonoBehaviour
     void Start()
     {
         myTurn = GetComponent<Statistiques>().myTurn;
-        ui = FindAnyObjectByType<UI>();
         job = GetComponent<Job>();
+        //turn = FindAnyObjectByType<TurnManager>();
     }
 
     // Update is called once per frame
@@ -48,29 +47,8 @@ public class NpcController : MonoBehaviour
                     isControlled = true;
                     playerMoveMe.target = transform.position;
                 }
-                //playerActionMe.Attack();
                 playerMoveMe.Movement();
                 job.BehaviorForJob();
-                //if (Input.GetKeyDown(KeyCode.L))
-                //{
-                //    playerActionMe.SimpleAttack(5f, 25);
-                //    Debug.Log("simpleAttack");
-                //}
-                //if (Input.GetKeyDown(KeyCode.M))
-                //{
-                //    StartCoroutine(playerActionMe.Grab(5f, 5));
-                //    Debug.Log("Grab");
-                //}
-                //if (Input.GetKeyDown(KeyCode.N))
-                //{
-                //    playerActionMe.Heal(2f, 25);
-                //    Debug.Log("Heal");
-                //}
-                //if (Input.GetKeyDown(KeyCode.B))
-                //{
-                //    playerActionMe.HealAround(3f, 10);
-                //    Debug.Log("HealAround");
-                //}
             }
         }
         else if(!isCompanion && turn.currentTurn == myTurn)
