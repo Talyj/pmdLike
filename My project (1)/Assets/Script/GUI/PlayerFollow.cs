@@ -10,6 +10,7 @@ public class PlayerFollow : MonoBehaviour
     public TurnManager turn;
     private Vector3 _cameraOffset;
     [Range(0.01f, 1.0f)] public float SmoothFactor = 0.5f;
+    private int position = 0;
 
     private void Awake()
     {
@@ -18,14 +19,11 @@ public class PlayerFollow : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        //PlayerTransform = FindAnyObjectByType<PlayerController>();
-        //if(PlayerTransform == null)
-        //{
-        //    PlayerController.instanceStarted += OnPlayerInstanceStarted;
-        //}
+        _cameraOffset = new(0, 3, -4);
     }
     private void Update()
     {
+        MoveCameraAround();
     }
 
     public void LateUpdate()
@@ -43,8 +41,71 @@ public class PlayerFollow : MonoBehaviour
     public void FollowTarget(GameObject target)
     {
         targetPosition = target;
-        Vector3 newPos = target.transform.position + new Vector3(0, 3, -4);
+        Vector3 newPos = target.transform.position + _cameraOffset;
         transform.position = Vector3.Slerp(transform.position, newPos, SmoothFactor);
+    }
+
+    public void MoveCameraAround()
+    {
+        if (Input.GetButtonUp("MoveCameraRight"))
+        {
+            //_cameraOffset = new Vector3(-4, 3, 0);
+            //0 == base => 0, 3, -4
+            position++;
+            if(position > 3)
+            {
+                position = 0;
+            }
+            switch (position)
+            {
+                //Check why the rotation breaks everything
+                case 0:
+                    _cameraOffset = new Vector3(0, 3, -4);
+                    transform.Rotate(new Vector3(0, -90, 0), Space.World);
+                    break;
+                case 1:
+                    _cameraOffset = new Vector3(4, 3, 0);
+                    transform.Rotate(new Vector3(0, -90, 0), Space.World);
+                    break;
+                case 2:
+                    _cameraOffset = new Vector3(0, 3, 4);
+                    transform.Rotate(new Vector3(0, -90, 0), Space.World);
+                    break;
+                case 3:
+                    _cameraOffset = new Vector3(-4, 3, 0);
+                    transform.Rotate(new Vector3(0, -90, 0), Space.World);
+                    break;
+            }
+        }
+        if (Input.GetButtonUp("MoveCameraLeft"))
+        {
+            //0 == base => 0, 3, -4
+            position--;
+            if (position < 0)
+            {
+                position = 3;
+            }
+            switch (position)
+            {
+                case 0:
+                    _cameraOffset = new Vector3(0, 3, -4);
+                    transform.Rotate(new Vector3(0, 90, 0), Space.World);
+                    break;
+                case 1:
+                    _cameraOffset = new Vector3(4, 3, 0);
+                    transform.Rotate(new Vector3(0, 90, 0), Space.World);
+                    break;
+                case 2:
+                    _cameraOffset = new Vector3(0, 3, 4);
+                    transform.Rotate(new Vector3(0, 90, 0), Space.World);
+                    break;
+                case 3:
+                    _cameraOffset = new Vector3(-4, 3, 0);
+                    transform.Rotate(new Vector3(0, 90, 0), Space.World);
+                    break;
+            }
+        }
+
     }
 
     private void OnTriggerEnter(Collider other)

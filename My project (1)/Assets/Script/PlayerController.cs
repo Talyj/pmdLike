@@ -41,11 +41,6 @@ public class PlayerController : MonoBehaviour
                 //CHeckGrapple
                 StartCoroutine(action.Grapple(5f, 5));                
             }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Debug.Log("ou");
-                StartCoroutine(action.Grab(5f, 5));
-            }
             ////Why the fuck did i need the second check ?? (in case the turn of some companions get jumped after attacking just add this condition)
             //if (Input.GetButtonUp("Jump")/* && mainCamera.targetPosition == gameObject*/)
             //{

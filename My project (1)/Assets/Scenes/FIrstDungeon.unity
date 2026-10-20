@@ -714,6 +714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4fe4e8553ce6ed41bbeffad2d34b9f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TurnManagement
+  HeightMovementForEvryone: 0.35
+  RangeViewNotClip: 1.5
   companionTurn: 0
   currentTurn: 0
   totalTurn: 0
@@ -734,7 +736,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c561ee27767365740bc385a9cfc69cd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenerateCharacters
-  heightSpawn: 3.5
   ui: {fileID: 1212175267}
   player: {fileID: 7503565349928239517, guid: d7d6c908ed8e0a546b7bf9b9be788ad7, type: 3}
   npc: {fileID: 8539622564464889243, guid: e87cb17cb04f8644c8933506144cf3f0, type: 3}
@@ -763,9 +764,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cd3676262008a42b8297ccd7f487ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenerateTerrain
-  heightSpawn: 3.5
-  mapWidthInTiles: 2
-  mapDepthInTiles: 2
+  mapWidthInTiles: 10
+  mapDepthInTiles: 10
   tilePrefab: {fileID: 1465953844180287608, guid: db02baa1fc4f3904d92f2b362d2dcb56, type: 3}
   grounds: []
 --- !u!4 &789353663
