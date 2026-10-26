@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class TerrainType
@@ -39,9 +40,18 @@ public class TileGeneration : MonoBehaviour
         Vector3[] meshVertices = this.meshFilter.mesh.vertices;
         int tileDepth = (int)Mathf.Sqrt(meshVertices.Length);
         int tileWidth = tileDepth;
-
-        float offsetX = -this.gameObject.transform.position.x;
-        float offsetZ = -this.gameObject.transform.position.z;
+        float offsetX;
+        float offsetZ;
+        if (SceneManager.GetActiveScene().name.ToLower() != "firstdungeon")
+        {
+            offsetX = UnityEngine.Random.Range(-10000, 10000);
+            offsetZ = UnityEngine.Random.Range(-10000, 10000);
+        }
+        else
+        {
+            offsetX = -this.gameObject.transform.position.x;
+            offsetZ = -this.gameObject.transform.position.z;
+        }        
 
         heightMap = this.noiseMapGeneration.GenerateNoiseMap(tileDepth, tileWidth, this.mapScale, offsetX, offsetZ);
 
@@ -86,7 +96,8 @@ public class TileGeneration : MonoBehaviour
             Ground ground = Instantiate(sol, newVEctor, Quaternion.identity);
             obj.grounds.Add(ground);
             //ajouter une seconde
-        }       
+        }    
+        //Sinon générer des décors
     }
 
     TerrainType ChooseTerrainType(float height)

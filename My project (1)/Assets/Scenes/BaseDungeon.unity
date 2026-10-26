@@ -766,8 +766,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cd3676262008a42b8297ccd7f487ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GenerateTerrain
-  mapWidthInTiles: 10
-  mapDepthInTiles: 10
+  mapWidthInTiles: 4
+  mapDepthInTiles: 4
   tilePrefab: {fileID: 1465953844180287608, guid: db02baa1fc4f3904d92f2b362d2dcb56, type: 3}
   grounds: []
 --- !u!4 &789353663

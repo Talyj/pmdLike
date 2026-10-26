@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static TurnManager;
 
 public class GenerateCharacters : MonoBehaviour
@@ -32,53 +33,43 @@ public class GenerateCharacters : MonoBehaviour
     void Start()
     {
         grounds = GetComponent<GenerateTerrain>().grounds;
-        SpawnPlayer();
-        SpawnCompanions(allCompanions);
+
+        StartCoroutine(SpawnPlayer());        
+        //SpawnCompanions(allCompanions);
+        StartCoroutine(SpawnGoal());
     }
 
     // Update is called once per frame
     void Update()
     {
         BaseSpawnForDungeons(20);
-        SpawnGoal();
     }
 
     public void BaseSpawnForDungeons(int numOfEnemies)
     {
         //Spawn them during the Player turn
-        if (turnManager.totalTurn == 0 && numberOfEnemy < numOfEnemies)
+        if (turnManager.currentTurn == 0 && numberOfEnemy < numOfEnemies)
         {
             SpawnEnemiesOnce(GetRandomNpc());
         }
     }
 
-    public IEnumerator SpawnEnemiesLoop(int numOfEnemies)
+    private IEnumerator SpawnGoal()
     {
-        while (true)
+        while (grounds.Count() <= 0)
         {
-            if (grounds.Count() > 0 && numberOfEnemy < numOfEnemies)
-            {
-
-                SpawnEnemiesOnce(GetRandomNpc());
-            }
-            yield return new WaitForSeconds(10);
+            yield return new WaitForEndOfFrame();
         }
-    }
-
-    public void SpawnGoal()
-    {
-        if (!isGoalThere)
+        var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() - 1);
+        while (Vector3.Distance(grounds[rdmChoice].transform.position, mainPlayer.transform.position) < 30)
         {
-            var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() - 1);
-            while (Vector3.Distance(grounds[rdmChoice].transform.position, mainPlayer.transform.position) < 30)
-            {
-                rdmChoice = Random.Range(0, grounds.Count() - 1);
-            }
-            //Vector3 goalPosition = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
-            Vector3 goalPosition = new Vector3(0 , turnManager.HeightMovementForEvryone, 8);
-            GameObject goal = Instantiate(goalToSpawn, goalPosition, Quaternion.identity);
-            isGoalThere = true;
+            rdmChoice = Random.Range(0, grounds.Count() - 1);
         }
+        Vector3 goalPosition = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
+        //Vector3 goalPosition = new Vector3(0 , turnManager.HeightMovementForEvryone, 8);
+        GameObject goal = Instantiate(goalToSpawn, goalPosition, Quaternion.identity);
+        isGoalThere = true;
+
     }
 
     public string GetRandomNpc()
@@ -95,9 +86,15 @@ public class GenerateCharacters : MonoBehaviour
 
     public void SpawnEnemiesOnce(string npcName)
     {
-        var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() -1);
+        var rdmChoice = 0;
+        Vector3 rdmPos;
+        while (!grounds[rdmChoice].IsEmpty)
+        {
+            rdmChoice = UnityEngine.Random.Range(0, grounds.Count() -1);
+        }
+        rdmPos = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
 
-        GameObject enemy = Instantiate(allNpcAvailable[npcName], new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z), Quaternion.identity);
+        GameObject enemy = Instantiate(allNpcAvailable[npcName], rdmPos, Quaternion.identity);
         //GameObject enemy = Instantiate(npc, new Vector3(0, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
@@ -113,8 +110,13 @@ public class GenerateCharacters : MonoBehaviour
         }
     }
 
-    void SpawnPlayer()
+    private IEnumerator SpawnPlayer()
     {
+        while(grounds.Count() <= 0)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
         var fileName = Application.persistentDataPath + "/save.json";
         Player savedPlayer;
         if (File.Exists(fileName))
@@ -130,10 +132,13 @@ public class GenerateCharacters : MonoBehaviour
         }
 
         //Player
-        // TODO Give all the variables to the controller
-        GameObject play = Instantiate(player, new Vector3(0, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
-        //GameObject play = Instantiate(player, new Vector3(5, turnManager.HeightMovementForEvryone, -5), Quaternion.identity);
+        var rdmChoice = UnityEngine.Random.Range(0, grounds.Count() - 1);
+        var rdmPos = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
 
+        GameObject play = Instantiate(player, rdmPos, Quaternion.identity);
+        //GameObject play = Instantiate(player, new Vector3(0, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
+
+        //Variables to set
         play.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.playerTurn);
         play.GetComponent<PlayerController>().turn = turnManager;
         ui.player = play.GetComponent<Statistiques>();
@@ -150,17 +155,31 @@ public class GenerateCharacters : MonoBehaviour
 
         //Camera
         camera.GetComponent<PlayerFollow>().mainPlayer = play;
-        camera.GetComponent<PlayerFollow>().targetPosition = play;        
+        camera.GetComponent<PlayerFollow>().targetPosition = play;
+
+        SpawnCompanions(allCompanions, play.transform.position);
     }
 
-    public void SpawnCompanions(List<string> allCompanions)
+    public void SpawnCompanions(List<string> allCompanions, Vector3 playerPos)
     {
+        var rdmChoice = 0;
+        Vector3 rdmPos;
+        var tileAround = GetTilesAround(playerPos);
+
         //Add the spawn of the companion around the player
-        for(int compOrder = 0; compOrder < allCompanions.Count; compOrder++)
+        for (int compOrder = 0; compOrder < allCompanions.Count; compOrder++)
         {
-            //mainPlayer.GetComponent<PlayerMovement>().
             //Companions
-            GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], new Vector3(1, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
+            while (!tileAround[rdmChoice].IsEmpty)
+            {
+                rdmChoice = UnityEngine.Random.Range(0, tileAround.Count());
+            }
+            tileAround.RemoveAt(rdmChoice);
+            rdmPos = new Vector3(tileAround[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, tileAround[rdmChoice].transform.position.z);
+
+
+            GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], rdmPos, Quaternion.identity);
+            //GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], new Vector3(1, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
             companion.tag = "characters";
             companion.GetComponent<NpcController>().isCompanion = true;
             companion.GetComponent<NpcMovement>().targetStats = mainPlayer.GetComponent<Statistiques>();
@@ -175,17 +194,28 @@ public class GenerateCharacters : MonoBehaviour
                 companion.GetComponent<MeshRenderer>().material = materialCompanions;
             }
         }
+    }
 
+    public List<Ground> GetTilesAround(Vector3 targetPos)
+    {
+        List<Ground> res = new List<Ground>();
 
+        //Get the collider around to see where i can go
+        Collider[] hitColliders = Physics.OverlapSphere(targetPos, 2f);
 
-        ////test second companions
-        //GameObject companion1 = Instantiate(npc, new Vector3(1, turnManager.HeightMovementForEvryone, 1), Quaternion.identity);
-        //companion1.GetComponent<MeshRenderer>().material = materialCompanions;
-        //companion1.GetComponent<NpcMovement>().player = mainPlayer.GetComponent<PlayerController>();
-        //companion1.GetComponent<NpcController>().turn = turnManager;
-        //companion1.GetComponent<Statistiques>().myTurn = 1;
-        //companion.GetComponent<Statistiques>().healthCurrent = 45;
-        //companion1.GetComponent<NpcController>().orderId = 1;
-        //turnManager.companions.Add(companion1);
+        foreach (var col in hitColliders)
+        {
+            var direction = new Vector3(col.transform.position.x, transform.position.y, col.transform.position.z) - transform.position;
+            if (col.tag.ToLower() == "ground")
+            {
+                //Take only the tiles that are not me
+                if (new Vector3(col.transform.position.x, turnManager.HeightMovementForEvryone, col.transform.position.z) != transform.position)
+                {
+                    //Debug.Log("my place");
+                    res.Add(col.GetComponent<Ground>());
+                }
+            }
+        }
+        return res;
     }
 }

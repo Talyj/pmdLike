@@ -62,6 +62,10 @@ public class TurnManager : MonoBehaviour
                 if(companions.Count == 0)
                 {
                     AddTurn();
+                    if (enemies.Count == 0)
+                    {
+                        AddTurn();
+                    }
                 }
                 break;
             case ((int)turn.companionTurn):

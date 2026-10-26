@@ -27,7 +27,7 @@ public class UI : MonoBehaviour
     void Start()
     {
         turn = FindAnyObjectByType<TurnManager>();
-        playerJob = player.GetComponent<Job>();
+        //playerJob = player.GetComponent<Job>();
         StartCoroutine(DisplaySkills());
         if(turn != null)
         {
@@ -38,7 +38,10 @@ public class UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DisplayHealth();
+        if(player != null)
+        {
+            DisplayHealth();
+        }
     }
 
     public void DisplayModeDeCombat()

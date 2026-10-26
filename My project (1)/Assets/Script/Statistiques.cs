@@ -38,7 +38,7 @@ public class Statistiques : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckHealth();
+        //CheckHealth();
         if(healthBar != null)
         {
             healthBar.LookAtCamera();
@@ -63,6 +63,7 @@ public class Statistiques : MonoBehaviour
         {
             healthBar.UpdateHealthBar(healthCurrent, healthMax);
         }
+        CheckHealth();
     }
 
     public void Dies()
@@ -79,7 +80,7 @@ public class Statistiques : MonoBehaviour
                 break;
             case "enemy":
                 //before death check if the gameobject is still referenced
-                turn.TurnChange();
+                //turn.TurnChange();
                 //add the list of dot
                 dot.listCharacterToDebuff.Remove(gameObject);
                 turn.enemies.Remove(gameObject);

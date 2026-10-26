@@ -28,11 +28,19 @@ public class PlayerFollow : MonoBehaviour
 
     public void LateUpdate()
     {
-        if(turn.currentTurn == ((int)TurnManager.turn.playerTurn))
+        if(mainPlayer != null)
+        {
+            ChangeCameraTarget();
+        }
+    }
+
+    private void ChangeCameraTarget()
+    {
+        if (turn.currentTurn == ((int)TurnManager.turn.playerTurn))
         {
             FollowTarget(mainPlayer.gameObject);
         }
-        else if(turn.currentTurn == ((int)TurnManager.turn.companionTurn) && turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Tactique))
+        else if (turn.currentTurn == ((int)TurnManager.turn.companionTurn) && turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Tactique))
         {
             FollowTarget(turn.companions[turn.companionTurn]);
         }

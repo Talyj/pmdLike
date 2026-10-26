@@ -9,8 +9,8 @@ public class NoiseMapGeneration : MonoBehaviour
         {
             for (int xIndex = 0; xIndex < mapWidth; xIndex++)
             {
-                float sampleX = (xIndex + offsetX) / scale /*+ Random.Range(0,2)*/;
-                float sampleZ = (zIndex + offsetZ )/ scale /*+ Random.Range(0, 2)*/;
+                float sampleX = (xIndex + offsetX) / scale;
+                float sampleZ = (zIndex + offsetZ )/ scale;
                 float noise = Mathf.PerlinNoise(sampleX, sampleZ);
 
                 noiseMap[zIndex, xIndex] = noise;
