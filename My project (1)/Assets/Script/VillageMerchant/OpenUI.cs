@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class OpenUI : MonoBehaviour
 {
     [SerializeField] private Canvas CanvaToActivate;
-    private bool isActive = false;
+    [HideInInspector] public bool isActive = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

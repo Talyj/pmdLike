@@ -1022,10 +1022,10 @@ RectTransform:
   - {fileID: 1029413767}
   m_Father: {fileID: 6370387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: -50}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.55, y: 0.254}
+  m_AnchorMax: {x: 0.8528514, y: 0.546}
+  m_AnchoredPosition: {x: -0.5, y: 0}
+  m_SizeDelta: {x: -51, y: -46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &321895347
 MonoBehaviour:
@@ -1371,7 +1371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
   skillsList: []
-  job: 0
+  job: 2
 --- !u!114 &416036140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1700,6 +1700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenUI
   CanvaToActivate: {fileID: 6370392}
+  isActive: 0
 --- !u!136 &617020316
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2353,10 +2354,10 @@ RectTransform:
   - {fileID: 927498396}
   m_Father: {fileID: 6370387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: -50}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0.14662476, y: 0.254}
+  m_AnchorMax: {x: 0.45400003, y: 0.546}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -54, y: -46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &858721916
 MonoBehaviour:
@@ -2401,7 +2402,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 858721917}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 975549987}
+        m_TargetAssemblyTypeName: VillageButtonBehavior, Assembly-CSharp
+        m_MethodName: CloseUI
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 6370392}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Canvas, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &858721917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3362,6 +3375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenUI
   CanvaToActivate: {fileID: 67514028}
+  isActive: 0
 --- !u!1 &1210063611
 GameObject:
   m_ObjectHideFlags: 0

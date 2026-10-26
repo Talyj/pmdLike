@@ -24,6 +24,12 @@ public class VillageButtonBehavior : MonoBehaviour
     public void LeaveVillage()
     {
         data.SaveData(job.gameObject);
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("BaseDungeon");
+    }
+
+    public void CloseUI(Canvas canvaToClose)
+    {
+        canvaToClose.gameObject.SetActive(false);
+        canvaToClose.GetComponent<OpenUI>().isActive = false;
     }
 }

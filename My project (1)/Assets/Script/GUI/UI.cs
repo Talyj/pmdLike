@@ -27,7 +27,10 @@ public class UI : MonoBehaviour
     void Start()
     {
         turn = FindAnyObjectByType<TurnManager>();
-        //playerJob = player.GetComponent<Job>();
+        if(player != null)
+        {
+            playerJob = player.GetComponent<Job>();
+        }
         StartCoroutine(DisplaySkills());
         if(turn != null)
         {
