@@ -1,3 +1,5 @@
+using Assets.Script.Movements;
+using System.IO;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -8,6 +10,7 @@ public class Statistiques : MonoBehaviour
     private TurnManager turn;
     private DamageOverTime dot;
     private GenerateCharacters charGen;
+
     public float healthCurrent;
     public float healthMax;
     public float manaCurrent;
@@ -84,5 +87,25 @@ public class Statistiques : MonoBehaviour
                 break;
         }
         Destroy(this.gameObject);
+    }
+
+    public void GetStats()
+    {
+        var fileName = Application.persistentDataPath + "/save.json";
+        Player savedPlayer;
+        if (File.Exists(fileName))
+        {
+            string jsonString = File.ReadAllText(Application.persistentDataPath + "/save.json");
+            savedPlayer = JsonUtility.FromJson<Player>(jsonString);
+
+            atq = savedPlayer.atq;
+            def = savedPlayer.def;
+            healthMax = savedPlayer.healthMax;
+            manaMax = savedPlayer.manaMax;
+            GetComponent<Job>().job = savedPlayer.job;
+
+            atq = savedPlayer.atq;
+            atq = savedPlayer.atq;
+        }
     }
 }

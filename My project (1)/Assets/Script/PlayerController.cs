@@ -1,5 +1,6 @@
 using Assets.Script.Movements;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json.Nodes;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public Job job;
     public TurnManager turn;
     public Statistiques stats;
+    [SerializeField] public List<string> allCompanions = new List<string>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

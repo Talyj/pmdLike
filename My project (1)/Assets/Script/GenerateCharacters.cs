@@ -136,16 +136,17 @@ public class GenerateCharacters : MonoBehaviour
 
         play.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.playerTurn);
         play.GetComponent<PlayerController>().turn = turnManager;
-        ui.playerJob = play.GetComponent<Job>();
         ui.player = play.GetComponent<Statistiques>();
+        ui.playerJob = play.GetComponent<Job>();
         ui.mainPlayer = ui.player;
         mainPlayer = play;
 
-        play.GetComponent<Statistiques>().healthMax = 500;
-        play.GetComponent<Statistiques>().manaMax = 500;
-        play.GetComponent<Statistiques>().atq = 50;
-        play.GetComponent<Statistiques>().def = 0;
-        //play.GetComponent<Job>().job = savedPlayer.job;
+        play.GetComponent<Statistiques>().healthMax = savedPlayer.healthMax;
+        play.GetComponent<Statistiques>().manaMax = savedPlayer.manaMax;
+        play.GetComponent<Statistiques>().atq = savedPlayer.atq;
+        play.GetComponent<Statistiques>().def = savedPlayer.def;
+        play.GetComponent<Job>().job = savedPlayer.job;
+        //play.GetComponent<PlayerController>().allCompanions = savedPlayer.listCompanions;
 
         //Camera
         camera.GetComponent<PlayerFollow>().mainPlayer = play;

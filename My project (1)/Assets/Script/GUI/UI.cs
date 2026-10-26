@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    [HideInInspector] public Statistiques player;
+    public Statistiques player;
     [HideInInspector] public Job playerJob;
     [HideInInspector] public Statistiques mainPlayer;
     [SerializeField] private HealthBar healthBar;
@@ -27,8 +27,12 @@ public class UI : MonoBehaviour
     void Start()
     {
         turn = FindAnyObjectByType<TurnManager>();
-        DisplayModeDeCombat();
+        playerJob = player.GetComponent<Job>();
         StartCoroutine(DisplaySkills());
+        if(turn != null)
+        {
+            DisplayModeDeCombat();
+        }
     }
 
     // Update is called once per frame
