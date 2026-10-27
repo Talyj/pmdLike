@@ -77,7 +77,7 @@ public class TileGeneration : MonoBehaviour
                 TerrainType terrainType = ChooseTerrainType(height);
                 colorMap[colorIndex] = terrainType.color;
 
-                GenerateTiles(terrainType, xIndex, zIndex);
+                GenerateTiles(terrainType, xIndex, zIndex, tileDepth, tileWidth);
             }
         }
         Texture2D tileTexture = new Texture2D(tileWidth, tileDepth);
@@ -87,11 +87,10 @@ public class TileGeneration : MonoBehaviour
         return tileTexture;
     }
 
-    private void GenerateTiles(TerrainType terrainType, int xIndex, int zIndex)
+    private void GenerateTiles(TerrainType terrainType, int xIndex, int zIndex, int tileDepthZ, int tileWidthX)
     {
         if (terrainType.name == "ground")
         {
-            //Debug.Log(xIndex + " " + zIndex);
             var newVEctor = new Vector3((this.transform.position.x + xIndex * -1) + 5 , 0, (this.transform.position.z + zIndex * -1) + 5);
             Ground ground = Instantiate(sol, newVEctor, Quaternion.identity);
             obj.grounds.Add(ground);

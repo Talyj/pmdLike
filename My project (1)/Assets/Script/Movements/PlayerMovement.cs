@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public Vector3 target;
     private int myTurn;
 
+    private List<GameObject> targetAround = new List<GameObject>();
+
     private void OnEnable()
     {
         moveAction.action.Enable();
@@ -46,10 +48,22 @@ public class PlayerMovement : MonoBehaviour
             move = Vector3.ClampMagnitude(move, 1f);
             move = Diagonals(move);
 
-            //Fire1 = n
-            if (Input.GetKey(KeyCode.F))
+            //Fire1 = left shift
+            if (Input.GetButton("Fire1"))
             {
-                transform.LookAt(transform.position + move);
+                //Maybe have to change that
+                if(GetTargetAround().Count <= 0)
+                {
+                    transform.LookAt(transform.position + move);
+                }
+                else
+                {
+
+                    targetAround = GetTargetAround();
+                    var rdm = UnityEngine.Random.Range(0, targetAround.Count);
+
+                    transform.LookAt(targetAround[rdm].transform.position);
+                }
             }
             else
             {
@@ -94,6 +108,22 @@ public class PlayerMovement : MonoBehaviour
                 turn.TurnChange();
             }
         }
+    }
+
+    private List<GameObject> GetTargetAround()
+    {
+        List<Vector3> targetsPos = new List<Vector3>();
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1.5f);
+
+        var res = new List<GameObject>();
+        foreach(var col in hitColliders)
+        {
+            if(col.tag.ToLower() == "enemy")
+            {
+                res.Add(col.gameObject);
+            }
+        }
+        return res;
     }
 
     public List<Vector3> GetMovePointAround()

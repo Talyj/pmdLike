@@ -8,7 +8,7 @@ public class PlayerFollow : MonoBehaviour
     [HideInInspector] public GameObject mainPlayer;
     public GameObject targetPosition;
     public TurnManager turn;
-    private Vector3 _cameraOffset;
+    public Vector3 _cameraOffset;
     [Range(0.01f, 1.0f)] public float SmoothFactor = 0.5f;
     private int position = 0;
 
@@ -19,7 +19,7 @@ public class PlayerFollow : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        _cameraOffset = new(0, 3, -4);
+        //_cameraOffset = new(0, 3, -4);
     }
     private void Update()
     {

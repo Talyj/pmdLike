@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
                 //action.HealAround(3f, 10);
                 //CHeckGrapple
                 //StartCoroutine(action.Grapple(5f, 5));
+
                 Debug.Log("nothing lol");
             }
             ////Why the fuck did i need the second check ?? (in case the turn of some companions get jumped after attacking just add this condition)

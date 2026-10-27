@@ -18,21 +18,24 @@ public class GenerateCharacters : MonoBehaviour
     [HideInInspector] private GameObject mainPlayer;
     [SerializeField] private GameObject npc;
     [SerializeField] Camera camera;
+    [SerializeField] Camera minimapCamera;
+    [SerializeField] Camera mapCamera;
     [SerializeField] TurnManager turnManager;
     [SerializeField] private Material materialMechant;
     [SerializeField] private Dictionary<string, GameObject> allNpcAvailable = new Dictionary<string, GameObject>();
     [SerializeField] public List<string> allCompanions = new List<string>();
     [SerializeField] private Material materialCompanions;
     public List<Ground> grounds;
+    private List<GameObject> cornerGrounds;
     public int numberOfEnemy = 0;
 
     [SerializeField] public GameObject goalToSpawn;
-    private bool isGoalThere = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         grounds = GetComponent<GenerateTerrain>().grounds;
+        cornerGrounds = GetComponent<GenerateTerrain>().cornerGrounds;
 
         StartCoroutine(SpawnPlayer());        
         //SpawnCompanions(allCompanions);
@@ -68,7 +71,6 @@ public class GenerateCharacters : MonoBehaviour
         Vector3 goalPosition = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
         //Vector3 goalPosition = new Vector3(0 , turnManager.HeightMovementForEvryone, 8);
         GameObject goal = Instantiate(goalToSpawn, goalPosition, Quaternion.identity);
-        isGoalThere = true;
 
     }
 
@@ -156,8 +158,25 @@ public class GenerateCharacters : MonoBehaviour
         //Camera
         camera.GetComponent<PlayerFollow>().mainPlayer = play;
         camera.GetComponent<PlayerFollow>().targetPosition = play;
+        //Minimap camera
+        minimapCamera.GetComponent<PlayerFollow>().mainPlayer = play;
+        minimapCamera.GetComponent<PlayerFollow>().targetPosition = play;
+
+        //Move the Big map camera to the center
+        var pos = cornerGrounds;
+        var totX = 0f;
+        var totZ = 0f;
+        foreach(var corner in cornerGrounds)
+        {
+            totX += corner.transform.position.x;
+            totZ += corner.transform.position.z;
+        }
+        var centerX = totX / cornerGrounds.Count();
+        var centerZ = totZ / cornerGrounds.Count();
+        mapCamera.transform.position = new Vector3(centerX, 88, centerZ);
 
         SpawnCompanions(allCompanions, play.transform.position);
+
     }
 
     public void SpawnCompanions(List<string> allCompanions, Vector3 playerPos)
