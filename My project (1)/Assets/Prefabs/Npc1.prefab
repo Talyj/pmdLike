@@ -557,6 +557,7 @@ MonoBehaviour:
   posGround: {x: 0, y: 0, z: 0}
   isMoving: 0
   action: {fileID: 2522545263159381453}
+  job: {fileID: 4172164394100933365}
 --- !u!114 &2522545263159381453
 MonoBehaviour:
   m_ObjectHideFlags: 0

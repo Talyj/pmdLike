@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Script.Movements;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -28,6 +29,7 @@ namespace Assets.Script.Actions
                     {
                         move.hasMoved = true;
                         //Attack....
+                        transform.LookAt(target.transform.position);
                         targets.Add(hit.GetComponent<Statistiques>());
                         //hit.GetComponent<Statistiques>().TakeDamage(10);
                         //npcController.turn.TurnChange();
@@ -44,14 +46,15 @@ namespace Assets.Script.Actions
             }
         }
 
-        public bool CheckForTargets()
+        public bool CheckForTargets(List<string> targets)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectRange);
             foreach(var hit in hitColliders)
             {
-                if(hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
+                //if (hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
+                if (targets.Contains(hit.tag.ToLower()))
                 {
-                    if(target == null)
+                    if (target == null)
                     {
                         target = hit.GetComponent<Statistiques>();
                     }
@@ -68,6 +71,34 @@ namespace Assets.Script.Actions
         {
             target = null;
             hasTarget = false;
+        }
+
+        public int GetBestAction(Job.Jobs job)
+        {
+            //switch (job)
+            //{
+            //    case Job.Jobs.Tank:
+            //        break;
+            //    case Job.Jobs.Dps:
+
+            //        break;
+            //    case Job.Jobs.Healer:
+            //        break;
+            //    case Job.Jobs.Troubadour:                    
+            //        return UnityEngine.Random.Range(0, 3);
+            //}
+            //return 2;
+            return UnityEngine.Random.Range(0, 3);
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (gameObject.tag.ToLower() == "characters")
+            {
+                Gizmos.color = Color.yellow;
+                //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
+                Gizmos.DrawWireSphere(transform.position, 5f);
+            }
         }
 
     }

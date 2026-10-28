@@ -45,7 +45,7 @@ public class GenerateCharacters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BaseSpawnForDungeons(20);
+        BaseSpawnForDungeons(30);
     }
 
     public void BaseSpawnForDungeons(int numOfEnemies)
@@ -69,7 +69,7 @@ public class GenerateCharacters : MonoBehaviour
             rdmChoice = Random.Range(0, grounds.Count() - 1);
         }
         Vector3 goalPosition = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
-        //Vector3 goalPosition = new Vector3(0 , turnManager.HeightMovementForEvryone, 8);
+        //Vector3 goalPosition = new Vector3(0, turnManager.HeightMovementForEvryone, 8);
         GameObject goal = Instantiate(goalToSpawn, goalPosition, Quaternion.identity);
 
     }
@@ -97,7 +97,7 @@ public class GenerateCharacters : MonoBehaviour
         rdmPos = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
 
         GameObject enemy = Instantiate(allNpcAvailable[npcName], rdmPos, Quaternion.identity);
-        //GameObject enemy = Instantiate(npc, new Vector3(0, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(1, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
         enemy.GetComponent<NpcMovement>().turn = turnManager;

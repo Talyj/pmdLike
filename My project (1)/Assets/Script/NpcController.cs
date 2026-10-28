@@ -37,8 +37,10 @@ public class NpcController : MonoBehaviour
         {
             if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Classique))
             {
-                npcMove.FollowLeader();
+                npcMove.CompanionBehavior();
                 //ajouter la possibilité d'attaquer si à coté d'un ennemy
+                //If there is an enemy around me i start trying to kill it instead of just following the player
+
             }
             else if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Tactique) && turn.companionTurn == orderId)
             {
@@ -54,6 +56,7 @@ public class NpcController : MonoBehaviour
         else if(!isCompanion && turn.currentTurn == myTurn)
         {
             npcMove.EnemiesMove();
+            //turn.TurnChange();
         }
     }
 

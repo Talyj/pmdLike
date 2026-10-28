@@ -52,7 +52,6 @@ public class PlayerAction : MonoBehaviour
         //else if(race == goblin){
         // change something else
         //}
-
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
@@ -93,8 +92,6 @@ public class PlayerAction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
-            //if (hit.collider.tag.ToLower() == "enemy" || hit.collider.tag.ToLower() == "player" || hit.collider.tag.ToLower() == "characters")
-            //{
             var target = hit.collider.gameObject;
             var direction = -(hit.collider.transform.position - transform.position).normalized;
 
@@ -109,7 +106,6 @@ public class PlayerAction : MonoBehaviour
                 }
                 yield return new WaitForEndOfFrame();
             }
-            //}
         }
         ChangeNpcState();
         isActing = false;

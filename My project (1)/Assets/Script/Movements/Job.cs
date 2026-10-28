@@ -1,7 +1,9 @@
-﻿using NUnit.Framework;
+﻿using Assets.Script.Actions;
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -10,7 +12,8 @@ namespace Assets.Script.Movements
     public class Job : MonoBehaviour
     {
         //Can put this script in statistiques?
-        private PlayerAction action;
+        private PlayerAction playAction;
+        private NpcAction npcAction;
         private Statistiques stats;
 
         [HideInInspector] public List<string> skillsList = new List<string>();
@@ -32,7 +35,8 @@ namespace Assets.Script.Movements
         void Start()
         {
             stats = GetComponent<Statistiques>();
-            action = GetComponent<PlayerAction>();
+            playAction = GetComponent<PlayerAction>();
+            npcAction = GetComponent<NpcAction>();
         }
 
         // Update is called once per frame
@@ -60,66 +64,91 @@ namespace Assets.Script.Movements
             }
         }
 
+        public void NpcBehaviorForJob()
+        {
+            if (!playAction.isActing)
+            {
+                playAction.isActing = true;
+                var res = npcAction.GetBestAction(job);
+                switch (job)
+                {
+                    case Jobs.Tank:
+                        NpcTankBehavior(res);
+                        break;
+                    case Jobs.Dps:
+                        NpcDpsBehavior(res);
+                        break;
+                    case Jobs.Healer:
+                        NpcHealerBehavior(res);
+                        break;
+                    case Jobs.Troubadour:
+                        NpcTroubadourBehavior(res);
+                        break;
+                }
+            }
+        }
+
+
         public void TankBehavior(/*Get value of the atq*/)
         {
             //BaseAttack = u
-            if (Input.GetButtonUp("BaseAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
                 //CHange value to stats.something
-                action.SimpleAttack(5f, 30);
+                playAction.SimpleAttack(5f, 30);
             }
             //BaseAttack2 = i
-            if (Input.GetButtonUp("SecondAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
                 //CHange that to def for the tank
                 //action.Grab(5f, 5);
-                action.Aggro(10f, 0);
+                playAction.Aggro(10f, 0);
                 Debug.Log("Def");
             }
             //Special = o
-            if (Input.GetButtonUp("Special") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
-                StartCoroutine(action.Grab(5f, 5));
+                StartCoroutine(playAction.Grab(5f, 5));
             }
         }
 
         public void HealerBehavior()
         {
             //BaseAttack = u
-            if (Input.GetButtonUp("BaseAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
                 //CHange value to stats.something
-                action.SimpleAttack(5f, 5);
+                playAction.SimpleAttack(5f, 5);
             }
             //BaseAttack2 = i
-            if (Input.GetButtonUp("SecondAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                action.Heal(5f, 50);
+                playAction.Heal(5f, 50);
             }
             //Special = o
-            if (Input.GetButtonUp("Special") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
-                action.HealAround(3f, 15);
+                playAction.HealAround(3f, 15);
             }
         }
 
         public void DpsBehavior()
         {
             //BaseAttack = u
-            if (Input.GetButtonUp("BaseAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                action.SimpleAttack(5f, 50);
+                playAction.SimpleAttack(5f, 50);
             }
             //BaseAttack2 = i
-            if (Input.GetButtonUp("SecondAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                action.DealAOEDamages(5f, 25);
+                playAction.DealAOEDamages(5f, 25);
             }
             //Special = o
-            if (Input.GetButtonUp("Special") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
                 Debug.Log("cc");
-                action.PoisonAttack(5f, 3);
+                playAction.PoisonAttack(5f, 3);
             }
         }
 
@@ -127,22 +156,90 @@ namespace Assets.Script.Movements
         {
             //Trouver un moyen de pouvoir changer ses compétences
             //BaseAttack = u
-            if (Input.GetButtonUp("BaseAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                Debug.Log("u");
-                action.SimpleAttack(5f, 50);
+                playAction.SimpleAttack(5f, 50);
             }
             //BaseAttack2 = i
-            if (Input.GetButtonUp("SecondAttack") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                Debug.Log("i");
-                action.HealAround(2f, 5);
+                playAction.HealAround(2f, 5);
             }
             //Special = o
-            if (Input.GetButtonUp("Special") && action.mainCamera.targetPosition == gameObject)
+            if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
-                Debug.Log("o");
-                StartCoroutine(action.Grapple(5f, 5));
+                StartCoroutine(playAction.Grapple(5f, 5));
+            }
+        }
+
+        public void NpcHealerBehavior(int test)
+        {
+            transform.LookAt(npcAction.target.transform.position);
+            switch (test)
+            {
+                case 0:
+                    playAction.SimpleAttack(5f, 5);
+                    break;
+                case 1:
+                    playAction.Heal(5f, 50);
+                    break;
+                case 2:
+                    playAction.HealAround(3f, 15);
+                    break;
+            }
+        }
+
+        public void NpcTankBehavior(int test)
+        {
+            transform.LookAt(npcAction.target.transform.position);
+            switch (test)
+            {
+                case 0:
+                    Debug.Log(test);
+                    playAction.SimpleAttack(5f, 30);
+                    break;
+                case 1:
+                    Debug.Log(test);
+                    playAction.Aggro(10f, 0);
+                    break;
+                case 2:
+                    Debug.Log(test);
+                    StartCoroutine(playAction.Grab(5f, 5));
+                    break;
+            }
+        }
+
+        public void NpcDpsBehavior(int test)
+        {
+            transform.LookAt(npcAction.target.transform.position);
+            switch (test)
+            {
+                case 0:
+                    playAction.SimpleAttack(5f, 50);
+                    break;
+                case 1:
+                    playAction.DealAOEDamages(5f, 25);
+                    break;
+                case 2:
+                    playAction.PoisonAttack(5f, 3);
+                    break;
+            }
+        }
+
+        public void NpcTroubadourBehavior(int test)
+        {
+            transform.LookAt(npcAction.target.transform.position);
+            switch (test)
+            {
+                case 0:
+                    playAction.SimpleAttack(5f, 50);
+                    break;
+                case 1:
+                    playAction.HealAround(2f, 5);
+                    break;
+                case 2:
+                    StartCoroutine(playAction.Grapple(5f, 5));
+                    break;
             }
         }
 

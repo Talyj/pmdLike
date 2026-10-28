@@ -73,6 +73,7 @@ public class TurnManager : MonoBehaviour
                 break;
             case ((int)turn.enemyTurn):
                 CheckAllActed(enemies);
+                //AddTurn();
                 break;
         }
         if (modeDeCombat == 1)
