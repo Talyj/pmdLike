@@ -119,7 +119,7 @@ public class PlayerAction : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, range))
         {
-            if (hit.collider.tag.ToLower() == "characters" || hit.collider.tag.ToLower() == "player")
+            if (/*hit.collider.tag.ToLower() == "characters" ||*/ hit.collider.tag.ToLower() == "player")
             {
                 hit.collider.GetComponent<Statistiques>().TakeDamage(-heal);
             }
@@ -134,7 +134,7 @@ public class PlayerAction : MonoBehaviour
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
         foreach (var hit in hitColliders)
         {
-            if (hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
+            if (hit.tag.ToLower() == "player" /*|| hit.tag.ToLower() == "characters"*/)
             {
                 //-heal because flemme de faire deux fonctions
                 hit.GetComponent<Statistiques>().TakeDamage(-heal);
@@ -187,9 +187,9 @@ public class PlayerAction : MonoBehaviour
             Collider[] hitColliders = Physics.OverlapSphere(hit.transform.position, 3f);
             foreach (var col in hitColliders)
             {
-                if (col.tag.ToLower() == "enemy" || col.tag.ToLower() == "characters" || col.tag.ToLower() == "player")
+                if (col.tag.ToLower() == "enemy" /*|| col.tag.ToLower() == "characters"*/ || col.tag.ToLower() == "player")
                 {
-                    if (!turn.GetComponent<DamageOverTime>().listCharacterToDebuff.ContainsKey(gameObject))
+                    if (!turn.GetComponent<DamageOverTime>().listCharacterToDebuff.ContainsKey(col.gameObject))
                     {
                         turn.GetComponent<DamageOverTime>().listCharacterToDebuff.Add(col.gameObject, duration);
                     }

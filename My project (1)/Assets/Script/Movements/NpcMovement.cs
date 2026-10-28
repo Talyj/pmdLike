@@ -56,7 +56,7 @@ public class NpcMovement : MonoBehaviour
             rdmTargetPos = GetRandomTile(GetAroundTile());
             posGround = transform.position;
             possibleTargets.Add("player");
-            possibleTargets.Add("characters");
+            //possibleTargets.Add("characters");
 
         }
         job.GetComponent<Job>();
@@ -98,6 +98,7 @@ public class NpcMovement : MonoBehaviour
             if(Vector3.Distance(action.target.transform.position, transform.position) <= action.atqRange && !isMoving)
             {
                 action.Attack();
+                //job.NpcBehaviorForJob();
             }
             else
             {

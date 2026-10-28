@@ -10,7 +10,16 @@ public class HealthBar : MonoBehaviour
 
     private void Awake()
     {
-        mainCamera = FindAnyObjectByType<Camera>();
+        
+        var cameras = FindObjectsByType<Camera>();
+        foreach(var cam in cameras)
+        {
+            if(cam.name.ToLower().Contains("main"))
+            {
+                mainCamera = cam;
+                break;
+            }
+        }
     }
 
     private void Start()

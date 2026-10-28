@@ -72,12 +72,19 @@ public class Statistiques : MonoBehaviour
         switch (gameObject.tag)
         {
             case "Player":
+                var companion = GetComponent<NpcController>();
+                if(companion != null)
+                {
+                    dot.listCharacterToDebuff.Remove(gameObject);
+                    turn.companions.Remove(gameObject);
+                    break;
+                }
                 isDead = true;
                 return;
-            case "characters":
-                dot.listCharacterToDebuff.Remove(gameObject);
-                turn.companions.Remove(gameObject);
-                break;
+            //case "characters":
+            //    dot.listCharacterToDebuff.Remove(gameObject);
+            //    turn.companions.Remove(gameObject);
+            //    break;
             case "enemy":
                 //before death check if the gameobject is still referenced
                 //turn.TurnChange();

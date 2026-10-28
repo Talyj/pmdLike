@@ -28,20 +28,24 @@ public class DataToSave : MonoBehaviour
     {
         //CoMpanions to save
         List<Companion> companionsToSave = new List<Companion>();
-        var companions = GameObject.FindGameObjectsWithTag("characters");
+        var companions = GameObject.FindGameObjectsWithTag("Player");
 
         foreach(var com in companions)
         {
-            var comStats = com.GetComponent<Statistiques>();
-            var comToSave = new Companion()
+            var companion = com.GetComponent<NpcController>();
+            if(companion != null)
             {
-                job = com.GetComponent<Job>().job,
-                healthMax = comStats.healthMax,
-                manaMax = comStats.manaMax,
-                atq = comStats.atq,
-                def = comStats.def,
-            };
-            companionsToSave.Add(comToSave);
+                var comStats = com.GetComponent<Statistiques>();
+                var comToSave = new Companion()
+                {
+                    job = com.GetComponent<Job>().job,
+                    healthMax = comStats.healthMax,
+                    manaMax = comStats.manaMax,
+                    atq = comStats.atq,
+                    def = comStats.def,
+                };
+                companionsToSave.Add(comToSave);
+            }
         }
 
         //Save the player

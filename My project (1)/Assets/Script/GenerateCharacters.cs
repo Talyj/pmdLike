@@ -199,7 +199,7 @@ public class GenerateCharacters : MonoBehaviour
 
             GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], rdmPos, Quaternion.identity);
             //GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], new Vector3(1, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
-            companion.tag = "characters";
+            companion.tag = "Player";
             companion.GetComponent<NpcController>().isCompanion = true;
             companion.GetComponent<NpcMovement>().targetStats = mainPlayer.GetComponent<Statistiques>();
             companion.GetComponent<NpcController>().turn = turnManager;

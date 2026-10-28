@@ -23,7 +23,6 @@ public class DamageOverTime : MonoBehaviour
 
                 pla.Key.GetComponent<Statistiques>().TakeDamage((float)(pla.Key.GetComponent<Statistiques>().healthMax * 0.1));
                 listToModify.Add(pla.Key);
-                Debug.Log("hit");
             }
         }
         foreach(var mod in listToModify)

@@ -25,7 +25,7 @@ namespace Assets.Script.Actions
                 List<Statistiques> targets = new List<Statistiques>();
                 foreach (var hit in hitColliders)
                 {
-                    if (hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
+                    if (hit.tag.ToLower() == "player" /*|| hit.tag.ToLower() == "characters"*/)
                     {
                         move.hasMoved = true;
                         //Attack....
@@ -51,7 +51,6 @@ namespace Assets.Script.Actions
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectRange);
             foreach(var hit in hitColliders)
             {
-                //if (hit.tag.ToLower() == "player" || hit.tag.ToLower() == "characters")
                 if (targets.Contains(hit.tag.ToLower()))
                 {
                     if (target == null)
@@ -93,7 +92,7 @@ namespace Assets.Script.Actions
 
         private void OnDrawGizmos()
         {
-            if (gameObject.tag.ToLower() == "characters")
+            if (gameObject.tag.ToLower() == "player")
             {
                 Gizmos.color = Color.yellow;
                 //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
