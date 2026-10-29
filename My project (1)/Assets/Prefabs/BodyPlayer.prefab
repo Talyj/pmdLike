@@ -409,7 +409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
   skillsList: []
-  job: 0
+  job: 1
 --- !u!1 &7826879906707756118
 GameObject:
   m_ObjectHideFlags: 0
