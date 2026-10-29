@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class NpcController : MonoBehaviour
 {
-    [SerializeField] private NpcMovement npcMove;
+    //[SerializeField] private NpcMovement npcMove;
     [SerializeField] private Statistiques statistiques;
     [SerializeField] private NpcAction action;
-    [SerializeField] private PlayerMovement playerMoveMe;
+    [SerializeField] private MovementGlobal Movement;
     [SerializeField] private PlayerAction playerActionMe;
+    [HideInInspector] public PlayerController mainPlayer;
 
     [HideInInspector] public Job job;
     [HideInInspector]public TurnManager turn;
@@ -27,6 +28,8 @@ public class NpcController : MonoBehaviour
     {
         myTurn = GetComponent<Statistiques>().myTurn;
         job = GetComponent<Job>();
+        mainPlayer = FindAnyObjectByType<PlayerController>();
+
         //turn = FindAnyObjectByType<TurnManager>();
     }
 
@@ -37,9 +40,10 @@ public class NpcController : MonoBehaviour
         {
             if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Classique))
             {
-                npcMove.CompanionBehavior();
+                //npcMove.CompanionBehavior();
                 //ajouter la possibilité d'attaquer si à coté d'un ennemy
                 //If there is an enemy around me i start trying to kill it instead of just following the player
+                CompanionBehavior();
 
             }
             else if(turn.modeDeCombat == ((int)TurnManager.ModeDeCombat.Tactique) && turn.companionTurn == orderId)
@@ -47,18 +51,61 @@ public class NpcController : MonoBehaviour
                 if (!isControlled)
                 {
                     isControlled = true;
-                    playerMoveMe.target = transform.position;
+                    Movement.target = transform.position;
                 }
-                playerMoveMe.Movement();
+                Movement.MovementPlayer();
                 job.BehaviorForJob();
             }
         }
         else if(!isCompanion && turn.currentTurn == myTurn)
         {
-            npcMove.EnemiesMove();
+            //npcMove.EnemiesMove();
+            EnemyBehavior();
             //turn.TurnChange();
         }
     }
+
+    private void CompanionBehavior()
+    {
+        if (/*action.hasTarget && */action.target != null)
+        {
+            if (!Movement.isMoving && Vector3.Distance(action.target.transform.position, transform.position) <= /*action.atqRange*/5f)
+            {
+                //action.Attack();
+                //hAve to decide which move to pick
+                job.NpcBehaviorForJob();
+            }
+            else
+            {
+                Movement.Move(action.target.gameObject);
+            }
+        }
+        else
+        {
+            Movement.Move(mainPlayer.gameObject);
+        }
+    }
+
+    private void EnemyBehavior()
+    {
+        if (/*action.hasTarget && */action.target != null)
+        {
+            if (Vector3.Distance(action.target.transform.position, transform.position) <= action.atqRange && !Movement.isMoving)
+            {
+                action.Attack();
+                //job.NpcBehaviorForJob();
+            }
+            else
+            {
+                Movement.Move(action.target.gameObject);
+            }
+        }
+        else
+        {
+            Movement.Wait();
+        }
+    }
+
 
     //private void OnDrawGizmos()
     //{

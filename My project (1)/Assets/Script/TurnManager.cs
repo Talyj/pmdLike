@@ -52,8 +52,9 @@ public class TurnManager : MonoBehaviour
         charGen = GetComponent<GenerateCharacters>();
     }
 
-    public void TurnChange()
+    public void TurnChange(GameObject curGameObject)
     {
+        curGameObject.GetComponent<MovementGlobal>().lastPosition = curGameObject.transform.position;
         switch (currentTurn)
         {
             case ((int)turn.playerTurn):
@@ -86,7 +87,8 @@ public class TurnManager : MonoBehaviour
     {
         foreach(var npc in toCheck)
         {
-            if (!npc.GetComponent<NpcMovement>().hasMoved) return 0;
+            if (!npc.GetComponent<MovementGlobal>().hasMoved) return 0;
+            //if (!npc.GetComponent<NpcMovement>().hasMoved) return 0;
         }
 
         if(enemies.Count <= 0)
@@ -125,7 +127,8 @@ public class TurnManager : MonoBehaviour
     {
         foreach(var npc in toReset)
         {
-            npc.GetComponent<NpcMovement>().hasMoved = false;
+            npc.GetComponent<MovementGlobal>().hasMoved = false;
+            //npc.GetComponent<NpcMovement>().hasMoved = false;
         }
     }
 }

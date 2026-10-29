@@ -12,7 +12,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class PlayerAction : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement move;
+    [SerializeField] private MovementGlobal move;
     [SerializeField] private Statistiques stats;
     //[HideInInspector] public PlayerController playerCont;
     [HideInInspector] public TurnManager turn;
@@ -31,7 +31,7 @@ public class PlayerAction : MonoBehaviour
         turn = FindAnyObjectByType<TurnManager>();
         npc = GetComponent<NpcController>();
         mainCamera = FindAnyObjectByType<PlayerFollow>();
-        move = GetComponent<PlayerMovement>();
+        move = GetComponent<MovementGlobal>();
         stats = GetComponent<Statistiques>();
     }
 
@@ -62,7 +62,7 @@ public class PlayerAction : MonoBehaviour
         }
         ChangeNpcState();
         isActing = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public IEnumerator Grab(float range ,int dmg)
@@ -77,14 +77,14 @@ public class PlayerAction : MonoBehaviour
                 var grabTo = new Vector3(transform.position.x + direction.x, transform.position.y + direction.y, transform.position.z + direction.z);
                 while (target.transform.position != grabTo)
                 {
-                    target.GetComponent<PlayerMovement>().MoveTo(grabTo);
+                    target.GetComponent<MovementGlobal>().MoveTo(grabTo);
                     yield return new WaitForEndOfFrame();
                 }
             }
         }
         ChangeNpcState();
         isActing = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public IEnumerator Grapple(float range, int dmg)
@@ -111,7 +111,7 @@ public class PlayerAction : MonoBehaviour
         isActing = false;
         move.target = transform.position;
         move.isMoving = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public void Heal(float range, int heal)
@@ -126,7 +126,7 @@ public class PlayerAction : MonoBehaviour
         }
         ChangeNpcState();
         isActing = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public void HealAround(float range, int heal)
@@ -142,7 +142,7 @@ public class PlayerAction : MonoBehaviour
         }
         ChangeNpcState();
         isActing = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public void DealAOEDamages(float range, int dmg)
@@ -161,7 +161,7 @@ public class PlayerAction : MonoBehaviour
         }
         ChangeNpcState();
         isActing = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public void Aggro(float range, int dmg)
@@ -176,7 +176,7 @@ public class PlayerAction : MonoBehaviour
         }
         ChangeNpcState();
         isActing = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public void PoisonAttack(float range, int duration)
@@ -198,7 +198,7 @@ public class PlayerAction : MonoBehaviour
         }
         ChangeNpcState();
         isActing = false;
-        turn.TurnChange();
+        turn.TurnChange(gameObject);
     }
 
     public bool ChangeNpcState()
@@ -207,7 +207,7 @@ public class PlayerAction : MonoBehaviour
         if (npc != null)
         {
             turn.companionTurn++;
-            GetComponent<NpcMovement>().hasMoved = true;
+            GetComponent<MovementGlobal>().hasMoved = true;
         }
         return false;
     }

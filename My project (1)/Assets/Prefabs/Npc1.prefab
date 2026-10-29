@@ -404,7 +404,6 @@ GameObject:
   - component: {fileID: 4788737605132109508}
   - component: {fileID: 656943900296820624}
   - component: {fileID: 5479067551072629707}
-  - component: {fileID: 7818774945478956500}
   - component: {fileID: 2522545263159381453}
   - component: {fileID: 2766672414295036171}
   - component: {fileID: 6002184441026313907}
@@ -525,39 +524,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ff2f009386b0e8479439759b52c993d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NpcController
-  npcMove: {fileID: 7818774945478956500}
   statistiques: {fileID: 2766672414295036171}
   action: {fileID: 2522545263159381453}
-  playerMoveMe: {fileID: 3772329987888953450}
+  Movement: {fileID: 3772329987888953450}
   playerActionMe: {fileID: 6002184441026313907}
+  mainPlayer: {fileID: 0}
   job: {fileID: 0}
   turn: {fileID: 0}
   isCompanion: 1
   isControlled: 0
   orderId: 0
   canAct: 0
---- !u!114 &7818774945478956500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8692312961584957385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dae870847c32d24d9b3919648828c1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NpcMovement
-  turn: {fileID: 0}
-  playerSpeed: 5
-  hasMoved: 0
-  targetStats: {fileID: 0}
-  targetPos: {x: 0, y: 0, z: 0}
-  rdmTargetPos: {x: 0, y: 0, z: 0}
-  posGround: {x: 0, y: 0, z: 0}
-  isMoving: 0
-  action: {fileID: 2522545263159381453}
-  job: {fileID: 4172164394100933365}
 --- !u!114 &2522545263159381453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,9 +547,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8380f32deb8584c49a4d9760e849a75c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Actions.NpcAction
-  move: {fileID: 7818774945478956500}
+  moveGlo: {fileID: 3772329987888953450}
   npcController: {fileID: 5479067551072629707}
   target: {fileID: 0}
+  detectRange: 5
   atqRange: 2
   hasTarget: 0
 --- !u!114 &2766672414295036171
@@ -623,13 +601,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8692312961584957385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95dd71c44a8c3d14ea8ab6fa29cbb799, type: 3}
+  m_Script: {fileID: 11500000, guid: c3fba7e3dc41ec445b78218b2a2d1cc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  playerSpeed: 3
+  playerSpeed: 5
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   isMoving: 0
   target: {x: 0, y: 0, z: 0}
+  hasMoved: 0
+  action: {fileID: 2522545263159381453}
 --- !u!114 &4172164394100933365
 MonoBehaviour:
   m_ObjectHideFlags: 0

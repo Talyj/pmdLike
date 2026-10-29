@@ -28,6 +28,12 @@ public class TileGeneration : MonoBehaviour
     [SerializeField] float mapScale;
 
     private GenerateTerrain obj;
+
+
+    public Ground nodePrefab;
+    public List<Ground> nodeList;
+    public MovementGlobal npcController;
+    private bool canDrawGizmos;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -111,5 +117,15 @@ public class TileGeneration : MonoBehaviour
             }
         }
         return terrainTypes[terrainTypes.Length - 1];
+    }
+
+    void CreateNodes()
+    {
+
+    }
+
+    void CreateConnections()
+    {
+        
     }
 }

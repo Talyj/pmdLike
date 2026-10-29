@@ -45,7 +45,7 @@ public class GenerateCharacters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BaseSpawnForDungeons(30);
+        BaseSpawnForDungeons(20);
     }
 
     public void BaseSpawnForDungeons(int numOfEnemies)
@@ -97,10 +97,10 @@ public class GenerateCharacters : MonoBehaviour
         rdmPos = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
 
         GameObject enemy = Instantiate(allNpcAvailable[npcName], rdmPos, Quaternion.identity);
-        //GameObject enemy = Instantiate(npc, new Vector3(1, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(0, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
-        enemy.GetComponent<NpcMovement>().turn = turnManager;
+        //enemy.GetComponent<NpcMovement>().turn = turnManager;
         enemy.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.enemyTurn);
         enemy.tag = "enemy";
         turnManager.enemies.Add(enemy);
@@ -175,15 +175,15 @@ public class GenerateCharacters : MonoBehaviour
         var centerZ = totZ / cornerGrounds.Count();
         mapCamera.transform.position = new Vector3(centerX, 88, centerZ);
 
-        SpawnCompanions(allCompanions, play.transform.position);
+        SpawnCompanions(allCompanions, play);
 
     }
 
-    public void SpawnCompanions(List<string> allCompanions, Vector3 playerPos)
+    public void SpawnCompanions(List<string> allCompanions, GameObject player)
     {
         var rdmChoice = 0;
         Vector3 rdmPos;
-        var tileAround = GetTilesAround(playerPos);
+        var tileAround = GetTilesAround(player.transform.position);
 
         //Add the spawn of the companion around the player
         for (int compOrder = 0; compOrder < allCompanions.Count; compOrder++)
@@ -201,9 +201,9 @@ public class GenerateCharacters : MonoBehaviour
             //GameObject companion = Instantiate(allNpcAvailable[allCompanions[compOrder]], new Vector3(1, turnManager.HeightMovementForEvryone, 0), Quaternion.identity);
             companion.tag = "Player";
             companion.GetComponent<NpcController>().isCompanion = true;
-            companion.GetComponent<NpcMovement>().targetStats = mainPlayer.GetComponent<Statistiques>();
+            //companion.GetComponent<NpcMovement>().targetStats = mainPlayer.GetComponent<Statistiques>();
             companion.GetComponent<NpcController>().turn = turnManager;
-            companion.GetComponent<NpcMovement>().turn = turnManager;
+            //companion.GetComponent<NpcMovement>().turn = turnManager;
             companion.GetComponent<Statistiques>().myTurn = ((int)TurnManager.turn.companionTurn);
             //companion.GetComponent<Statistiques>().healthCurrent = 50;
             companion.GetComponent<NpcController>().orderId = compOrder;

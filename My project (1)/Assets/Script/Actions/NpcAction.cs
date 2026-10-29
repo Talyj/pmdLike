@@ -9,17 +9,18 @@ namespace Assets.Script.Actions
 {
     public class NpcAction : MonoBehaviour
     {
-        [SerializeField] private NpcMovement move;
+        //[SerializeField] private NpcMovement move;
+        [SerializeField] private MovementGlobal moveGlo;
         [SerializeField] private NpcController npcController;
         [HideInInspector]public Statistiques target;
-        private float detectRange = 5f;
-        public float atqRange = 2f;
+        public float detectRange = 10f;
+        public float atqRange = 5f;
         [HideInInspector] public bool hasTarget = false;
 
 
         public void Attack()
         {
-            if (!move.hasMoved)
+            if (!moveGlo.hasMoved)
             {
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, atqRange);
                 List<Statistiques> targets = new List<Statistiques>();
@@ -27,7 +28,7 @@ namespace Assets.Script.Actions
                 {
                     if (hit.tag.ToLower() == "player" /*|| hit.tag.ToLower() == "characters"*/)
                     {
-                        move.hasMoved = true;
+                        moveGlo.hasMoved = true;
                         //Attack....
                         transform.LookAt(target.transform.position);
                         targets.Add(hit.GetComponent<Statistiques>());
@@ -37,21 +38,29 @@ namespace Assets.Script.Actions
                 }
                 if (targets.Count > 0)
                 {
+                    moveGlo.hasMoved = true;
                     foreach (var tar in targets)
                     {
                         tar.GetComponent<Statistiques>().TakeDamage(10);
                     }
-                    npcController.turn.TurnChange();
+                    npcController.turn.TurnChange(gameObject);
                 }
             }
         }
 
-        public bool CheckForTargets(List<string> targets)
+        public bool CheckForTargets()
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectRange);
+            var versus = "player";
+            if (npcController.isCompanion)
+            {
+                versus = "enemy";
+            }
             foreach(var hit in hitColliders)
             {
-                if (targets.Contains(hit.tag.ToLower()))
+                //if (targets.Contains(hit.tag.ToLower()))
+                if(hit.tag.ToLower() == versus)
+                //if (hit.tag.ToLower()!= "ground" && tag.ToLower() != hit.tag.ToLower())
                 {
                     if (target == null)
                     {
@@ -59,7 +68,7 @@ namespace Assets.Script.Actions
                     }
                     //Debug.Log("FOUUUUUUUUND");
                     hasTarget = true;
-                    move.posGround = move.GetClosestTileToTarget(move.GetAroundTile(), target.transform.position, target).transform.position;
+                    //move.posGround = move.GetClosestTileToTarget(move.GetAroundTile(), target.transform.position, target).transform.position;
                     return true;
                 }
             }

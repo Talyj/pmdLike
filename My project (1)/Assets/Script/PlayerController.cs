@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] public PlayerMovement playerMove;
+    [SerializeField] public MovementGlobal playerMove;
     [SerializeField] public Statistiques damageable;
     [SerializeField] public PlayerAction action;
     [HideInInspector] public Job job;
@@ -35,7 +35,8 @@ public class PlayerController : MonoBehaviour
                 turn.ChangeMode();
             }
 
-            playerMove.Movement();
+            //playerMove.Movement();
+            playerMove.MovementPlayer();
             job.BehaviorForJob();
 
             if (Input.GetKeyUp(KeyCode.L))
