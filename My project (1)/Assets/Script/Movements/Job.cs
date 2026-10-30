@@ -223,6 +223,7 @@ namespace Assets.Script.Movements
                 case 1:
                     //check if i can do something similar for the npc
                     Debug.Log("aggro");
+                    playAction.SimpleAttack(stats.detectRange, stats.atq);
                     //playAction.Aggro(10f, 0);
                     break;
                 case 2:
