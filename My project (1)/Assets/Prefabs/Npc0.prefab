@@ -801,6 +801,7 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   isMoving: 0
   target: {x: 0, y: 0, z: 0}
+  lastPosition: {x: 0, y: 0, z: 0}
   hasMoved: 0
   action: {fileID: 6017293004085227596}
 --- !u!114 &6346452584074994380
@@ -816,4 +817,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
   skillsList: []
-  job: 0
+  job: 2

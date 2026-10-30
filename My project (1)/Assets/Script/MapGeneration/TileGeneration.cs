@@ -17,6 +17,7 @@ public class TerrainType
 public class TileGeneration : MonoBehaviour
 {
     [SerializeField] private Ground sol;
+    [SerializeField] private GameObject obstacle;
 
     [SerializeField] private TerrainType[] terrainTypes;
     [SerializeField] public float[,] heightMap;
@@ -101,7 +102,12 @@ public class TileGeneration : MonoBehaviour
             Ground ground = Instantiate(sol, newVEctor, Quaternion.identity);
             obj.grounds.Add(ground);
             //ajouter une seconde
-        }    
+        }
+        else
+        {
+            var newVEctor = new Vector3((this.transform.position.x + xIndex * -1) + 5, 0, (this.transform.position.z + zIndex * -1) + 5);
+            GameObject obs = Instantiate(obstacle, newVEctor, Quaternion.identity);
+        }
         //Sinon générer des décors
     }
 
@@ -117,15 +123,5 @@ public class TileGeneration : MonoBehaviour
             }
         }
         return terrainTypes[terrainTypes.Length - 1];
-    }
-
-    void CreateNodes()
-    {
-
-    }
-
-    void CreateConnections()
-    {
-        
     }
 }

@@ -110,6 +110,19 @@ public class MovementGlobal : MonoBehaviour
         //var direction = (player.transform.position - transform.position).normalized;
         //var goTo = new Vector3(transform.position.x + direction.x, transform.position.y + direction.y, transform.position.z + direction.z);
 
+        //if there is something on their way, the movement stops
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.forward, out hit, 1))
+        {
+            action.CheckForTargets();
+            lastPosition = transform.position;
+            hasMoved = true;
+            isMoving = false;
+            turn.companionTurn++;
+            turn.TurnChange(gameObject);
+            return;
+        }
+
         if (Vector3.Distance(transform.position, new Vector3( positions.x, turn.HeightMovementForEvryone, positions.z)) < 0.001f ||
             Vector3.Distance(transform.position, lastPosition) > maxMovement)
         {
@@ -122,6 +135,7 @@ public class MovementGlobal : MonoBehaviour
         }
         else
         {
+            transform.LookAt(new Vector3(positions.x, turn.HeightMovementForEvryone, positions.z));
             MoveTo(positions);
         }
     }
@@ -209,97 +223,97 @@ public class MovementGlobal : MonoBehaviour
         return res;
     }
 
-    //public Vector3 Diagonals(Vector3 move)
-    //{
-    //    Vector3 res = move;
-    //    if(move.x != 0 && move.z != 0)
-    //    {
-    //        res = new Vector3(move.x / Math.Abs(move.x), 0, move.z / Math.Abs(move.z));
-    //    }
-    //    return res;
-    //}
+    public Vector3 Diagonals(Vector3 move)
+    {
+        Vector3 res = move;
+        if (move.x != 0 && move.z != 0)
+        {
+            res = new Vector3(move.x / Math.Abs(move.x), 0, move.z / Math.Abs(move.z));
+        }
+        return res;
+    }
 
     public void MoveTo(Vector3 targetPos)
     {
         isMoving = true;
         var direction = new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z) - transform.position;
-        transform.rotation = Quaternion.LookRotation(-direction);
+        //transform.rotation = Quaternion.LookRotation(targetPos);
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z), playerSpeed * Time.deltaTime * 2);
     }
 
     public void Movement()
     {
-        ////If is moving cant input something else
-        //if (!isMoving)
-        //{
-        //    List<Vector3> possibleTargets = GetMovePointAround();
+        //If is moving cant input something else
+        if (!isMoving)
+        {
+            List<Vector3> possibleTargets = GetMovePointsAroundTarget(gameObject);
 
-        //    // Read input
-        //    Vector2 input = moveAction.action.ReadValue<Vector2>();
-        //    Vector3 move = new Vector3(input.x, 0, input.y);
-        //    move = Vector3.ClampMagnitude(move, 1f);
-        //    move = Diagonals(move);
+            // Read input
+            Vector2 input = moveAction.action.ReadValue<Vector2>();
+            Vector3 move = new Vector3(input.x, 0, input.y);
+            move = Vector3.ClampMagnitude(move, 1f);
+            move = Diagonals(move);
 
-        //    //Fire1 = left shift
-        //    if (Input.GetButton("Look"))
-        //    {
-        //        //Maybe have to change that
-        //        if(GetTargetAround().Count <= 0)
-        //        {
-        //            transform.LookAt(transform.position + move);
-        //        }
-        //        else
-        //        {
+            //Fire1 = left shift
+            if (Input.GetButton("Look"))
+            {
+                //Maybe have to change that
+                if (GetTargetAround().Count <= 0)
+                {
+                    transform.LookAt(transform.position + move);
+                }
+                else
+                {
 
-        //            targetAround = GetTargetAround();
-        //            var rdm = UnityEngine.Random.Range(0, targetAround.Count);
+                    targetAround = GetTargetAround();
+                    var rdm = UnityEngine.Random.Range(0, targetAround.Count);
 
-        //            transform.LookAt(targetAround[rdm].transform.position);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        foreach (var pos in possibleTargets)
-        //        {
-        //            if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
-        //            {
-        //                target = new Vector3(pos.x, turn.HeightMovementForEvryone, pos.z);
-        //                isMoving = true;
-        //                break;
-        //            }
-        //        }
+                    transform.LookAt(targetAround[rdm].transform.position);
+                }
+            }
+            else
+            {
+                foreach (var pos in possibleTargets)
+                {
+                    if (transform.position.x + move.x == pos.x && transform.position.z + move.z == pos.z)
+                    {
+                        target = new Vector3(pos.x, turn.HeightMovementForEvryone, pos.z);
+                        isMoving = true;
+                        break;
+                    }
+                }
 
-        //        if (move != Vector3.zero)
-        //            transform.forward = move;
-        //    }
+                if (move != Vector3.zero)
+                    transform.forward = move;
+            }
 
-        //    //THis works with the controller
-        //    //var test = Input.GetAxis("Horizontal");
-        //    //var test2 = Input.GetAxis("Vertical");
-        //    //Vector2 input = new Vector2(test, test2);
-        //}
-        //float step = playerSpeed * Time.deltaTime;
+            //THis works with the controller
+            //var test = Input.GetAxis("Horizontal");
+            //var test2 = Input.GetAxis("Vertical");
+            //Vector2 input = new Vector2(test, test2);
+        }
+        float step = playerSpeed * Time.deltaTime;
 
-        //if(transform.position != target)
-        //{
-        //    transform.position = Vector3.MoveTowards(transform.position, target, step);
-        //    if(Vector3.Distance(transform.position, target) < 0.001f)
-        //    {
-        //        //partie companion
-        //        var npc = GetComponent<NpcMovement>();
-        //        if(npc != null)
-        //        {
-        //            turn.companionTurn++;
-        //            npc.hasMoved = true;
-        //            GetComponent<NpcController>().isControlled = false;
-        //        }
+        if (transform.position != target)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, step);
+            if (Vector3.Distance(transform.position, target) < 0.001f)
+            {
+                //partie companion
+                var npc = GetComponent<MovementGlobal>();
+                if (npc != null)
+                {
+                    turn.companionTurn++;
+                    npc.hasMoved = true;
+                    GetComponent<NpcController>().isControlled = false;
+                }
 
-        //        //tous
-        //        transform.position = target;
-        //        isMoving = false;
-        //        turn.TurnChange();
-        //    }
-        //}
+                //tous
+                transform.position = target;
+                isMoving = false;
+                turn.TurnChange(gameObject);
+            }
+        }
     }
 
 }

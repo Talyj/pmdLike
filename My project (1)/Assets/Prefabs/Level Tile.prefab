@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileGeneration
   sol: {fileID: 5402438516157415846, guid: 8ed35cc80f708ae489afc97ede45d0e4, type: 3}
+  obstacle: {fileID: 7399274345087713894, guid: f851172cd82dc26418b5987fec69ea8c, type: 3}
   terrainTypes:
   - name: void
     height: 0
@@ -143,6 +144,9 @@ MonoBehaviour:
   meshFilter: {fileID: 2925461239274273236}
   meshCollider: {fileID: 3412402655022335300}
   mapScale: 6
+  nodePrefab: {fileID: 0}
+  nodeList: []
+  npcController: {fileID: 0}
 --- !u!114 &7990429973746308036
 MonoBehaviour:
   m_ObjectHideFlags: 0

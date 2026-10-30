@@ -8,6 +8,7 @@ TagManager:
   - enemy
   - ground
   - Goal
+  - obstacle
   layers:
   - Default
   - TransparentFX
