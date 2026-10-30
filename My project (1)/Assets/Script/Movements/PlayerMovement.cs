@@ -136,7 +136,7 @@ public class PlayerMovement : MonoBehaviour
         {
             var direction = new Vector3(pos.transform.position.x, transform.position.y, pos.transform.position.z) - transform.position;
             //CAnt go on a tile with an enemy in
-            if (Physics.Raycast(transform.position, direction, out hit, 1.5f))
+            if (Physics.Raycast(transform.position, direction, out hit, 1f))
             {
                 //If ici contact avec quelque chose
 
@@ -170,6 +170,6 @@ public class PlayerMovement : MonoBehaviour
         isMoving = true;
         var direction = new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z) - transform.position;
         transform.rotation = Quaternion.LookRotation(-direction);
-        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z), playerSpeed * Time.deltaTime * 2);
+        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, turn.HeightMovementForEvryone, targetPos.z), playerSpeed * Time.deltaTime * 5);
     }
 }

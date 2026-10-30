@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static TurnManager;
@@ -31,11 +32,14 @@ public class GenerateCharacters : MonoBehaviour
 
     [SerializeField] public GameObject goalToSpawn;
 
+    private DataToSave data;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         grounds = GetComponent<GenerateTerrain>().grounds;
         cornerGrounds = GetComponent<GenerateTerrain>().cornerGrounds;
+        data = GetComponent<DataToSave>();
 
         StartCoroutine(SpawnPlayer());        
         //SpawnCompanions(allCompanions);
@@ -45,7 +49,7 @@ public class GenerateCharacters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        BaseSpawnForDungeons(30);
+        BaseSpawnForDungeons(1);
     }
 
     public void BaseSpawnForDungeons(int numOfEnemies)
@@ -97,7 +101,7 @@ public class GenerateCharacters : MonoBehaviour
         rdmPos = new Vector3(grounds[rdmChoice].transform.position.x, turnManager.HeightMovementForEvryone, grounds[rdmChoice].transform.position.z);
 
         GameObject enemy = Instantiate(allNpcAvailable[npcName], rdmPos, Quaternion.identity);
-        //GameObject enemy = Instantiate(npc, new Vector3(1, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
+        //GameObject enemy = Instantiate(npc, new Vector3(0, turnManager.HeightMovementForEvryone, 4), Quaternion.identity);
         enemy.GetComponent<NpcController>().isCompanion = false;
         enemy.GetComponent<NpcController>().turn = turnManager;
         enemy.GetComponent<NpcMovement>().turn = turnManager;
@@ -105,8 +109,26 @@ public class GenerateCharacters : MonoBehaviour
         enemy.tag = "enemy";
         turnManager.enemies.Add(enemy);
         numberOfEnemy++;
+
+        var test = data.ReadDefaultSave();
+        foreach (var res in test.jobs)
+        {
+            var stats = enemy.GetComponent<Statistiques>();
+            if (res.jobName == enemy.GetComponent<Job>().job)
+            {
+                stats.atq = res.atq;
+                stats.def = res.def;
+                stats.healthMax = res.healthMax;
+                stats.healthCurrent = res.healthMax;
+                stats.manaMax = res.manaMax;
+                stats.manaCurrent = res.manaMax;
+                stats.atqRange = res.atqRange;
+                stats.detectRange = res.detectRange;
+                break;
+            }
+        }
         //This should be the only parameters that will change when i have models
-        if(enemy.GetComponent<MeshRenderer>() != null)
+        if (enemy.GetComponent<MeshRenderer>() != null)
         {
             enemy.GetComponent<MeshRenderer>().material = materialMechant;
         }
@@ -175,7 +197,7 @@ public class GenerateCharacters : MonoBehaviour
         var centerZ = totZ / cornerGrounds.Count();
         mapCamera.transform.position = new Vector3(centerX, 88, centerZ);
 
-        SpawnCompanions(allCompanions, play.transform.position);
+        //SpawnCompanions(allCompanions, play.transform.position);
 
     }
 

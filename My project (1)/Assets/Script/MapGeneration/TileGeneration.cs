@@ -17,6 +17,7 @@ public class TerrainType
 public class TileGeneration : MonoBehaviour
 {
     [SerializeField] private Ground sol;
+    [SerializeField] private GameObject obstacle;
 
     [SerializeField] private TerrainType[] terrainTypes;
     [SerializeField] public float[,] heightMap;
@@ -87,15 +88,27 @@ public class TileGeneration : MonoBehaviour
         return tileTexture;
     }
 
+    //regarder si je peux créer un objet grid genre (Gameobject[,])
     private void GenerateTiles(TerrainType terrainType, int xIndex, int zIndex, int tileDepthZ, int tileWidthX)
     {
+        //SOmetimes both the objects gets created, check why
+        var newVEctor = new Vector3((this.transform.position.x + xIndex * -1) + 5, 0, (this.transform.position.z + zIndex * -1) + 5);
         if (terrainType.name == "ground")
         {
-            var newVEctor = new Vector3((this.transform.position.x + xIndex * -1) + 5 , 0, (this.transform.position.z + zIndex * -1) + 5);
             Ground ground = Instantiate(sol, newVEctor, Quaternion.identity);
             obj.grounds.Add(ground);
             //ajouter une seconde
-        }    
+            return;
+        }
+        else
+        {
+            //foreach(var gro in obj.grounds)
+            //{
+            //    if (gro.transform.position == newVEctor) return null;
+            //}
+            GameObject prefab = Instantiate(obstacle, newVEctor, Quaternion.identity);
+            return;
+        }
         //Sinon générer des décors
     }
 

@@ -42,6 +42,7 @@ public class NpcMovement : MonoBehaviour
     [SerializeField] private Job job;
 
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -72,7 +73,7 @@ public class NpcMovement : MonoBehaviour
 
     public void CompanionBehavior()
     {
-        if (/*action.hasTarget && */action.target != null)
+        if (action.target != null)
         {
             if (!isMoving && Vector3.Distance(action.target.transform.position, transform.position) <= /*action.atqRange*/5f)
             {
@@ -93,12 +94,12 @@ public class NpcMovement : MonoBehaviour
 
     public void EnemiesMove()
     {
-        if (/*action.hasTarget && */action.target != null)
+        if (action.target != null)
         {
-            if(Vector3.Distance(action.target.transform.position, transform.position) <= action.atqRange && !isMoving)
+            if (!isMoving && Vector3.Distance(action.target.transform.position, transform.position) <= action.target.atqRange)
             {
-                action.Attack();
-                //job.NpcBehaviorForJob();
+                //action.Attack();
+                job.NpcBehaviorForJob();
             }
             else
             {

@@ -12,16 +12,20 @@ namespace Assets.Script.Actions
         [SerializeField] private NpcMovement move;
         [SerializeField] private NpcController npcController;
         [HideInInspector]public Statistiques target;
-        private float detectRange = 5f;
-        public float atqRange = 2f;
         [HideInInspector] public bool hasTarget = false;
+        [HideInInspector] private Statistiques myStats;
+
+        private void Start()
+        {
+            myStats = GetComponent<Statistiques>();
+        }
 
 
         public void Attack()
         {
             if (!move.hasMoved)
             {
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, atqRange);
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, myStats.atqRange);
                 List<Statistiques> targets = new List<Statistiques>();
                 foreach (var hit in hitColliders)
                 {
@@ -48,19 +52,27 @@ namespace Assets.Script.Actions
 
         public bool CheckForTargets(List<string> targets)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectRange);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, myStats.detectRange);
+            RaycastHit ray;
             foreach(var hit in hitColliders)
             {
                 if (targets.Contains(hit.tag.ToLower()))
                 {
-                    if (target == null)
+                    var direction = hit.transform.position - transform.position;
+                    if (Physics.Raycast(transform.position, direction, out ray, myStats.detectRange))
                     {
-                        target = hit.GetComponent<Statistiques>();
+                        if (targets.Contains(ray.collider.tag.ToLower()))
+                        {
+                            if (target == null)
+                            {
+                                target = hit.GetComponent<Statistiques>();
+                            }
+                            //Debug.Log("FOUUUUUUUUND");
+                            hasTarget = true;
+                            move.posGround = move.GetClosestTileToTarget(move.GetAroundTile(), target.transform.position, target).transform.position;
+                            return true;
+                        }
                     }
-                    //Debug.Log("FOUUUUUUUUND");
-                    hasTarget = true;
-                    move.posGround = move.GetClosestTileToTarget(move.GetAroundTile(), target.transform.position, target).transform.position;
-                    return true;
                 }
             }
             return false;   
@@ -74,6 +86,7 @@ namespace Assets.Script.Actions
 
         public int GetBestAction(Job.Jobs job)
         {
+            Debug.Log("test");
             //switch (job)
             //{
             //    case Job.Jobs.Tank:
@@ -92,7 +105,7 @@ namespace Assets.Script.Actions
 
         private void OnDrawGizmos()
         {
-            if (gameObject.tag.ToLower() == "player")
+            if (gameObject.tag.ToLower() == "enemy")
             {
                 Gizmos.color = Color.yellow;
                 //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.

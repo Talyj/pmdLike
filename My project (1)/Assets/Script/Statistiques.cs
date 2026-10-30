@@ -17,6 +17,10 @@ public class Statistiques : MonoBehaviour
     public float manaMax;
     public float atq;
     public float def;
+    public float detectRange = 5f;
+    public float atqRange = 2f;
+
+
     public bool isDead = false;
     public int myTurn;
 

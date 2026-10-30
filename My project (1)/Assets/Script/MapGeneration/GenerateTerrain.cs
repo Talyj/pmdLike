@@ -23,6 +23,7 @@ public class GenerateTerrain : MonoBehaviour
     //public int numberOfEnemy=0;
     private int tileWidth, tileDepth;
 
+
     private void OnEnable()
     {
         // get the tile dimensions from the tile Prefab

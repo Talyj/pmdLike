@@ -37,6 +37,13 @@ namespace Assets.Script.Movements
             stats = GetComponent<Statistiques>();
             playAction = GetComponent<PlayerAction>();
             npcAction = GetComponent<NpcAction>();
+
+            //Get the base stats of the class
+        }
+
+        private void GetBaseStats()
+        {
+
         }
 
         // Update is called once per frame
@@ -95,20 +102,23 @@ namespace Assets.Script.Movements
             if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
                 //CHange value to stats.something
-                playAction.SimpleAttack(5f, 30);
+                playAction.SimpleAttack(stats.detectRange, stats.atq);
+                //playAction.SimpleAttack(5f, 30);
             }
             //BaseAttack2 = i
             if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
                 //CHange that to def for the tank
                 //action.Grab(5f, 5);
-                playAction.Aggro(10f, 0);
+                playAction.Aggro(stats.detectRange, stats.atq);
+                //playAction.Aggro(10f, 0);
                 Debug.Log("Def");
             }
             //Special = o
             if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
-                StartCoroutine(playAction.Grab(5f, 5));
+                StartCoroutine(playAction.Grab(stats.detectRange, stats.atq));
+                //StartCoroutine(playAction.Grab(5f, 5));
             }
         }
 
@@ -118,17 +128,20 @@ namespace Assets.Script.Movements
             if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
                 //CHange value to stats.something
-                playAction.SimpleAttack(5f, 5);
+                playAction.SimpleAttack(stats.detectRange, stats.atq);
+                //playAction.SimpleAttack(5f, 5);
             }
             //BaseAttack2 = i
             if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                playAction.Heal(5f, 50);
+                playAction.Heal(stats.detectRange, stats.atq);
+                //playAction.Heal(5f, 50);
             }
             //Special = o
             if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
-                playAction.HealAround(3f, 15);
+                playAction.HealAround(stats.detectRange, stats.atq);
+                //playAction.HealAround(3f, 15);
             }
         }
 
@@ -137,18 +150,20 @@ namespace Assets.Script.Movements
             //BaseAttack = u
             if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                playAction.SimpleAttack(5f, 50);
+                playAction.SimpleAttack(stats.detectRange, stats.atq);
+                //playAction.SimpleAttack(5f, 50);
             }
             //BaseAttack2 = i
             if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                playAction.DealAOEDamages(5f, 25);
+                playAction.DealAOEDamages(stats.detectRange, stats.atq);
+                //playAction.DealAOEDamages(5f, 25);
             }
             //Special = o
             if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
-                Debug.Log("cc");
-                playAction.PoisonAttack(5f, 3);
+                playAction.PoisonAttack(stats.detectRange, 3);
+                //playAction.PoisonAttack(5f, 3);
             }
         }
 
@@ -158,33 +173,39 @@ namespace Assets.Script.Movements
             //BaseAttack = u
             if (Input.GetButtonUp("BaseAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                playAction.SimpleAttack(5f, 50);
+                playAction.SimpleAttack(stats.detectRange, stats.atq);
+                //playAction.SimpleAttack(5f, 50);
             }
             //BaseAttack2 = i
             if (Input.GetButtonUp("SecondAttack") && playAction.mainCamera.targetPosition == gameObject)
             {
-                playAction.HealAround(2f, 5);
+                playAction.HealAround(stats.detectRange, stats.atq);
+                //playAction.HealAround(2f, 5);
             }
             //Special = o
             if (Input.GetButtonUp("Special") && playAction.mainCamera.targetPosition == gameObject)
             {
-                StartCoroutine(playAction.Grapple(5f, 5));
+                StartCoroutine(playAction.Grapple(stats.detectRange, stats.atq));
+                //StartCoroutine(playAction.Grapple(5f, 5));
             }
         }
 
-        public void NpcHealerBehavior(int test)
+        public void NpcHealerBehavior(int res)
         {
             transform.LookAt(npcAction.target.transform.position);
-            switch (test)
+            switch (res)
             {
                 case 0:
-                    playAction.SimpleAttack(5f, 5);
+                    playAction.SimpleAttack(stats.detectRange, stats.atq);
+                    //playAction.SimpleAttack(5f, 5);
                     break;
                 case 1:
-                    playAction.Heal(5f, 50);
+                    playAction.Heal(stats.detectRange, stats.atq);
+                    //playAction.Heal(5f, 50);
                     break;
                 case 2:
-                    playAction.HealAround(3f, 15);
+                    playAction.HealAround(stats.detectRange, stats.atq);
+                    //playAction.HealAround(3f, 15);
                     break;
             }
         }
@@ -196,15 +217,18 @@ namespace Assets.Script.Movements
             {
                 case 0:
                     Debug.Log(test);
-                    playAction.SimpleAttack(5f, 30);
+                    playAction.SimpleAttack(stats.detectRange, stats.atq);
+                    //playAction.SimpleAttack(5f, 30);
                     break;
                 case 1:
-                    Debug.Log(test);
-                    playAction.Aggro(10f, 0);
+                    //check if i can do something similar for the npc
+                    Debug.Log("aggro");
+                    //playAction.Aggro(10f, 0);
                     break;
                 case 2:
                     Debug.Log(test);
                     StartCoroutine(playAction.Grab(5f, 5));
+                    //StartCoroutine(playAction.Grab(5f, 5));
                     break;
             }
         }
@@ -216,12 +240,15 @@ namespace Assets.Script.Movements
             {
                 case 0:
                     playAction.SimpleAttack(5f, 50);
+                    //playAction.SimpleAttack(5f, 50);
                     break;
                 case 1:
                     playAction.DealAOEDamages(5f, 25);
+                    //playAction.DealAOEDamages(5f, 25);
                     break;
                 case 2:
                     playAction.PoisonAttack(5f, 3);
+                    //playAction.PoisonAttack(5f, 3);
                     break;
             }
         }
@@ -233,12 +260,15 @@ namespace Assets.Script.Movements
             {
                 case 0:
                     playAction.SimpleAttack(5f, 50);
+                    //playAction.SimpleAttack(5f, 50);
                     break;
                 case 1:
                     playAction.HealAround(2f, 5);
+                    //playAction.HealAround(2f, 5);
                     break;
                 case 2:
                     StartCoroutine(playAction.Grapple(5f, 5));
+                    //StartCoroutine(playAction.Grapple(5f, 5));
                     break;
             }
         }

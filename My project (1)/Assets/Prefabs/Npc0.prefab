@@ -836,4 +836,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.Movements.Job
   skillsList: []
-  job: 0
+  job: 1
